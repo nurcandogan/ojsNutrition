@@ -8,18 +8,22 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Image } from 'react-native';
 import bell from '../assets/bell.png';
 import newspaper from '../assets/newspaper.png';
-import { Home } from './screens/Home';
-import { Profile } from './screens/Profile';
-import { Settings } from './screens/Settings';
-import { Updates } from './screens/Updates';
-import { NotFound } from './screens/NotFound';
+import SearchProduct from './screens/SearchProduct';
+import AllProducts from './screens/AllProducts';
+import Menu from './screens/Menu';
+import Home from './screens/Home';
+import LoginRegister from './screens/LoginRegister';
+
 
 const HomeTabs = createBottomTabNavigator({
+   screenOptions: {
+    headerShown: false,
+  },
   screens: {
     Home: {
       screen: Home,
       options: {
-        title: 'Feed',
+        title: 'Anasayfa',
         tabBarIcon: ({ color, size }) => (
           <Image
             source={newspaper}
@@ -32,8 +36,9 @@ const HomeTabs = createBottomTabNavigator({
         ),
       },
     },
-    Updates: {
-      screen: Updates,
+    SearchProduct: {
+      screen: SearchProduct,
+      title: 'Ürün Ara',
       options: {
         tabBarIcon: ({ color, size }) => (
           <Image
@@ -47,11 +52,54 @@ const HomeTabs = createBottomTabNavigator({
         ),
       },
     },
+    AllProducts: {
+      screen: AllProducts,
+      options: {
+        title: 'Tüm Ürünler',
+        tabBarIcon: ({ color, size }) => (
+          <Image
+            source={newspaper}
+            tintColor={color}
+            style={{
+              width: size,
+              height: size,
+            }}
+          />
+        ),
+      },
+    },
+ 
+    Menu: {
+      screen: Menu,
+      options: {
+        title: 'Menü',
+        tabBarIcon: ({ color, size }) => (
+          <Image
+            source={newspaper}
+            tintColor={color}
+            style={{
+              width: size,
+              height: size,
+            }}
+          />
+        ),
+      },
+    },
   },
 });
 
 const RootStack = createNativeStackNavigator({
+  screenOptions: {
+    headerShown: false,
+  },
   screens: {
+    Login: {
+      screen: LoginRegister,
+      options: {
+        //title: 'Home',
+        headerShown: false,
+      },
+    },
     HomeTabs: {
       screen: HomeTabs,
       options: {
@@ -59,42 +107,16 @@ const RootStack = createNativeStackNavigator({
         headerShown: false,
       },
     },
-    Profile: {
-      screen: Profile,
-      linking: {
-        path: ':user(@[a-zA-Z0-9-_]+)',
-        parse: {
-          user: (value) => value.replace(/^@/, ''),
-        },
-        stringify: {
-          user: (value) => `@${value}`,
-        },
-      },
-    },
-    Settings: {
-      screen: Settings,
-      options: ({ navigation }) => ({
-        presentation: 'modal',
-        headerRight: () => (
-          <HeaderButton onPress={navigation.goBack}>
-            <Text>Close</Text>
-          </HeaderButton>
-        ),
-      }),
-    },
-    NotFound: {
-      screen: NotFound,
-      options: {
-        title: '404',
-      },
-      linking: {
-        path: '*',
-      },
-    },
-  },
-});
+  }})
+
+
+    
+
+
+
 
 export const Navigation = createStaticNavigation(RootStack);
+
 
 type RootStackParamList = StaticParamList<typeof RootStack>;
 

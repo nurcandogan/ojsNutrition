@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "ojsNutrition",
+    "name": "",
     "slug": "ojsNutrition",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/OJS.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "scheme": "ojsnutrition",
@@ -28,7 +28,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#ffffff",
-          "image": "./assets/splash-icon.png"
+          "image": "./assets/OJS.png"
         }
       ],
       "react-native-edge-to-edge"

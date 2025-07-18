@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Home = () => {
+const Menu = () => {
   return (
     <View>
-      <Text>Hohjıjklhnkjhnkjbhme</Text>
+      <Text>Menu</Text>
     </View>
   )
 }
 
-export default Home
+export default Menu
