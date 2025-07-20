@@ -4,7 +4,7 @@
     "slug": "ojsNutrition",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/OJS.png",
+    "icon": "./assets/ojs-1.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "scheme": "ojsnutrition",
@@ -28,7 +28,7 @@
         "expo-splash-screen",
         {
           "backgroundColor": "#ffffff",
-          "image": "./assets/OJS.png"
+          "image": "./assets/ojs-1.png"
         }
       ],
       "react-native-edge-to-edge"

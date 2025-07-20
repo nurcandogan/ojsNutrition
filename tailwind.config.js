@@ -9,6 +9,7 @@ module.exports = {
         bordergray:'#E5E5E5',
         inputgray:'#E7E7E7',
         logintext:'#2126AB',
+        ticaritext:'#777777,'
       }
     },
   },

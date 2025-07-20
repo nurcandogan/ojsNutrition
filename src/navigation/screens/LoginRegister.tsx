@@ -1,17 +1,38 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity ,ScrollView} from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, SafeAreaView, Image, TouchableOpacity ,ScrollView, Modal, Alert} from 'react-native'
+import React, { useCallback, useState } from 'react'
 import LoginForm from '../../components/LoginForm'
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import RegisterForm from '../../components/RegisterForm';
+import {  Feather } from '@expo/vector-icons';
+import { kvkkAydinlatmaMetni } from '../../constant/legal/Kvkk';
+import { MembershipAgreement } from '../../constant/legal/MembershipAgreement';
+
 
 
 const LoginRegister = () => {
   const navigation = useNavigation();
-   const [tab, setTab] = useState<'login' | 'register'>('login');
+  const [tab, setTab] = useState<'login' | 'register'>('login');
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
+  const [isCheck, setIsCheck] = useState(false);
+  const [secondCheck, setSecondCheck] = useState(false);
+  const [showContractModal, setShowContractModal] = useState(false);    //sözleşmeler
+  const [showKVKKModal, setShowKVKKModal]     = useState(false);        //kvkk
+  
+
+
+  useFocusEffect(
+    useCallback(() => {
+      setEmail('');
+      setPassword('');
+      setName('');
+      setSurname('');
+      setIsCheck(false);
+      setSecondCheck(false);
+    }, [])
+  );
 
 const handleEmailChange= (text:string)=> setEmail(text)
 const handlePasswordChange= (text:string)=> setPassword(text)
@@ -20,19 +41,25 @@ const handleSurnameChange= (text:string)=> setSurname(text)
 
 
 
-const handleSubmit = () => {
-    if (tab === 'login') {
-      console.log('Login:', { email, password });
-      navigation.navigate('HomeTabs');
-    } 
+  const Wrapper = tab === 'register' ? ScrollView : View;
+  const WrapperStyle = {
+    alignItems: 'center' as const,
+    paddingBottom: 40,
   };
 
-     const Wrapper = tab === 'register' ? ScrollView : View;
-     const WrapperStyle = {
-        alignItems: 'center' as const,
-        paddingBottom: 40,
-};
+  const handleSubmit = () => {
+    if (tab === 'login') {
+      console.log('Login:', { email, password });
+
+      navigation.navigate('HomeTabs');
+    } else {
+      // Kayıt başarılı olunca:
+      setTab('login');
+      Alert.alert('Başarılı', 'Kaydınız oluşturuldu. Lütfen giriş yapın.');
+    }
+  }
   
+
   return (
     <SafeAreaView className=' flex-1'>
       <Wrapper
@@ -44,9 +71,52 @@ const handleSubmit = () => {
           style: WrapperStyle,
         }
 
-      )}
-      >
-        
+      )}>
+         {/* ————— Modallar ————— */}
+        <Modal
+          visible={showContractModal}
+          animationType="slide"
+          transparent
+          onRequestClose={() => setShowContractModal(false)}
+        >
+          <View className="flex-1 justify-center items-center">
+            <View className="w-11/12 h-4/5 bg-white rounded-lg p-4">
+              <View className="flex-row justify-between items-center mb-2">
+                <Text className="text-lg font-bold">Üyelik Sözleşmesi</Text>
+                <TouchableOpacity onPress={() => setShowContractModal(false)}>
+                  <Feather name="x" size={24} color="#000" />
+                </TouchableOpacity>
+              </View>
+              <ScrollView>
+                <Text className="text-sm">{MembershipAgreement}</Text>
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          visible={showKVKKModal}
+          animationType="slide"
+          transparent
+          onRequestClose={() => setShowKVKKModal(false)}
+        >
+          <View className="flex-1 mt-3 justify-center items-center">
+            <View className="w-11/12 h-4/5 bg-white rounded-lg p-4">
+              <View className="flex-row justify-between items-center mb-2">
+                <Text className="text-lg font-bold">KVKK Aydınlatma Metni</Text>
+                <TouchableOpacity onPress={() => setShowKVKKModal(false)}>
+                  <Feather name="x" size={24} color="#000" />
+                </TouchableOpacity>
+              </View>
+              <ScrollView>
+                <Text className="text-sm">{kvkkAydinlatmaMetni}</Text>
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+        {/* ————— Modallar Son ————— */}
+
+
       <View className=' mt-5 '>
          <Image className='w-28 h-20' source={require('../../assets/ojs-1.png')} resizeMode="contain" />
       </View>
@@ -78,9 +148,10 @@ const handleSubmit = () => {
       </View>
 
 
-     <View>
+   <View>
       {tab === 'login' ? (
         <>
+
         <LoginForm label="*E-Posta" value= {email} onChangeText={handleEmailChange}/>
         <LoginForm label='*Şifre' value= {password} onChangeText={handlePasswordChange} />
         </>
@@ -90,11 +161,30 @@ const handleSubmit = () => {
           <RegisterForm label='Soyad' value = {surname}  onChangeText={handleSurnameChange} />
           <LoginForm label="*E-Posta" value= {email} onChangeText={handleEmailChange}/>
          <LoginForm label='*Şifre' value= {password} onChangeText={handlePasswordChange} />
-        </>
-      )}</View>
+      
+
+      
+     <View className='w-[320px] mx-auto self-center flex-row items-start  '>
+        <TouchableOpacity onPress={()=> setIsCheck(!isCheck)}>
+          <Feather name={isCheck ? 'check-square' : 'square'} size={20} color={isCheck ? '#2126AB' : '#2126AB'} />
+        </TouchableOpacity>
+          <Text className='ml-2 flex-1 text-xs leading-[20px] text-ticaritext'>Kampanyalardan haberdar olmak için <Text  className='underline font-bold text-black '>Ticari Elektronik İleti Onayı </Text> metnini okudum, onaylıyorum. Tarafınızdan gönderilecek ticari elektronik iletileri almak istiyorum. </Text>
+     </View>
+     <View className='w-[320px] mx-auto self-center flex-row items-start '>
+        <TouchableOpacity onPress={()=> setSecondCheck(!secondCheck)}>
+          <Feather name={secondCheck ? 'check-square' : 'square'} size={20} color={isCheck ? '#2126AB' : '#2126AB'} />
+        </TouchableOpacity>
+          <Text className='ml-2 flex-1 leading-[20px] text-xs text-ticaritext'><Text onPress={() => setShowContractModal(true)} className=' underline font-bold text-black'>Üyelik sözleşmesini</Text> <Text className='text-black'>ve</Text> <Text onPress={() => setShowKVKKModal(true)} className='underline font-bold text-black'> KVKK Aydınlatma Metni </Text><Text className='text-black'>okudum, kabul ediyorum</Text></Text>
+     </View>
+
+     </>
+      )}
+  </View>
+
+
 
         <TouchableOpacity className='w-[324px]  items-end '>
-         <Text className='text-sm text-sm underline'>
+         <Text className='text-sm underline'>
         {tab==='login' ? '  Şifremi unuttum?' : ''}
           </Text>
         </TouchableOpacity>
@@ -103,7 +193,11 @@ const handleSubmit = () => {
 
       <TouchableOpacity 
       onPress={handleSubmit}
-      className=' rounded-md mx-9 justify-center items-center mt-4 w-[324px] h-[55px] bg-black '>
+      disabled={tab === 'register' && !secondCheck}
+      className={`rounded-md mx-9 justify-center items-center mt-4 w-[324px] h-[55px] bg-black 
+      ${tab === 'register' && !secondCheck  ? 'bg-gray-300' : 'bg-black'}`}>    
+       {  /*  dinamik yaparak checklenip checklenmeme durumuna göre renk değişimi olur */}            
+
         <Text className=' text-2xl semibold text-white text-center '>
            {tab === 'login' ? 'GİRİŞ YAP' : 'ÜYE OL'}
         </Text>
