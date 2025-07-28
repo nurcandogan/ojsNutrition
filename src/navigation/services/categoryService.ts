@@ -1,6 +1,8 @@
 const baseUrl = "https://fe1111.projects.academy.onlyjs.com/api/v1";
 
 export type Category = {
+  title: string;
+  image: unknown;
   id: number;
   name: string;
 

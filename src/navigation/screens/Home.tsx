@@ -4,6 +4,8 @@ import Feather from '@expo/vector-icons/Feather';
 import { TextInput } from 'react-native-gesture-handler';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { Category, fetchCategories } from '../services/categoryService';
+import { BestSellerProps, fetchBestSellers } from '../services/bestSeller';
+import BestSeller from '../../components/BestSeller';
 
 
 const images = [
@@ -23,22 +25,28 @@ const Home = () => {
     const [searchText, setSearchText] = useState("");                 // State to hold the search text
     const [categories, setCategories] = useState<Category[]>([]);     // category servıce'den gelen veri
     const [loading, setLoading] = useState(true);
+    const [items, setItems] = useState<BestSellerProps[]>([]);        //bestseller servıce'den gelen veri
 
   useEffect(() => {
-   fetchCategories().then((data) => {
-     // API'den gelen kategorilere "Tüm Ürünler" kategorisini ekle
-    const allCategories = [...data, { id: data.length + 1, name: 'TÜM ÜRÜNLER' }];
-    setCategories(allCategories);
-    // setCategories(data);
-    setLoading(false);
-  });
-
+    categoriesFetch();
+    loadBestSellers();
 }, []); 
 
+const categoriesFetch = async () => {
+  const data = await fetchCategories();
+  // API'den gelen kategorilere "Tüm Ürünler" kategorisini ekle
+    const allCategories = [...data, { id: data.length + 1, name: 'TÜM ÜRÜNLER' }];
+    setCategories(allCategories);
+    setLoading(false);
+}
 
-  function getBackgroundColor(index: number): import("react-native").ColorValue | undefined {
-    throw new Error('Function not implemented.');
-  }
+
+ const loadBestSellers = async () => {
+    const data = await fetchBestSellers();
+    setItems(data);
+};
+
+  
 
   return (
 
@@ -115,9 +123,14 @@ const Home = () => {
        </View>
 
     )}
+      <BestSeller items={items} />
+
    
      </ScrollView>
     </SafeAreaView>
   )
 }
  export default Home
+
+
+
