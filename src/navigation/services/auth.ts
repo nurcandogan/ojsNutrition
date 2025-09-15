@@ -1,4 +1,4 @@
-export const API_BASE_URL = "https://fe1111.projects.academy.onlyjs.com/api/v1";
+import { API_BASE_URL } from "@env";
 
 export const REGISTER_URL = `${API_BASE_URL}/auth/register`;
 export const LOGIN_URL = `${API_BASE_URL}/auth/login`;

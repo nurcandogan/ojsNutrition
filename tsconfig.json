@@ -2,6 +2,8 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "moduleResolution": "bundler",
-    "strict": true
-  }
+    "strict": true,
+    "types": ["env"]   // 👈 ekledik
+  },
+  "include": ["env.d.ts", "src"]   // env.d.ts ve src’yi kapsa
 }
