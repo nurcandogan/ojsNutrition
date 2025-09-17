@@ -10,6 +10,9 @@ import { kvkkAydinlatmaMetni } from "../../constant/legal/Kvkk";
 import { MembershipAgreement } from "../../constant/legal/MembershipAgreement";
 import * as Yup from "yup";
 import { FormikProps } from "formik";
+import { loginService, registerService } from "../services/auth";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const loginSchema = Yup.object().shape({
@@ -76,7 +79,22 @@ const LoginRegister = () => {
 
 			try {
 				await loginSchema.validate({ username: email, password }, { abortEarly: false });
-				navigation.navigate("HomeTabs");
+				const res = await loginService(email, password);
+			    console.log("API Cevabı:", res);
+				if (!res.success) {
+				Alert.alert("Giriş Hatası", res.message || "Hata oluştu");
+				return;
+			    }
+				// TOKEN SAKLA
+                try {
+                await AsyncStorage.setItem("accessToken", res.data.access_token);
+                console.log("Token başarıyla saklandı");
+			
+                } catch (err) {
+                console.error("Token kaydedilirken hata:", err);
+                }
+
+
 			} catch (err) {
 				if (err instanceof Yup.ValidationError) {
 					const formErrors: Record<string, string> = {};
@@ -96,8 +114,23 @@ const LoginRegister = () => {
 					{ first_name: name, last_name: surname, email, password, password2: password, isCheck, secondCheck },
 					{ abortEarly: false }
 				);
-					Alert.alert("Başarılı", "Kaydınız oluşturuldu. Lütfen giriş yapın.");
-					setTab("login");
+					const res = await registerService({
+                     first_name: name,
+                     last_name: surname,
+                     email,
+                     password,
+                     password2: password, // düzeltilecek
+                     });
+
+                  // 2. Başarısızsa mesaj göster
+                      if (!res.success) {
+                               Alert.alert("Kayıt Hatası", res.message || "Bilinmeyen hata");
+                        return;
+                       }
+
+                   // 3. Başarılıysa login sekmesine geç
+                     Alert.alert("Başarılı", "Kaydınız oluşturuldu. Lütfen giriş yapın.");
+	 				setTab("login");
 			} catch (err) {
 				if (err instanceof Yup.ValidationError) {
 					const formErrors: Record<string, string> = {};

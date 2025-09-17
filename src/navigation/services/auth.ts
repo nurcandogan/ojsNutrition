@@ -1,10 +1,11 @@
-import { API_BASE_URL } from "@env";
+import { API_BASE_URL, API_KEY } from "@env";
+
+//console.log("API_KEY:", API_KEY);
+
 
 export const REGISTER_URL = `${API_BASE_URL}/auth/register`;
 export const LOGIN_URL = `${API_BASE_URL}/auth/login`;
 
-// Postman’dan alınan API anahtarı
-export const API_KEY = "136139";
 
 
 export type AuthResponse = {
@@ -43,6 +44,7 @@ export const loginService = async (username: string, password: string): Promise<
   })
 
   const json = await response.json();
+  console.log("loginService json:", json);
 
   if (!response.ok) {
 	return {

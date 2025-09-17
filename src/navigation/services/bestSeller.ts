@@ -1,7 +1,6 @@
-const BASE_URL = 'https://fe1111.projects.academy.onlyjs.com/api/v1';
+import { API_BASE_URL} from "@env";
+
  
-
-
 export interface PriceInfo {
   profit: number | null;
   total_price: number;
@@ -22,7 +21,7 @@ export interface BestSellerProps {
 }
 
  export const fetchBestSellers = async () :Promise<BestSellerProps[]> => {
-const response = await fetch(`${BASE_URL}/products/best-sellers`);
+const response = await fetch(`${API_BASE_URL}/products/best-sellers`);
 if (!response.ok) {
     throw new Error(`HTTP ${response.status} - ${response.statusText}`);
   }
