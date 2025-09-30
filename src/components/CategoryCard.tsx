@@ -1,32 +1,63 @@
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+// components/CategoryCard.tsx
+import { View, Text, TouchableOpacity, Image, ImageBackground, ImageSourcePropType, ActivityIndicator } from 'react-native'
 import React from 'react'
-
+import { Category } from '../navigation/services/categoryService'
 
 interface CategoryCardProps {
-  image: any;
-  title: string;
-  onPress: () => void; 
+  categories: Category[];
+  images: ImageSourcePropType[];
+  loading: boolean;
+  aminoAcidImage: ImageSourcePropType;
 }
 
-const CategoryCard = ({image, title, onPress}:CategoryCardProps ) => {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.8}
-      className="flex-row items-center justify-between bg-gray-200 rounded-xl p-3 m-2 flex-1 min-w-[150px]"
-    >
-      <View>
-         <Image source={image} className='w-12 h-12 rounded-lg' resizeMode='contain' />
-         <View className='ml-3 flex-1'>
-            <Text className="font-bold text-lg">{title.toUpperCase()}</Text>
-         </View>
-         <View className='bg-black rounded-xl px-4 py-1'>
-          <Text className='font-bold text-white'>İNCELE</Text>
-         </View>
+const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryCardProps) => {
+  if (loading) {
+    return (
+      <View className='flex-1 justify-center items-center'>
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
+    );
+  }
 
-    </TouchableOpacity>
-  )
+  return (
+    <View className='flex-row flex-wrap mt-3'>
+      {categories.map((cat, index) => {
+        const isAll = cat.name === 'TÜM ÜRÜNLER';
+        return (
+          <TouchableOpacity 
+            key={cat.id}
+            activeOpacity={0.8}
+            onPress={() => console.log("Kategori seçildi:", cat.name, cat.slug)}
+            className='w-1/2 px-2 mb-4'
+          >
+            <ImageBackground
+              source={images[index] || images[0]}
+              className="w-52 h-32 rounded-xl overflow-hidden items-end"
+              resizeMode="cover"
+            >
+              {isAll && (
+                <Image
+                  source={aminoAcidImage}
+                  resizeMode="cover"
+                  className="absolute mt-9 left-2 w-20 h-16"
+                />
+              )}
+
+              <View className='flex-1 justify-center items-center p-4 gap-4 mt-5'>
+                <Text className="font-black text-xl text-center leading-tight text-right">
+                  {cat.name.replace(' ', '\n')}
+                </Text>
+
+                <TouchableOpacity className="bg-black px-4 py-1 rounded-full">
+                  <Text className="text-white font-bold text-sm">İNCELE</Text>
+                </TouchableOpacity>
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
 }
 
 export default CategoryCard;

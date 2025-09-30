@@ -6,6 +6,7 @@ import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { Category, fetchCategories } from '../services/categoryService';
 import { BestSellerProps, fetchBestSellers } from '../services/bestSeller';
 import BestSeller from '../../components/BestSeller';
+import CategoryCard from '../../components/CategoryCard';
 
 
 const images = [
@@ -35,7 +36,10 @@ const Home = () => {
 const categoriesFetch = async () => {
   const data = await fetchCategories();
   // API'den gelen kategorilere "Tüm Ürünler" kategorisini ekle
-    const allCategories = [...data, { id: data.length + 1, name: 'TÜM ÜRÜNLER' }];
+    const allCategories : Category[] = [...data, {  id: 'all-products', 
+        name: 'TÜM ÜRÜNLER',
+        slug: 'tum-urunler',
+        order: data.length + 1 }];
     setCategories(allCategories);
     setLoading(false);
 }
@@ -50,7 +54,7 @@ const categoriesFetch = async () => {
 
   return (
 
-    <SafeAreaView className=' '>
+    <SafeAreaView >
       <ScrollView contentContainerStyle={{ paddingBottom: 20 }} >
     <View className='flex-row justify-between items-center px-6 mt-3 shadow-lg bg-neutral-200 ' >
         <Image source={require('../../assets/ojslogo2.png')} className='w-32 h-16 items-start' resizeMode="contain"  />
@@ -78,54 +82,10 @@ const categoriesFetch = async () => {
     <View className='mt-3 px-4'>
       <Text className='text-xl font-semibold'>Kategoriler</Text>
     </View>
-
-    { loading ? (
-      <View className='flex-1 justify-center items-center'>
-        <ActivityIndicator size="large" color="#0000ff" />
-      </View>
-    ) : (
-       <View className='flex-row flex-wrap  mt-3'>
-        {categories.map((cat, index) => {
-          const isAll = cat.name === 'TÜM ÜRÜNLER';
-          return (
-            <TouchableOpacity 
-            key={index}
-            activeOpacity={0.8}
-            onPress={() => console.log("Kategori seçildi:", cat.name)}
-            className='w-1/2 px-2 mb-4'
-          >
-             <ImageBackground
-                  source={images[index] || images[0]}
-                  className="w-52 h-32 rounded-xl overflow-hidden items-end  "
-                  resizeMode="cover"
-                >
-                
-                {isAll && (
-                      <Image
-                        source={aminoAcidImage}
-                        resizeMode="cover"
-                        className="absolute mt-9 left-2 w-20] h-16"
-                      />
-                    )}
-
-               <View className='flex-1 justify-center items-center p-4 gap-4 mt-5'>
-                   <Text className="font-black text-xl text-center leading-tight text-right">{cat.name.replace(' ', '\n')}</Text>
-
-                    <TouchableOpacity className=" bg-black px-4 py-1 rounded-full">
-                       <Text className="text-white font-bold text-sm">İNCELE</Text>
-                    </TouchableOpacity>
-               </View>
-             </ImageBackground>
-       
-          </TouchableOpacity>
-          );
-        })}
-       </View>
-
-    )}
+     
+      <CategoryCard categories={categories} images={images} loading={loading} aminoAcidImage={aminoAcidImage} />
       <BestSeller items={items} />
 
-   
      </ScrollView>
     </SafeAreaView>
   )

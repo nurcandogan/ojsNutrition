@@ -2,10 +2,12 @@ import { API_BASE_URL } from '@env';
 
 
 export type Category = {
-  title: string;
-  image: unknown;
-  id: number;
+  id: string;           // API'de string olarak geliyor
   name: string;
+  slug: string;
+  order: number;
+  children?: any[];     // İleride kullanıcaz
+  top_sellers?: any[];  // İleride kullanıcaz
 
  
 };
