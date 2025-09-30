@@ -15,8 +15,8 @@ export async function fetchCategories(): Promise<Category[]> {
   try {
     const response = await fetch(`${API_BASE_URL}/categories`);
     const data = await response.json();
-    console.log("API data:", data);
-    return data?.data?.data ?? [];                   // Veriyi return ediyoruz
+    //console.log("API data:", data);
+    return data?.data?.data ?? [];                //En içteki listeyi al, ama herhangi bir aşamada veri yoksa bana boş array ver
   } catch (error) {
     console.error("Kategori API hatası:", error);
     return []; // Hata durumunda boş array döner

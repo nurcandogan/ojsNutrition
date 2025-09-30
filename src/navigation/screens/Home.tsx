@@ -9,7 +9,6 @@ import BestSeller from '../../components/BestSeller';
 
 
 const images = [
-
   require("../../assets/protein.png"),
   require("../../assets/vitamin.png"),
   require("../../assets/sporgıdaları.png"),
@@ -18,6 +17,7 @@ const images = [
   require("../../assets/Katman 1.png"),
  
 ];
+
    const aminoAcidImage = require("../../assets/amino-asit-paket.png");
 
 
@@ -30,7 +30,7 @@ const Home = () => {
   useEffect(() => {
     categoriesFetch();
     loadBestSellers();
-}, []); 
+  }, []); 
 
 const categoriesFetch = async () => {
   const data = await fetchCategories();

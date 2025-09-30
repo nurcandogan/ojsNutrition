@@ -9,7 +9,7 @@ export interface PriceInfo {
   discount_percentage: number | null;
 }
 
-// Best Seller ürünü
+
 export interface BestSellerProps {
   name: string;
   short_explanation: string;
@@ -20,7 +20,7 @@ export interface BestSellerProps {
   average_star: number;
 }
 
- export const fetchBestSellers = async () :Promise<BestSellerProps[]> => {
+export const fetchBestSellers = async () :Promise<BestSellerProps[]> => {
 const response = await fetch(`${API_BASE_URL}/products/best-sellers`);
 if (!response.ok) {
     throw new Error(`HTTP ${response.status} - ${response.statusText}`);
@@ -29,7 +29,6 @@ if (!response.ok) {
     status: string;
     data: BestSellerProps[];
   } ;
-
  // Burada yalnızca içteki diziye erişiyoruz
   return json.data;
 }
