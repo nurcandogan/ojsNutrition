@@ -12,6 +12,7 @@ import * as Yup from "yup";
 import { FormikProps } from "formik";
 import { loginService, registerService } from "../services/auth";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LegalModal from "../../components/LegalModal";
 
 
 
@@ -160,37 +161,21 @@ const LoginRegister = () => {
 						})}
 			>
 				{/* ————— Modallar ————— */}
-				<Modal visible={showContractModal} animationType="slide" transparent onRequestClose={() => setShowContractModal(false)}>
-					<View className="flex-1 justify-center items-center">
-						<View className="w-11/12 h-4/5 bg-white rounded-lg p-4">
-							<View className="flex-row justify-between items-center mb-2">
-								<Text className="text-lg font-bold">Üyelik Sözleşmesi</Text>
-								<TouchableOpacity onPress={() => setShowContractModal(false)}>
-									<Feather name="x" size={24} color="#000" />
-								</TouchableOpacity>
-							</View>
-							<ScrollView>
-								<Text className="text-sm">{MembershipAgreement}</Text>
-							</ScrollView>
-						</View>
-					</View>
-				</Modal>
+				
+                 <LegalModal
+					visible={showContractModal}
+					onClose={() => setShowContractModal(false)}
+					title="Üyelik Sözleşmesi"
+					content={MembershipAgreement}
+				/>
 
-				<Modal visible={showKVKKModal} animationType="slide" transparent onRequestClose={() => setShowKVKKModal(false)}>
-					<View className="flex-1 mt-3 justify-center items-center">
-						<View className="w-11/12 h-4/5 bg-white rounded-lg p-4">
-							<View className="flex-row justify-between items-center mb-2">
-								<Text className="text-lg font-bold">KVKK Aydınlatma Metni</Text>
-								<TouchableOpacity onPress={() => setShowKVKKModal(false)}>
-									<Feather name="x" size={24} color="#000" />
-								</TouchableOpacity>
-							</View>
-							<ScrollView>
-								<Text className="text-sm">{kvkkAydinlatmaMetni}</Text>
-							</ScrollView>
-						</View>
-					</View>
-				</Modal>
+				<LegalModal
+					visible={showKVKKModal}
+					onClose={() => setShowKVKKModal(false)}
+					title="KVKK Aydınlatma Metni"
+					content={kvkkAydinlatmaMetni}
+				/>
+				
 				{/* ————— Modallar Son ————— */}
 
 				<View className=" mt-5 ">
@@ -242,10 +227,10 @@ const LoginRegister = () => {
 					)}
 				</View>
 
-				<View className="w-[324px] h-[20px] relative  ">
+				<View className="w-[324px] h-[20px] relative mb-2 mt-2">
 					{tab === "login" && (
-						<TouchableOpacity className="absolute right-0 bottom-2 -translate-y-1/2">
-							<Text className="text-sm underline">Şifremi unuttum?</Text>
+						<TouchableOpacity className="absolute right-0  -translate-y-1/2">
+							<Text className="text-sm underline ">Şifremi unuttum?</Text>
 						</TouchableOpacity>
 					)}
 				</View>

@@ -17,8 +17,8 @@ const LegalModal: React.FC<ContractModalProps> = ({ visible, onClose, title, con
       transparent
       onRequestClose={onClose}
     >
-      <View className="flex-1 bg-black bg-opacity-50 justify-center items-center">
-        <View className="w-11/12 h-4/5 bg-white rounded-lg p-4">
+      <View className="flex-1 bg-inherit bg-opacity-50 justify-center items-center ">
+        <View className="w-11/12 h-4/5 bg-white rounded-3xl p-4 ">
           {/* Başlık ve Kapat butonu */}
           <View className="flex-row justify-between items-center mb-2">
             <Text className="text-lg font-bold">{title}</Text>
