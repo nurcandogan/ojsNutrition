@@ -36,5 +36,4 @@ const LegalModal: React.FC<ContractModalProps> = ({ visible, onClose, title, con
     </Modal>
   );
 };
-
 export default LegalModal;
