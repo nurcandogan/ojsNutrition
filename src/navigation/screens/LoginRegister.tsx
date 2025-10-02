@@ -95,7 +95,6 @@ const LoginRegister = () => {
                 console.error("Token kaydedilirken hata:", err);
                 }
 
-
 			} catch (err) {
 				if (err instanceof Yup.ValidationError) {
 					const formErrors: Record<string, string> = {};
