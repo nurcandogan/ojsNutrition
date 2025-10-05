@@ -16,14 +16,13 @@ const images = [
   require("../../assets/gıda.png"),
   require("../../assets/saglık.png"),
   require("../../assets/Katman 1.png"),
- 
 ];
 
-   const aminoAcidImage = require("../../assets/amino-asit-paket.png");
+const aminoAcidImage = require("../../assets/amino-asit-paket.png");
 
 
 const Home = () => {
-    const [searchText, setSearchText] = useState("");                 // State to hold the search text
+    const [searchText, setSearchText] = useState("");                
     const [categories, setCategories] = useState<Category[]>([]);     // category servıce'den gelen veri
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState<BestSellerProps[]>([]);        //bestseller servıce'den gelen veri
@@ -50,12 +49,11 @@ const categoriesFetch = async () => {
     setItems(data);
 };
 
-  
 
   return (
 
-    <SafeAreaView >
-      <ScrollView contentContainerStyle={{ paddingBottom: 20 }} >
+  <SafeAreaView >
+   <ScrollView contentContainerStyle={{ paddingBottom: 20 }} >
     <View className='flex-row justify-between items-center px-6 mt-3 shadow-lg bg-neutral-200 ' >
         <Image source={require('../../assets/ojslogo2.png')} className='w-32 h-16 items-start' resizeMode="contain"  />
        <TouchableOpacity>
@@ -63,11 +61,11 @@ const categoriesFetch = async () => {
        </TouchableOpacity>
     </View>
     
-  { /* Search bar */}
+     { /* Search bar */}
     <View className='align-center mt-5  mx-4 flex-row items-center rounded-full bg-inputgray px-4 py-4'>
      <EvilIcons name="search" size={24} color="black" />
      <TextInput
-     placeholder="Aradığınız ürünü yazınız..."
+       placeholder="Aradığınız ürünü yazınız..."
        placeholderTextColor="#999"
        className="ml-3 flex-1 text-base p-0"
        value={searchText}
@@ -86,8 +84,8 @@ const categoriesFetch = async () => {
       <CategoryCard categories={categories} images={images} loading={loading} aminoAcidImage={aminoAcidImage} />
       <BestSeller items={items} />
 
-     </ScrollView>
-    </SafeAreaView>
+   </ScrollView>
+  </SafeAreaView>
   )
 }
  export default Home
