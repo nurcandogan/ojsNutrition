@@ -90,7 +90,7 @@ const LoginRegister = () => {
                 try {
                 await AsyncStorage.setItem("accessToken", res.data.access_token);
                 console.log("Token başarıyla saklandı");
-			
+				
                 } catch (err) {
                 console.error("Token kaydedilirken hata:", err);
                 }

@@ -15,9 +15,11 @@ import Home from './screens/Home';
 import LoginRegister from './screens/LoginRegister';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from "expo-splash-screen";
 
 
+
+SplashScreen.preventAutoHideAsync();
 
 
 const HomeTabs = createBottomTabNavigator({
@@ -117,28 +119,31 @@ const RootStack = createNativeStackNavigator({
 
     
 // ------------------- Navigation Wrapper -------------------
+
 function RootNavigation() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    const checkToken = async () => {
+  // 🔸 Token kontrol fonksiyonu
+  const checkToken = async () => {
+    try {
       const token = await AsyncStorage.getItem('accessToken');
       setIsLoggedIn(!!token);
+    } catch (err) {
+      console.log("Token kontrol hatası:", err);
+      setIsLoggedIn(false);
+    } finally {
+      await SplashScreen.hideAsync(); // splash her durumda kapatılır
+    }
+  };
 
-      //  token kontrolü bittikten sonra splash'ı kapat
-      await SplashScreen.hideAsync();
-    };
-
+  useEffect(() => {
     checkToken();
+    const interval = setInterval(checkToken, 1000); // 1 saniyede bir kontrol
+    return () => clearInterval(interval);
   }, []);
 
-  if (isLoggedIn === null) {
-    //  spinner yok → sadece splash ekranda kalıyor
-    return null;
-  }
+  if (isLoggedIn === null) return null;
 
-
-  // Login olmuşsa direkt HomeTabs, olmamışsa Login
   const StackWithAuth = createNativeStackNavigator({
     screenOptions: { headerShown: false },
     screens: isLoggedIn

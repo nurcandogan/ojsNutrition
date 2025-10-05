@@ -23,8 +23,8 @@ export function App() {
   const theme = colorScheme === 'dark' ? DarkTheme : DefaultTheme
 
   return (
-      <GestureHandlerRootView style={{ flex: 1 }}>
-    <Navigation
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Navigation
       theme={theme}
       linking={{
         enabled: 'auto',

@@ -11,6 +11,7 @@ module.exports = {
         logintext:'#2126AB',
         ticaritext:'#777777',
         errortext:'#ff7300',
+        discountText:'#ED2727',
       }
     },
   },

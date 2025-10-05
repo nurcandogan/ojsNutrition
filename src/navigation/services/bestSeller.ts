@@ -1,4 +1,4 @@
-import { API_BASE_URL} from "@env";
+import { API_BASE_URL, MEDIA_BASE_URL} from "@env";
 
  
 export interface PriceInfo {
@@ -26,9 +26,20 @@ if (!response.ok) {
     throw new Error(`HTTP ${response.status} - ${response.statusText}`);
   }
   const json = await response.json() as {
+    
     status: string;
     data: BestSellerProps[];
+    
   } ;
- // Burada yalnızca içteki diziye erişiyoruz
-  return json.data;
-}
+  
+
+  
+  const fixedData = json.data.map(item => ({
+    ...item,
+    photo_src: item.photo_src.startsWith('http')
+      ? item.photo_src
+      : `${MEDIA_BASE_URL}${item.photo_src}`,
+  }));
+
+  return fixedData;
+};
