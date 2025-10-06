@@ -21,7 +21,7 @@ const BestSeller = ({ items }: Props) => {
 
           return (
             <View key={item.slug} className='w-1/2 px-2 mb-6'>
-              <TouchableOpacity activeOpacity={0.8}
+              <TouchableOpacity activeOpacity={0.8} className=''
                >
                 {/* Image Section */}
                 <View className='relative items-center'>
@@ -40,19 +40,22 @@ const BestSeller = ({ items }: Props) => {
                 </View>
 
                 {/* Product Name */}
-                <Text className='text-base mt-2 font-bold text-center' numberOfLines={2} >
+                <Text className='text-base mt-2 font-bold text-center'  >
                   {item.name.toUpperCase()}
                 </Text>
 
                 {/* Short Description */}
-                {item.short_explanation && (
-                  <Text className='text-[10.13px] text-gray-600 mt-1 text-center'>
+                <View className='mt-1 justify-center '>
+                  {item.short_explanation && (
+                  <Text className='text-[10.13px] text-gray-600 mt-1 text-center '
+                  >
                     {item.short_explanation.toUpperCase()}
                   </Text>
-                )}
+                  )}
+                </View>
 
                 {/* Rating Section */}
-                <View className='items-center mt-2'>
+                <View className='items-center mt-3  '>
                   <View className='flex-row'>
                     {[...Array(5)].map((_, i) => (
                       <AntDesign
@@ -63,7 +66,7 @@ const BestSeller = ({ items }: Props) => {
                       />
                     ))}
                   </View>
-                  <View className='items-center mt-2'>
+                  <View className='items-center mt-3'>
                     <Text className='text-black  text-[12.77px] ml-2'>
                     {item.comment_count} Yorum
                   </Text>
