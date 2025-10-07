@@ -156,7 +156,10 @@ function RootNavigation() {
   const StackWithAuth = createNativeStackNavigator({
     screenOptions: { headerShown: false },
     screens: isLoggedIn
-      ? { HomeTabs: { screen: HomeTabs } }
+      ? { HomeTabs: { screen: HomeTabs }, 
+          CategoryProducts: { screen: CategoryProducts },   //  buraya ekle!!
+        }
+
       : { Login: { screen: LoginRegister } },
   });
 

@@ -5,7 +5,6 @@ export type Category = {
   id: string;           // API'de string olarak geliyor
   name: string;
   slug: string;
-  title: string;
   order: number;
   children?: any[];     // İleride kullanıcaz
   top_sellers?: any[];  // İleride kullanıcaz
