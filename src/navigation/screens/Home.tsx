@@ -84,6 +84,12 @@ const categoriesFetch = async () => {
       <CategoryCard categories={categories} images={images} loading={loading} aminoAcidImage={aminoAcidImage} />
       <BestSeller items={items} />
 
+       <Image
+                      source={require('../../assets/6527895 1.png')}
+                      className='w-[390px] h-[483px] mt-4'
+                      resizeMode='contain'
+                    />
+
    </ScrollView>
   </SafeAreaView>
   )

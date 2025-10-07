@@ -16,6 +16,7 @@ import LoginRegister from './screens/LoginRegister';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from "expo-splash-screen";
+import CategoryProducts from './screens/CategoryProducts';
 
 
 
@@ -43,6 +44,7 @@ const HomeTabs = createBottomTabNavigator({
         ),
       },
     },
+
     SearchProduct: {
       screen: SearchProduct,
       title: 'Ürün Ara',
@@ -107,6 +109,13 @@ const RootStack = createNativeStackNavigator({
         headerShown: false,
       },
     },
+     CategoryProducts: {
+      screen: CategoryProducts,
+      options: {
+        headerShown: false,
+      },
+    },
+    
     HomeTabs: {
       screen: HomeTabs,
       options: {

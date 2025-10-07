@@ -11,7 +11,7 @@ interface Props {
 const BestSeller = ({ items }: Props) => {
  
   return (
-    <View>
+    <View className=''>
       <Text className='ml-5 font-semibold text-xl mt-6 mb-2'>Top Sellers</Text>
       <View className='flex-row flex-wrap mt-4 px-2'>
         {items.map((item) => {
@@ -84,13 +84,15 @@ const BestSeller = ({ items }: Props) => {
                       {item.price_info.total_price} TL
                     </Text>
                   )}
-                  
                 </View>
+
               </TouchableOpacity>
             </View>
           );
         })}
       </View>
+
+     
     </View>
   );
 }

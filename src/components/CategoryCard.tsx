@@ -2,6 +2,7 @@
 import { View, Text, TouchableOpacity, Image, ImageBackground, ImageSourcePropType, ActivityIndicator } from 'react-native'
 import React from 'react'
 import { Category } from '../navigation/services/categoryService'
+import { useNavigation } from '@react-navigation/native';
 
 interface CategoryCardProps {
   categories: Category[];
@@ -11,6 +12,8 @@ interface CategoryCardProps {
 }
 
 const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryCardProps) => {
+  const navigation = useNavigation();
+  
   if (loading) {
     return (
       <View className='flex-1 justify-center items-center'>
@@ -48,8 +51,13 @@ const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryC
                   {cat.name.replace(' ', '\n')}
                 </Text>
 
-                <TouchableOpacity className="bg-black px-4 py-1 rounded-full">
-                  <Text className="text-white font-bold text-sm">İNCELE</Text>
+                <TouchableOpacity onPress={() =>
+                 navigation.navigate('CategoryProducts', {
+                slug: cat.slug,
+                title: cat.name,
+                })} 
+                className="bg-black px-4 py-1 rounded-full">
+                <Text className="text-white font-bold text-sm">İNCELE</Text>
                 </TouchableOpacity>
               </View>
             </ImageBackground>
