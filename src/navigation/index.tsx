@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from "expo-splash-screen";
 import CategoryProducts from './screens/CategoryProducts';
+import ProductDetail from './screens/ProductDetail';
 
 
 
@@ -158,6 +159,7 @@ function RootNavigation() {
     screens: isLoggedIn
       ? { HomeTabs: { screen: HomeTabs }, 
           CategoryProducts: { screen: CategoryProducts },   //  buraya ekle!!
+          ProductDetail: { screen: ProductDetail  }  //  buraya ekle!!
         }
 
       : { Login: { screen: LoginRegister } },

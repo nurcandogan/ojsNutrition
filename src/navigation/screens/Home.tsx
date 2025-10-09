@@ -85,10 +85,10 @@ const categoriesFetch = async () => {
       <BestSeller items={items} />
 
        <Image
-                      source={require('../../assets/6527895 1.png')}
-                      className='w-[390px] h-[483px] mt-4'
-                      resizeMode='contain'
-                    />
+        source={require('../../assets/6527895 1.png')}
+        className='w-[390px] h-[483px] mt-4'
+        resizeMode='contain'
+        />
 
    </ScrollView>
   </SafeAreaView>
