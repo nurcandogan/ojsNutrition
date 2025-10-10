@@ -26,7 +26,6 @@ type RootStackParamList = {
 };
 
 
-
 const CategoryProducts = () => {
   const route = useRoute();
   const {id, name, slug} = route.params as {id:string, name:string, slug:string};
@@ -94,7 +93,6 @@ const CategoryProducts = () => {
               )}
             </View>
           
-         
             <View className='h-[165px]'>
                {/* Product Name */}
              <Text className='text-[18px] text-center font-bold mt-8 leading-tight tracking-tight' numberOfLines={2}>
