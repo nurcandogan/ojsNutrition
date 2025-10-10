@@ -44,7 +44,7 @@ const CategoryProducts = () => {
 
  const fetchProducts = async() => {
   try {
-    const response = await fetch ( `${API_BASE_URL}/products?categories=${id}`);
+    const response = await fetch ( `${API_BASE_URL}/products?main_category=${id}`);
     const data = await response.json();
     const productList = data?.data ?? [];
     setProducts(productList);

@@ -8,5 +8,4 @@ const ProductDetail = () => {
     </View>
   )
 }
-
 export default ProductDetail
