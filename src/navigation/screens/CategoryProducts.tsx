@@ -35,8 +35,8 @@ const CategoryProducts = () => {
   const [loading, setLoading] = useState(true);
 
  useEffect(() => {
+  setLoading(false);
     fetchProducts();
-    setLoading(false);
 
  }, [id]);
 
