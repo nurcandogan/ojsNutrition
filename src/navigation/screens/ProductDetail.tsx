@@ -21,7 +21,6 @@ const Pill = ({ label }: { label: string }) => (
     <Text className="text-[12px] font-medium">{label}</Text>
   </View>
 );
-
 const Accordion = ({ title, children }: { title: string; children: React.ReactNode }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -43,7 +42,6 @@ const RatingBar = ({ value, total }: { value: number; total: number }) => {
     </View>
   );
 };
-
 const ProductDetails = () => {
   const route = useRoute<ProductDetailRoute>();
   const navigation = useNavigation<NavigationProp<any>>();
@@ -66,10 +64,8 @@ const ProductDetails = () => {
 
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
 
-  // Recently viewed
   const [recent, setRecent] = useState<MiniProduct[]>([]);
 
-  // sticky bar yüksekliği için alttaki boşluk
   const STICKY_H = 76;
 
   useEffect(() => {
@@ -77,8 +73,7 @@ const ProductDetails = () => {
       setLoading(true);
       const detail = await fetchProductDetail(slug);
       setData(detail);
-      // default seçimler
-      const defaultAroma = detail?.variants?.[0]?.aroma ?? 'Aromasız';
+       const defaultAroma = detail?.variants?.[0]?.aroma ?? 'Aromasız';
       setSelectedAroma(defaultAroma);
       setSelectedVariant(detail?.variants?.find(v => (v.aroma ?? 'Aromasız') === defaultAroma) ?? null);
       setLoading(false);
