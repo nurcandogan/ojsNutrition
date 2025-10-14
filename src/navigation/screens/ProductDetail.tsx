@@ -320,16 +320,16 @@ const ProductDetails = () => {
       </TouchableOpacity>
 
       {/* STICKY ALT BAR */}
-      <View className="absolute left-0 right-0 bottom-0 bg-white border-t border-neutral-200 px-4 py-3 flex-row items-center">
+      <View className="absolute left-0 right-0 bottom-0 mb-9 bg-white border-t border-neutral-200 px-4 py-3 flex-row items-center">
         <View className="flex-1">
           <Text className="text-[22px] font-extrabold">{price ? `${price.final} TL` : '-'}</Text>
           {price?.old ? <Text className="text-neutral-500 line-through">{price.old} TL</Text> : null}
         </View>
         <TouchableOpacity
           onPress={() => {/* sepet entegrasyonu */}}
-          className="bg-black px-5 py-3 rounded-xl"
+          className="bg-black w-[195px] h-[47px] px-5 py-3 "
         >
-          <Text className="text-white font-bold">SEPETE EKLE</Text>
+          <Text className="text-white justify-center text-center mt-1 font-bold">SEPETE EKLE</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
