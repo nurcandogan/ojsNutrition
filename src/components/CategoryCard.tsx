@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, ImageBackground, ImageSourcePropType, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Category } from '../navigation/services/categoryService';
 
 type RootStackParamList = {
@@ -17,7 +16,7 @@ interface CategoryCardProps {
 }
 
 const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryCardProps) => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<RootStackParamList>();
 
   if (loading) {
     return (
