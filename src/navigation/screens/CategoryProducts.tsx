@@ -21,7 +21,7 @@ interface Product {
 }
 
 type RootStackParamList = {
-  ProductDetail: { id: string };
+  ProductDetail: { slug: string; name?: string };
   CategoryProducts: { id: string; name: string; slug: string };
 };
 
@@ -76,7 +76,7 @@ const CategoryProducts = () => {
         return (    
          <TouchableOpacity
          key={product.id}
-         onPress={() => navigation.navigate('ProductDetail', {id: product.id,})}
+         onPress={() => navigation.navigate('ProductDetail', {slug: product.slug, name: product.name})}
          className='w-1/2 py-2 h-[344px]  mb-6 '>
 
           <View className='w-[179px] h-[344px] justify-center mx-auto '>
