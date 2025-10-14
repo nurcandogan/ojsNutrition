@@ -16,8 +16,9 @@ import LoginRegister from './screens/LoginRegister';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from "expo-splash-screen";
-import CategoryProducts from './screens/CategoryProducts';
 import ProductDetail from './screens/ProductDetail';
+import ProductList from './screens/ProductList';
+
 
 
 
@@ -110,8 +111,8 @@ const RootStack = createNativeStackNavigator({
         headerShown: false,
       },
     },
-     CategoryProducts: {
-      screen: CategoryProducts,
+     ProductList: {
+      screen: ProductList,
       options: {
         headerShown: false,
       },
@@ -158,7 +159,7 @@ function RootNavigation() {
     screenOptions: { headerShown: false },
     screens: isLoggedIn
       ? { HomeTabs: { screen: HomeTabs }, 
-          CategoryProducts: { screen: CategoryProducts },   //  buraya ekle!!
+          ProductList: { screen: ProductList },   //  buraya ekle!!
           ProductDetail: { screen: ProductDetail  }  //  buraya ekle!!
         }
 

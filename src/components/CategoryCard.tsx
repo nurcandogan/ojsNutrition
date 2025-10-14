@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Category } from '../navigation/services/categoryService';
 
 type RootStackParamList = {
+  navigate(arg0: string, arg1: { id: string; name: string; slug: string; }): void;
   Home: undefined;
   CategoryProducts: { id: string; name: string; slug: string };
 };
@@ -52,7 +53,7 @@ const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryC
 
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate('CategoryProducts', {
+                    navigation.navigate('ProductList', {
                       id: categorie.id,
                       name: categorie.name,
                       slug: categorie.slug,

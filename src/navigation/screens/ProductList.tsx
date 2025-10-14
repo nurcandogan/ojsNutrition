@@ -14,6 +14,7 @@ interface Product {
   average_star:number;
   photo_src:string;
   price_info: {
+    profit?:number;
     total_price:number; 
     discounted_price?:number;
     discount_percentage?:number;
@@ -26,7 +27,7 @@ type RootStackParamList = {
 };
 
 
-const CategoryProducts = () => {
+const ProductList = () => {
   const route = useRoute();
   const {id, name, slug} = route.params as {id:string, name:string, slug:string};
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -151,4 +152,4 @@ const CategoryProducts = () => {
   )
 }
 
-export default CategoryProducts
+export default ProductList
