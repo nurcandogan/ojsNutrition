@@ -324,7 +324,7 @@ const ProductDetails = () => {
           onPress={() => {/* sepet entegrasyonu */}}
           className="bg-black w-[195px] h-[47px] px-5 py-3 "
         >
-          <Text className="text-white justify-center text-center mt-1 font-bold">SEPETE EKLE</Text>
+          <Text className="text-white justify-center text-center mt-1 ">SEPETE EKLE</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
