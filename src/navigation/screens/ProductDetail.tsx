@@ -68,8 +68,7 @@ const ProductDetails = () => {
 
   const STICKY_H = 76;
 
-  useEffect(() => {
-    (async () => {
+  useEffect(() => {(async () => {
       setLoading(true);
       const detail = await fetchProductDetail(slug);
       setData(detail);
@@ -183,7 +182,7 @@ const ProductDetails = () => {
                 <TouchableOpacity
                   key={a ?? 'Aromasız'}
                   onPress={() => setSelectedAroma(a)}
-                  className={`px-3 py-2 mr-2 mb-2 rounded-lg border ${active ? 'border-black bg-black' : 'border-neutral-300 bg-white'}`}
+                  className={`px-3 py-2 mr-2 mb-2 rounded-lg border ${active ? 'border-black bg-black' : 'border-neutral-400 bg-white'}`}
                 >
                   <Text className={`text-[13px] ${active ? 'text-white font-semibold' : 'text-black'}`}>
                     {a ?? 'Aromasız'}
@@ -324,7 +323,7 @@ const ProductDetails = () => {
           onPress={() => {/* sepet entegrasyonu */}}
           className="bg-black w-[195px] h-[47px] px-5 py-3 "
         >
-          <Text className="text-white justify-center text-center mt-1 ">SEPETE EKLE</Text>
+          <Text className="text-white justify-center text-center mt-1 font-bold">SEPETE EKLE</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
