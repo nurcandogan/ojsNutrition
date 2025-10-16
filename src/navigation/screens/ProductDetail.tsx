@@ -5,7 +5,7 @@ import { useRoute, RouteProp, useNavigation, NavigationProp } from '@react-navig
 import { MEDIA_BASE_URL } from '@env';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Feather from '@expo/vector-icons/Feather';
-import type { ProductDetail as ProductDetailType, Variant } from '../services/productService';
+import type { ProductDetailProps as ProductDetailType, Variant } from '../services/productService';
 import { fetchProductDetail } from '../services/productService';
 import { addRecentlyViewed, getRecentlyViewed, MiniProduct } from '../../storage-helper/recentlyViewed';
 

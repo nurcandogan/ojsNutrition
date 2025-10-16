@@ -45,7 +45,7 @@ export type Variant = {
   is_available: boolean;
 };
 
-export type ProductDetail = {
+export type ProductDetailProps = {
   id: string;                     
   name: string;                   
   slug: string;                  
@@ -60,13 +60,13 @@ export type ProductDetail = {
 };
 
 /** /products/:slug -> tek ürün döner */
-export async function fetchProductDetail(slug: string): Promise<ProductDetail | null> {
+export async function fetchProductDetail(slug: string): Promise<ProductDetailProps | null> {
   try {
     const res = await fetch(`${API_BASE_URL}/products/${slug}`);
     const json = await res.json();
     console.log('Ürün detayı:', json);
     if (json?.status === 'success' && json?.data) {
-      return json.data as ProductDetail;
+      return json.data as ProductDetailProps;
     }
     return null;
   } catch (e) {
