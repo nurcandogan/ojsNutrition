@@ -7,6 +7,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { MEDIA_BASE_URL } from '@env';
 import ProductStars from '../../components/ProductStars';
 import TagChip from '../../components/TagChip';
+import VariantPicker from '../../components/VariantPicker';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -143,6 +144,16 @@ const ProductDetail = () => {
             </View>
 
         </View>
+
+
+        <VariantPicker
+         aromas={aromas}
+         selectedAroma={selectedAroma}
+         onSelectAroma={setSelectedAroma}
+         sizeOptions={sizeOptionsForAroma}
+         selectedVariantId={selectedVariant?.id ?? null}
+         onSelectVariant={setSelectedVariant} 
+         />
 
 
 
