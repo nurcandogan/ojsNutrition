@@ -8,6 +8,7 @@ import { MEDIA_BASE_URL } from '@env';
 import ProductStars from '../../components/ProductStars';
 import TagChip from '../../components/TagChip';
 import VariantPicker from '../../components/VariantPicker';
+import IconHighlights from '../../components/IconHighlights';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -19,7 +20,7 @@ const ProductDetail = () => {
   const [recent, setRecent] = useState<MiniProduct[]>([]);   //Son görüntülenenler
 
  const aromas = useMemo(() => 
-   [...new Set(( data?.variants ?? []).map((v: Variant) => v.aroma ?? 'Aromasız'))], 
+   [...new Set(( data?.variants ?? []).map((v: Variant) => v.aroma ?? 'Aromasız'))] as string[],
    [data]
  );
 
@@ -154,6 +155,8 @@ const ProductDetail = () => {
          selectedVariantId={selectedVariant?.id ?? null}
          onSelectVariant={setSelectedVariant} 
          />
+
+         <IconHighlights />
 
 
 

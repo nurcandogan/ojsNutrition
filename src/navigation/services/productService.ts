@@ -28,6 +28,7 @@ export type Explanation = {
 };
 
 export type Variant = {
+  size_label: any;
   id: string;
   size: {
     gram: number | null;         

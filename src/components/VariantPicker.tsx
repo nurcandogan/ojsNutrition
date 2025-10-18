@@ -1,71 +1,64 @@
-import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
-import type { Variant } from '../../services/productService';
+import { View, Text, Touchable, TouchableOpacity } from 'react-native'
+import React from 'react'
+import { Variant } from '../navigation/services/productService';
 
-interface Props {
+interface VariantPickerProps {
   aromas: string[];
   selectedAroma: string | null;
-  onSelectAroma: (a: string) => void;
+  onSelectAroma: (aroma: string) => void;
   sizeOptions: Variant[];
   selectedVariantId: string | null;
-  onSelectVariant: (v: Variant) => void;
+  onSelectVariant: (variant: Variant) => void; 
 }
 
-const VariantPicker = ({
-  aromas,
-  selectedAroma,
-  onSelectAroma,
-  sizeOptions,
-  selectedVariantId,
-  onSelectVariant,
-}: Props) => {
+const VariantPicker = ({aromas, selectedAroma, onSelectAroma, sizeOptions, selectedVariantId, onSelectVariant}: VariantPickerProps) => {
   return (
-    <>
-      {/* AROMA */}
-      <View className="mt-4 px-4">
-        <Text className="text-[14px] font-bold mb-2">AROMA:</Text>
-        <View className="flex-row flex-wrap">
-          {aromas.map((a) => {
-            const label = a ?? 'Aromasız';
-            const active = (a ?? 'Aromasız') === (selectedAroma ?? 'Aromasız');
+   <>
+    {/* AROMA SEÇİMİ */}
+    <View className='px-5 mt-4'>
+      <Text className='text-lg font-bold'>AROMA:</Text>
+      <View className='flex-row flex-wrap'>
+        {aromas.map((aroma) => {
+            const label = aroma ?? 'Aromasız';
+            const active = (aroma ?? 'Aromasız') === (selectedAroma ?? 'Aromasız');
             return (
-              <TouchableOpacity
-                key={label}
-                onPress={() => onSelectAroma(a)}
-                className={`px-3 py-2 mr-2 mb-2 rounded-lg border ${active ? 'border-black bg-black' : 'border-neutral-400 bg-white'}`}
-              >
-                <Text className={`text-[13px] ${active ? 'text-white font-semibold' : 'text-black'}`}>
-                  {label}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </View>
+              <TouchableOpacity key={label} onPress={()=>onSelectAroma(aroma)}    //aromas filtrelendiği için benzersiz suan o sebeple key'e direkt label diyebiliriz..
+              className={`px-4 py-2 mt-2 mr-2 mb-2 border ${active ? 'border-black bg-black' : 'border-neutral-400 bg-white'} `}>
 
-      {/* BOYUT */}
-      <View className="mt-4 px-4">
-        <Text className="text-[14px] font-bold mb-2">BOYUT:</Text>
-        <View className="flex-row flex-wrap">
-          {sizeOptions.map((v) => {
-            const active = v.id === selectedVariantId;
-            const sizeLabel =
-              (v.size?.pieces ? `${v.size.pieces}` : '') +
-              (v.size?.total_services ? ` / ${v.size.total_services} servis` : '');
-            return (
-              <TouchableOpacity
-                key={v.id}
-                onPress={() => onSelectVariant(v)}
-                className={`px-3 py-2 mr-2 mb-2 rounded-lg border ${active ? 'border-indigo-600' : 'border-neutral-300'}`}
-              >
-                <Text className={`text-[13px] ${active ? 'font-semibold' : ''}`}>{sizeLabel || 'Seçenek'}</Text>
-              </TouchableOpacity>
+                   <Text className={`text-sm ${active ? 'text-slate-200' : 'text-black'} ` }>
+                     {label}  
+                   </Text>
+              </TouchableOpacity>  
+
             );
-          })}
-        </View>
+        })}
       </View>
-    </>
+    </View>
+   
+    {/* BOYUT SEÇİMİ */}
+    <View className='px-5 mt-4 '>
+      <Text className='text-lg font-bold'>BOYUT:</Text>
+      <View className='flex-row flex-wrap'>
+        {sizeOptions.map((variant) => {
+            const active = variant.id === selectedVariantId;
+            const label = (variant.size?.pieces ? `${variant.size.pieces}` : '') +
+             (variant.size?.total_services ? `/${variant.size.total_services} servis` : '');
+            return (
+              <TouchableOpacity key={variant.id} onPress={()=>onSelectVariant(variant)}
+              className={`px-4 py-2 mt-2 mr-2 mb-2 border ${active ? 'border-black bg-black' : 'border-neutral-400 bg-white'} `}>
+
+                   <Text className={`text-sm ${active ? 'text-slate-200' : 'text-black'} ` }>
+                     {label}  
+                   </Text>
+              </TouchableOpacity>  
+
+            );
+        })}
+      </View>
+    </View>
+    
+</>
   );
 };
 
-export default VariantPicker;
+export default VariantPicker
