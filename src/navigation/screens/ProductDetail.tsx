@@ -1,8 +1,9 @@
 import { View, Text, SafeAreaView, ScrollView } from 'react-native'
-import React, { use, useMemo, useState } from 'react'
+import React, { use, useEffect, useMemo, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
-import { Variant } from '../services/productService';
-import { MiniProduct } from '../../storage-helper/recentlyViewed';
+import { fetchProductDetail, Variant } from '../services/productService';
+import { addRecentlyViewed, getRecentlyViewed, MiniProduct } from '../../storage-helper/recentlyViewed';
+import Feather from '@expo/vector-icons/Feather';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -18,12 +19,90 @@ const ProductDetail = () => {
    [data]
  );
 
+
+  //seçili aromanın varyant listesidir.
  const sizeOptionsForAroma= useMemo(() => {
   if (!data) return [];
   return (data.variants ?? []).filter((v: Variant) => (v.aroma ?? 'Aromasız') === (selectedAroma ?? 'Aromasız'));
- }, 
- [data, selectedAroma]); 
+   }, 
+  [data, selectedAroma]
+ ); 
 
+  const STICKY_H = 76;
+
+  useEffect(() => {
+    fetchProduct();
+  }, [slug]);
+
+  useEffect(() => {
+  if (sizeOptionsForAroma.length > 0) {
+    setSelectedVariant(sizeOptionsForAroma[0]);
+  } else {
+    setSelectedVariant(null);
+  }
+}, [selectedAroma]);
+
+
+  const fetchProduct = async () => {
+    try { 
+      setLoading(true);
+      const detail = await fetchProductDetail(slug);
+      setData(detail);
+
+      const defaultAroma = detail?.variants?.[0]?.aroma ?? 'Aromasız';
+      setSelectedAroma(defaultAroma);
+
+      setSelectedVariant(detail?.variants?.find((v: Variant) => (v.aroma ?? 'Aromasız') === defaultAroma) ?? null);
+      
+      if (detail ) {
+        const variantPrice =detail.variants?.[0]?.price;
+        const finalPrice = variantPrice ? variantPrice.discounted_price ?? variantPrice.total_price : 0;
+        await addRecentlyViewed({
+          name: detail.name,
+          slug: detail.slug,
+          photo_src: detail.variants?.[0]?.photo_src  || "",
+          price: Math.round(finalPrice),
+        });
+        const list = await getRecentlyViewed();
+        setRecent(list.filter((x) => x.slug !== detail.slug)); // kendisini hariç tut
+
+      }
+
+    } catch (error) {
+      console.error('Ürün detayı alınırken hata oluştu:', error);
+      
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const price = useMemo(() => {
+    const p = selectedVariant?.price;
+    if (!p) return null;
+    return {
+      final: Math.round((p.discounted_price ?? p.total_price) as number),   // indirimli fiyat varsa onu al, yoksa normal fiyat
+      old: p.discount_percentage ? p.total_price : null,                    // indirim % varsa eski fiyat göster, yoksa eski fiyat gösterilmez
+      discountPct: p.discount_percentage                                    // indirim yüzdesi
+
+    };
+  }, [selectedVariant]);
+  
+
+  if (loading) {
+    return (
+      <SafeAreaView className="flex-1 bg-white items-center justify-center">
+        <Feather name="loader" size={28} />
+      </SafeAreaView>
+    );
+  }
+
+  if (!data) {
+    return (
+      <SafeAreaView className="flex-1 bg-white items-center justify-center">
+        <Text>Ürün bulunamadı.</Text>
+      </SafeAreaView>
+    );
+  }
 
 
   return (
