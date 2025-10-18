@@ -104,7 +104,17 @@ const ProductDetail = () => {
     );
   }
 
+   // Yorum dağılımı kaldırıcaz geçici duruyor
+    const totalComments = data.comment_count ?? 0;
+  const dist = [5, 4, 3, 2, 1].map((s, i) =>
+    i === 0 ? Math.round(totalComments * 0.85) :
+    i === 1 ? Math.round(totalComments * 0.12) :
+    i === 2 ? Math.round(totalComments * 0.02) :
+    i === 3 ? Math.max(1, Math.round(totalComments * 0.008)) :
+              Math.max(1, Math.round(totalComments * 0.002))
+  );
 
+  
   return (
     <SafeAreaView className='flex-1 bg-white'>
       <ScrollView>
