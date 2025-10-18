@@ -130,17 +130,17 @@ const ProductDetail = () => {
           <Text className='text-lg font-bold'>  {data.name.toUpperCase()} </Text>
 
           {!!data.short_explanation && (
-          <Text className='text-[14.61px] text-shortExplanationText mt-1'> {data.short_explanation} </Text> )}
+           <Text className='text-[14.61px] text-shortExplanationText mt-1'> {data.short_explanation} </Text> )}
            
            <View className='mt-2 flex-row items-center'>
             <ProductStars rating={data.average_star} commentCount={data.comment_count} />
            </View>
 
            <View className="flex-row flex-wrap mt-2">
-            {(data.tags ?? []).map((t) => (
-              <TagChip key={t} label={t} />
+            {(data.tags ?? []).map((tag: string, idx: number) => (
+              <TagChip key={`${tag}-${idx}`} label={tag} />
             ))}
-          </View>
+            </View>
 
         </View>
 

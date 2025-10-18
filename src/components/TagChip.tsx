@@ -7,6 +7,6 @@ const TagChip = ({label}: {label:string}) => {
       <Text className='text-[10.13px]'>{label}</Text>
     </View>
   )
-}
+};
 
 export default TagChip
