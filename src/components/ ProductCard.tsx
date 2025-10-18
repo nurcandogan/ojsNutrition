@@ -55,10 +55,9 @@ const  ProductCard = ({ product }:ProductCardProps) => {
            {/* Short Explanation */}
 
            {product.short_explanation &&  (
-            <Text className="text-gray-500 text-[10.5px] mt-1 text-center mt-2 mx-6 h-8 w-[123.43]"
+            <Text className="text-gray-500 text-[10.5px] text-center mt-2 mx-6 h-8 w-[123.43]"
                   numberOfLines={2}>
             {product.short_explanation.toUpperCase()}
-
            </Text>
            )}
 

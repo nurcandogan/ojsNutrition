@@ -22,7 +22,7 @@ const ProductStars = ({ rating, commentCount }: Props) => {
                 />
               ))}
             </View>
-             <Text className="text-[12.5px]  mt-1">
+             <Text className="text-[12.5px] mt-2">
                   {commentCount} Yorum
              </Text>
            </View>
