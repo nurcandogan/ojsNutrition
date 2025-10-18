@@ -12,6 +12,8 @@ module.exports = {
         ticaritext:'#777777',
         errortext:'#ff7300',
         discountText:'#ED2727',
+        shortExplanationText  :'#636363',
+        tagBg:'#F1F1F1',
       }
     },
   },

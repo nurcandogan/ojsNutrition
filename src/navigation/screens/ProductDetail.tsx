@@ -1,9 +1,12 @@
-import { View, Text, SafeAreaView, ScrollView } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image } from 'react-native'
 import React, { use, useEffect, useMemo, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
 import { fetchProductDetail, Variant } from '../services/productService';
 import { addRecentlyViewed, getRecentlyViewed, MiniProduct } from '../../storage-helper/recentlyViewed';
 import Feather from '@expo/vector-icons/Feather';
+import { MEDIA_BASE_URL } from '@env';
+import ProductStars from '../../components/ProductStars';
+import TagChip from '../../components/TagChip';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -114,17 +117,38 @@ const ProductDetail = () => {
               Math.max(1, Math.round(totalComments * 0.002))
   );
 
-  
+
   return (
     <SafeAreaView className='flex-1 bg-white'>
-      <ScrollView>
-        <Text>djhgej</Text>
+      <ScrollView contentContainerStyle={{ paddingBottom: STICKY_H + 24 }}>
+        <Image 
+          source={{ uri: `${MEDIA_BASE_URL}${selectedVariant?.photo_src || data.variants?.[0]?.photo_src || ''}` }}
+          className='w-[390px] h-[390px] ' resizeMode='cover'
+        />
+
+        <View className='px-4 mt-4 '>
+          <Text className='text-lg font-bold'>  {data.name.toUpperCase()} </Text>
+
+          {!!data.short_explanation && (
+          <Text className='text-[14.61px] text-shortExplanationText mt-1'> {data.short_explanation} </Text> )}
+           
+           <View className='mt-2 flex-row items-center'>
+            <ProductStars rating={data.average_star} commentCount={data.comment_count} />
+           </View>
+
+           <View className="flex-row flex-wrap mt-2">
+            {(data.tags ?? []).map((t) => (
+              <TagChip key={t} label={t} />
+            ))}
+          </View>
+
+        </View>
 
 
 
 
 
-
+ 
 
 
 
