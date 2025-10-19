@@ -11,7 +11,7 @@ interface CollapseSectionProps {
 const CollapseSection = ({title, children, defaultOpen = false}: CollapseSectionProps ) => {
     const [open, setOpen] = useState(defaultOpen);
   return (
-    <View className='border-b border-neutral-200'>
+    <View className='border-b border-neutral-200 '>
         <TouchableOpacity className="flex-row justify-between items-center py-4" onPress={() => setOpen(!open)}>
             <Text className='text-[15px] font-semibold'>{title} </Text>
             <AntDesign name={open ? 'up' : 'down'} size={16} />

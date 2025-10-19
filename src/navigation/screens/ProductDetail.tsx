@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, ScrollView, Image } from 'react-native'
 import React, { use, useEffect, useMemo, useState } from 'react'
 import { useRoute } from '@react-navigation/native';
-import { fetchProductDetail, Variant } from '../services/productService';
+import { FactItem, fetchProductDetail, NutritionalContent, Variant } from '../services/productService';
 import { addRecentlyViewed, getRecentlyViewed, MiniProduct } from '../../storage-helper/recentlyViewed';
 import Feather from '@expo/vector-icons/Feather';
 import { MEDIA_BASE_URL } from '@env';
@@ -9,6 +9,7 @@ import ProductStars from '../../components/ProductStars';
 import TagChip from '../../components/TagChip';
 import VariantPicker from '../../components/VariantPicker';
 import IconHighlights from '../../components/IconHighlights';
+import CollapseSection from '../../components/CollapseSection';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -119,6 +120,9 @@ const ProductDetail = () => {
               Math.max(1, Math.round(totalComments * 0.002))
   );
 
+const ingredients = (
+  data?.explanation?.nutritional_content?.ingredients ?? []
+) as NutritionalContent['ingredients'];
 
   return (
     <SafeAreaView className='flex-1 bg-white'>
@@ -146,7 +150,6 @@ const ProductDetail = () => {
 
         </View>
 
-
         <VariantPicker
          aromas={aromas}
          selectedAroma={selectedAroma}
@@ -155,8 +158,34 @@ const ProductDetail = () => {
          selectedVariantId={selectedVariant?.id ?? null}
          onSelectVariant={setSelectedVariant} 
          />
-
          <IconHighlights />
+
+         <View className='mt-6 px-4'>
+          <CollapseSection title='ÖZELLİKLER'>
+           <Text className='text-s leading-5 ' >
+            {data?.explanation?.features  || 'Bilgi yakında eklenecek.'}
+           </Text>
+          </CollapseSection>
+
+         <CollapseSection title="BESİN İÇERİĞİ">
+           {ingredients.length > 0 
+          ? (
+            <View>
+              {ingredients.map((ing, idx) => (
+             <Text
+               key={`${ing.aroma ?? 'Aromasız'}-${idx}`}
+               className="text-[13px] leading-5 mb-1">
+               {ing.value}
+             </Text>
+             ))}
+           </View>
+          ) : (  <Text className="text-[13px]">Bilgi yakında eklenecek.</Text>
+              )}
+        </CollapseSection>
+
+
+         </View>
+
 
 
 
