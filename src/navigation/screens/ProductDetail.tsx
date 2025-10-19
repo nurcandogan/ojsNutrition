@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, ScrollView, Image } from 'react-native'
 import React, { use, useEffect, useMemo, useState } from 'react'
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { FactItem, fetchProductDetail, NutritionalContent, Variant } from '../services/productService';
 import { addRecentlyViewed, getRecentlyViewed, MiniProduct } from '../../storage-helper/recentlyViewed';
 import Feather from '@expo/vector-icons/Feather';
@@ -10,9 +10,11 @@ import TagChip from '../../components/TagChip';
 import VariantPicker from '../../components/VariantPicker';
 import IconHighlights from '../../components/IconHighlights';
 import CollapseSection from '../../components/CollapseSection';
+import RecentlyViewed from '../../components/RecentlyViewed';
 
 const ProductDetail = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const { slug, name } = route.params as { slug: string; name?: string }; 
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -186,23 +188,13 @@ const ingredients = (
               {data?.explanation?.usage  || 'Bilgi yakında eklenecek.'}
             </Text>
           </CollapseSection>
-
-
         </View>
 
-
-
-
-
-
- 
-
-
-
-
-
+        <RecentlyViewed items={recent} onPressItem={(item) => navigation.navigate('ProductDetail'as never, { slug: item.slug, name: item.name } as never)} />
 
       </ScrollView>
+
+      
     </SafeAreaView>
   )
 }
