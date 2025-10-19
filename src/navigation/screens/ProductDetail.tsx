@@ -125,7 +125,7 @@ const ingredients = (
 ) as NutritionalContent['ingredients'];
 
   return (
-    <SafeAreaView className='flex-1 bg-white'>
+    <SafeAreaView className='flex-1 bg-white '>
       <ScrollView contentContainerStyle={{ paddingBottom: STICKY_H + 24 }}>
         <Image 
           source={{ uri: `${MEDIA_BASE_URL}${selectedVariant?.photo_src || data.variants?.[0]?.photo_src || ''}` }}
@@ -160,31 +160,35 @@ const ingredients = (
          />
          <IconHighlights />
 
-         <View className='mt-6 px-4'>
+        <View className='mt-7 px-4'>
+          <Text className='text-[13.01px] mb-1'>Son Kullanma Tarihi: 10.2026</Text>
           <CollapseSection title='ÖZELLİKLER'>
            <Text className='text-s leading-5 ' >
             {data?.explanation?.features  || 'Bilgi yakında eklenecek.'}
            </Text>
           </CollapseSection>
 
-         <CollapseSection title="BESİN İÇERİĞİ">
+          <CollapseSection title="BESİN İÇERİĞİ">
            {ingredients.length > 0 
-          ? (
-            <View>
-              {ingredients.map((ing, idx) => (
-             <Text
-               key={`${ing.aroma ?? 'Aromasız'}-${idx}`}
-               className="text-[13px] leading-5 mb-1">
-               {ing.value}
-             </Text>
-             ))}
-           </View>
-          ) : (  <Text className="text-[13px]">Bilgi yakında eklenecek.</Text>
-              )}
-        </CollapseSection>
+             ? ( <View>
+                {ingredients.map((ing, idx) => (
+                 <Text key={`${ing.aroma ?? 'Aromasız'}-${idx}`} className="text-s leading-5 mb-1">
+                  {ing.value}
+                 </Text>
+                ))}
+                 </View>
+              ) : (  <Text className="text-[13px]">Bilgi yakında eklenecek.</Text> )}
+             
+          </CollapseSection>
+
+          <CollapseSection title='KULLANIM ŞEKLİ'>
+            <Text className='text-s leading-5'>
+              {data?.explanation?.usage  || 'Bilgi yakında eklenecek.'}
+            </Text>
+          </CollapseSection>
 
 
-         </View>
+        </View>
 
 
 
