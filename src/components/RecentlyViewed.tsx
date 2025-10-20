@@ -34,7 +34,7 @@ type FullProductForCard = {
 };
 
 const toFull = (p: MiniProduct): FullProductForCard => ({
-  id: p.slug,                 // id yoksa slug'ı kimlik gibi kullanıyoruz
+  id: p.slug,                 
   name: p.name,
   short_explanation: '',
   slug: p.slug,
