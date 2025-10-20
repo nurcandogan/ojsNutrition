@@ -1,8 +1,8 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 import CarIcon from '../Svgs/CarIcon'
-import OkIcon from '../Svgs/okIcon'
 import GuaranteeIcon from '../Svgs/GuaranteeIcon'
+import SafeIcon from '../Svgs/SafeIcon'
 
 const IconHighlights = () => {
   return (
@@ -13,7 +13,7 @@ const IconHighlights = () => {
       </View>
 
       <View className='flex-row gap-3 items-center'>
-        <OkIcon/>
+        <SafeIcon/>
         <Text className='text-[9.94px] text-center'>750.000+{'\n'}Mutlu Müşteri</Text>
       </View>
 

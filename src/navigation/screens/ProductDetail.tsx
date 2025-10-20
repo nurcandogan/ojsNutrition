@@ -190,8 +190,7 @@ const ingredients = (
           </CollapseSection>
         </View>
 
-        <RecentlyViewed items={recent} onPressItem={(item) => navigation.navigate('ProductDetail'as never, { slug: item.slug, name: item.name } as never)} />
-
+        <RecentlyViewed items={recent} />
       </ScrollView>
 
       
