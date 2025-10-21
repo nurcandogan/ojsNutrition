@@ -33,6 +33,7 @@ type FullProductForCard = {
   };
 };
 
+
 const toFull = (p: MiniProduct): FullProductForCard => ({
   id: p.slug,                 
   name: p.name,
