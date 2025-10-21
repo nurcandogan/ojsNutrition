@@ -38,8 +38,8 @@ const toFull = (p: MiniProduct): FullProductForCard => ({
   name: p.name,
   short_explanation: '',
   slug: p.slug,
-  comment_count: 0,
-  average_star: 0,
+  comment_count: 5,
+  average_star: 5,
   photo_src: p.photo_src,
   price_info: {
     total_price: p.price,
