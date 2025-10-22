@@ -65,12 +65,19 @@ const ProductDetail = () => {
       if (detail ) {
         const variantPrice =detail.variants?.[0]?.price;
         const finalPrice = variantPrice ? variantPrice.discounted_price ?? variantPrice.total_price : 0;
-        await addRecentlyViewed({
-          name: detail.name,
-          slug: detail.slug,
-          photo_src: detail.variants?.[0]?.photo_src  || "",
-          price: Math.round(finalPrice),
-        });
+         await addRecentlyViewed({
+        name: detail.name,
+        slug: detail.slug,
+        short_explanation: detail.short_explanation || undefined,
+        photo_src: detail.variants?.[0]?.photo_src || "",
+        comment_count: detail.comment_count ?? 0,
+        average_star: detail.average_star ?? 0,
+        price_info: {
+          total_price: variantPrice?.total_price ?? 0,
+          discounted_price: variantPrice?.discounted_price ?? null,
+          discount_percentage: variantPrice?.discount_percentage ?? null,
+        }
+      });
         const list = await getRecentlyViewed();
         setRecent(list.filter((x) => x.slug !== detail.slug)); // kendisini hariç tut
 
@@ -112,16 +119,7 @@ const ProductDetail = () => {
     );
   }
 
-   // Yorum dağılımı kaldırıcaz geçici duruyor
-    const totalComments = data.comment_count ?? 0;
-  const dist = [5, 4, 3, 2, 1].map((s, i) =>
-    i === 0 ? Math.round(totalComments * 0.85) :
-    i === 1 ? Math.round(totalComments * 0.12) :
-    i === 2 ? Math.round(totalComments * 0.02) :
-    i === 3 ? Math.max(1, Math.round(totalComments * 0.008)) :
-              Math.max(1, Math.round(totalComments * 0.002))
-  );
-
+  
 const ingredients = (
   data?.explanation?.nutritional_content?.ingredients ?? []
 ) as NutritionalContent['ingredients'];
