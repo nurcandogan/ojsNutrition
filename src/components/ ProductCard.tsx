@@ -16,10 +16,10 @@ interface ProductCardProps {
   average_star:number;
   photo_src:string;
   price_info: {
-    profit?:number;
+    profit?:number | undefined;
     total_price:number; 
-     discounted_price: number | null;
-      discount_percentage: number | null;
+    discounted_price: number | null;
+    discount_percentage: number | null;
   }
 
  }

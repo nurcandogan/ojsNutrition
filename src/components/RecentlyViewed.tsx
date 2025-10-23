@@ -20,8 +20,6 @@ const RecentlyViewed = ({ items }: RecentlyViewedProps) => {
     return null;
   }
 
- 
-
   return (
     <View className='mt-8 mb-9 '>
       <View className='px-[16px]'>
@@ -38,18 +36,9 @@ const RecentlyViewed = ({ items }: RecentlyViewedProps) => {
               activeOpacity={0.7}
               className='w-1/2 py-2 h-[344px] mb-6'
             >
-              <ProductCard 
-                product={{
-                  id: item.slug,
-                  name: item.name,
-                  short_explanation: item.short_explanation,
-                  slug: item.slug,
-                  comment_count: item.comment_count,
-                  average_star: item.average_star,
-                  photo_src: item.photo_src,
-                  price_info: item.price_info
-                }} 
-              />
+           { /* ProductCard'da ki ve son görüntülenenler için yazdıgımız helper servisinin type'ını uyumla hale getirdik. */}
+              <ProductCard product={item}/>   
+
             </TouchableOpacity>
           );
         })}

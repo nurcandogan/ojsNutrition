@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type MiniProduct = {
+  id:string;
   slug: string;
   name: string;
   short_explanation?: string;
