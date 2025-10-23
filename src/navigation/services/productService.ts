@@ -47,6 +47,7 @@ export type Variant = {
 };
 
 export type ProductDetailProps = {
+  photo_src: string;
   id: string;                     
   name: string;                   
   slug: string;                  

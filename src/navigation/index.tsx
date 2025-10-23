@@ -117,6 +117,12 @@ const RootStack = createNativeStackNavigator({
         headerShown: false,
       },
     },
+     ProductDetail: {
+      screen: ProductDetail,
+      options: {
+        headerShown: false,
+      },
+    },
     
     HomeTabs: {
       screen: HomeTabs,

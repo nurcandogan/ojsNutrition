@@ -1,15 +1,20 @@
 import { View, Text, ScrollView, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { MiniProduct } from '../storage-helper/recentlyViewed';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,  NavigationProp } from '@react-navigation/native';
 import ProductCard from './ ProductCard';
 
+
+type RootStackParamList = {
+    ProductDetail: { slug: string; name: string };
+
+}
 interface RecentlyViewedProps {
   items: MiniProduct[];
 }
 
 const RecentlyViewed = ({ items }: RecentlyViewedProps) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   if (!items || items.length === 0) {
     return null;

@@ -29,7 +29,6 @@ const ProductList = () => {
   const route = useRoute();
   const { id, name } = route.params as { id: string; name: string; slug: string };
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 

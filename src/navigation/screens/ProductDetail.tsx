@@ -12,6 +12,9 @@ import IconHighlights from '../../components/IconHighlights';
 import CollapseSection from '../../components/CollapseSection';
 import RecentlyViewed from '../../components/RecentlyViewed';
 
+
+
+
 const ProductDetail = () => {
   const route = useRoute();
   const navigation = useNavigation();

@@ -8,13 +8,15 @@ export type MiniProduct = {
   comment_count: number;
   average_star: number;
   price_info: {
-    total_price: number;
-    discounted_price: number | null;
-    discount_percentage: number | null;
+     profit?:number | undefined;
+     total_price:number; 
+     discounted_price: number | null;
+     discount_percentage: number | null;
+  
   };
 };
 
-const KEY = 'recentlyViewed_v2'; // v1'den v2'ye upgrade ettik - eski veriyi atlatmak için
+const KEY = 'recentlyViewed_v3';
 const LIMIT = 8;
 
 export async function addRecentlyViewed(p: MiniProduct) {
