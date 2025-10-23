@@ -13,6 +13,7 @@ export type MiniProduct = {
      total_price:number; 
      discounted_price: number | null;
      discount_percentage: number | null;
+     price_per_servings: number | null;
   
   };
 };

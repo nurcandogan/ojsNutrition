@@ -61,7 +61,7 @@ const ProductList = () => {
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="px-[16px]">
           <BackButtonOverlay onPress={()=> navigation.goBack()} data={{ name }}/>
-        <Text className="text-center text-[22.5px] font-bold mt-10 mb-4">{name.toUpperCase()}</Text>
+        <Text className="text-center text-[22.5px] font-bold mt-8 mb-2">{name.toUpperCase()}</Text>
 
         <View className="flex-row flex-wrap justify-between">
           {products.map((product) => (

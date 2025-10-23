@@ -80,6 +80,7 @@ const ProductDetail = () => {
           total_price: variantPrice?.total_price ?? 0,
           discounted_price: variantPrice?.discounted_price ?? null,
           discount_percentage: variantPrice?.discount_percentage ?? null,
+          price_per_servings: detail.price_per_servings ?? null,
         }
       });
         const list = await getRecentlyViewed();
@@ -101,7 +102,8 @@ const ProductDetail = () => {
     return {
       final: Math.round((p.discounted_price ?? p.total_price) as number),   // indirimli fiyat varsa onu al, yoksa normal fiyat
       old: p.discount_percentage ? p.total_price : null,                    // indirim % varsa eski fiyat göster, yoksa eski fiyat gösterilmez
-      discountPct: p.discount_percentage                                    // indirim yüzdesi
+      discountPct: p.discount_percentage,                                  // indirim yüzdesi
+      perServices: p.price_per_servings ?? null,
 
     };
   }, [selectedVariant]);
@@ -200,8 +202,9 @@ const ingredients = (
       <StickyBar
         newPrice={price ? price.final : null}
         oldPrice={price?.old ?? null}
+        services={price?.perServices ?? null}
         onAddToCart={() => console.log("Sepete eklendi!")} // buraya sepet ekleme fonksiyonun gelecek
-
+       
        
       />
        

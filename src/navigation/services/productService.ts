@@ -41,12 +41,14 @@ export type Variant = {
     total_price: number;          
     discounted_price: number | null;    
     discount_percentage: number | null; 
+     price_per_servings: number | null;
   };
   photo_src: string;            
   is_available: boolean;
 };
 
 export type ProductDetailProps = {
+  price_per_servings: null;
   photo_src: string;
   id: string;                     
   name: string;                   
