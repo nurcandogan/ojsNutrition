@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Image } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
 import React, { use, useEffect, useMemo, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FactItem, fetchProductDetail, NutritionalContent, Variant } from '../services/productService';
@@ -11,9 +11,9 @@ import VariantPicker from '../../components/VariantPicker';
 import IconHighlights from '../../components/IconHighlights';
 import CollapseSection from '../../components/CollapseSection';
 import RecentlyViewed from '../../components/RecentlyViewed';
-
-
-
+import BackButtonOverlay from '../../components/BackButtonOverlay';
+import BackIcon from '../../Svgs/BackIcon';
+import StickyBar from '../../components/StickyBar';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -69,6 +69,7 @@ const ProductDetail = () => {
         const variantPrice =detail.variants?.[0]?.price;
         const finalPrice = variantPrice ? variantPrice.discounted_price ?? variantPrice.total_price : 0;
          await addRecentlyViewed({
+        id: detail.id,     // kullanmıyoruz ama yazmamız gerek productcard ile uyumlu olması için
         name: detail.name,
         slug: detail.slug,
         short_explanation: detail.short_explanation || undefined,
@@ -130,16 +131,18 @@ const ingredients = (
   return (
     <SafeAreaView className='flex-1 bg-white '>
       <ScrollView contentContainerStyle={{ paddingBottom: STICKY_H + 24 }}>
+        <BackButtonOverlay onPress={()=> navigation.goBack()} data={data}/>
+            
         <Image 
           source={{ uri: `${MEDIA_BASE_URL}${selectedVariant?.photo_src || data.variants?.[0]?.photo_src || ''}` }}
-          className='w-[390px] h-[390px] ' resizeMode='cover'
+          className='w-[390px] h-[390px] mt-2 ' resizeMode='cover'
         />
 
-        <View className='px-4 mt-4 '>
-          <Text className='text-lg font-bold'>  {data.name.toUpperCase()} </Text>
+        <View className='px-5 mt-4 '>
+          <Text className='text-lg font-bold'>{data.name.toUpperCase()} </Text>
 
           {!!data.short_explanation && (
-           <Text className='text-[14.61px] text-shortExplanationText mt-1'> {data.short_explanation} </Text> )}
+           <Text className='text-[14.61px] text-shortExplanationText mt-1'>{data.short_explanation} </Text> )}
            
            <View className='mt-2 flex-row items-center'>
             <ProductStars rating={data.average_star} commentCount={data.comment_count} />
@@ -163,7 +166,7 @@ const ingredients = (
          />
          <IconHighlights />
 
-        <View className='mt-7 px-4'>
+        <View className='mt-7 px-5'>
           <Text className='text-[13.01px] mb-1'>Son Kullanma Tarihi: 10.2026</Text>
           <CollapseSection title='ÖZELLİKLER'>
            <Text className='text-s leading-5 ' >
@@ -193,7 +196,15 @@ const ingredients = (
 
         <RecentlyViewed items={recent} />
       </ScrollView>
+      
+      <StickyBar
+        newPrice={price ? price.final : null}
+        oldPrice={price?.old ?? null}
+        onAddToCart={() => console.log("Sepete eklendi!")} // buraya sepet ekleme fonksiyonun gelecek
 
+       
+      />
+       
       
     </SafeAreaView>
   )

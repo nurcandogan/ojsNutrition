@@ -23,7 +23,7 @@ const VariantPicker = ({aromas, selectedAroma, onSelectAroma, sizeOptions, selec
             const active = (aroma ?? 'Aromasız') === (selectedAroma ?? 'Aromasız');
             return (
               <TouchableOpacity key={label} onPress={()=>onSelectAroma(aroma)}    //aromas filtrelendiği için benzersiz suan o sebeple key'e direkt label diyebiliriz..
-              className={`px-4 py-2 mt-2 mr-2 mb-2 border ${active ? 'border-black bg-black' : 'border-neutral-400 bg-white'} `}>
+              className={`px-5 py-2 mt-2 mr-2 mb-2 border ${active ? 'border-black bg-black' : 'border-neutral-400 bg-white'} `}>
 
                    <Text className={`text-sm ${active ? 'text-slate-200' : 'text-black'} ` }>
                      {label}  

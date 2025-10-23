@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute, NavigationProp } from '@react-navigation/native';
 import { API_BASE_URL } from '@env';
 import ProductCard from '../../components/ ProductCard';
+import BackButtonOverlay from '../../components/BackButtonOverlay';
 
 interface Product {
   id: string;
@@ -59,6 +60,7 @@ const ProductList = () => {
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView className="px-[16px]">
+          <BackButtonOverlay onPress={()=> navigation.goBack()} data={{ name }}/>
         <Text className="text-center text-[22.5px] font-bold mt-10 mb-4">{name.toUpperCase()}</Text>
 
         <View className="flex-row flex-wrap justify-between">
