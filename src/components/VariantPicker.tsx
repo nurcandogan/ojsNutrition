@@ -43,7 +43,7 @@ const VariantPicker = ({aromas, selectedAroma, onSelectAroma, sizeOptions, selec
       <View className='flex-row flex-wrap'>
         {aromas.map((aroma) => {
             const label = aroma ?? 'Aromasız';
-             const normalizedLabel = normalizeText(label);
+            const normalizedLabel = normalizeText(label);
             const active = (aroma ?? 'Aromasız') === (selectedAroma ?? 'Aromasız');
             const colorClass = aromaColorMap[normalizedLabel] || 'bg-gray-300';
 
@@ -62,7 +62,7 @@ const VariantPicker = ({aromas, selectedAroma, onSelectAroma, sizeOptions, selec
                   <View className="absolute -right-3 -top-3 w-[20px] h-[20px] rounded-full bg-blue-700 flex items-center justify-center">
                     <Text className="text-white font-bold text-s">✓</Text>
                   </View>
-              )}
+                  )}
               </TouchableOpacity>  
 
             );
@@ -80,11 +80,17 @@ const VariantPicker = ({aromas, selectedAroma, onSelectAroma, sizeOptions, selec
              (variant.size?.total_services ? `/${variant.size.total_services} servis` : '');
             return (
               <TouchableOpacity key={variant.id} onPress={()=>onSelectVariant(variant)}
-              className={`px-4 py-2 mt-2 mr-2 mb-2 border ${active ? 'border-black bg-black' : 'border-neutral-400 bg-white'} `}>
+              className={`px-4 py-2 mt-2 mr-2 mb-2 border-[4px] ${active ? 'border-logintext bg-white' : 'border-bordergray bg-white'} `}>
 
-                   <Text className={`text-sm ${active ? 'text-slate-200' : 'text-black'} ` }>
+                   <Text className='text-sm text-black'>
                      {label}  
                    </Text>
+                 {active && (
+                  <View className="absolute -right-3 -top-3 w-[20px] h-[20px] rounded-full bg-blue-700 flex items-center justify-center">
+                    <Text className="text-white font-bold text-s">✓</Text>
+                  </View>
+                 )}
+                   
               </TouchableOpacity>  
 
             );
