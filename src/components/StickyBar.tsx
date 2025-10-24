@@ -24,9 +24,9 @@ const StickyBar = ({newPrice, oldPrice, onAddToCart, services}:Props) => {
        </View>
 
 
-        <TouchableOpacity activeOpacity={0.8} onPress={onAddToCart} className='flex-row gap-2 content-center justify-center items-center bg-black text-white w-[195px] h-[47px] '>
+        <TouchableOpacity activeOpacity={0.8} onPress={onAddToCart} className='flex-row gap-4 content-center justify-center items-center bg-black text-white w-[195px] h-[47px] '>
           <Basket/>
-          <Text className='text-base  font-bold text-white'>SEPETE EKLE</Text>
+          <Text className='text-[16px]  font-bold text-white'>SEPETE EKLE</Text>
         </TouchableOpacity>
     </View>
   )

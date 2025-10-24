@@ -14,6 +14,7 @@ import RecentlyViewed from '../../components/RecentlyViewed';
 import BackButtonOverlay from '../../components/BackButtonOverlay';
 import BackIcon from '../../Svgs/BackIcon';
 import StickyBar from '../../components/StickyBar';
+import ReviewSummary from '../../components/ReviewSummary';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -197,6 +198,13 @@ const ingredients = (
         </View>
 
         <RecentlyViewed items={recent} />
+        
+        <ReviewSummary 
+          averageStar={data.average_star}
+          totalComments={}
+          distribution={}
+          />
+
       </ScrollView>
       
       <StickyBar
@@ -204,7 +212,6 @@ const ingredients = (
         oldPrice={price?.old ?? null}
         services={price?.perServices ?? null}
         onAddToCart={() => console.log("Sepete eklendi!")} // buraya sepet ekleme fonksiyonun gelecek
-       
        
       />
        
