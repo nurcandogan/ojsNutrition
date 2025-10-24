@@ -80,7 +80,7 @@ const ProductDetail = () => {
           total_price: variantPrice?.total_price ?? 0,
           discounted_price: variantPrice?.discounted_price ?? null,
           discount_percentage: variantPrice?.discount_percentage ?? null,
-          price_per_servings: detail.price_per_servings ?? null,
+          price_per_servings: variantPrice?.price_per_servings ?? null,
         }
       });
         const list = await getRecentlyViewed();

@@ -48,7 +48,6 @@ export type Variant = {
 };
 
 export type ProductDetailProps = {
-  price_per_servings: null;
   photo_src: string;
   id: string;                     
   name: string;                   
