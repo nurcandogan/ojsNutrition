@@ -38,9 +38,7 @@ export const ProductComments = async (slug:string, limit:10, offset:0):Promise<C
     })),
   };
 
-
 }
-
 
 
 // ReviewSummary için yardımcılar
