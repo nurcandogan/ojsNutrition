@@ -35,7 +35,7 @@ const ReviewSummary = ({ averageStar, totalComments, distribution }: Props) => {
               <RatingBar value={distribution[i]} total={Math.max(1, totalComments)} />
             </View>
             <Text className="w-10 text-right text-[12px] text-neutral-500">
-              {distribution[i]}
+              {distribution[i] ?? 0}
             </Text>
           </View>
         ))}

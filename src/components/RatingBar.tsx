@@ -1,7 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 
-const RatingBar = ({ value, total }: { value: number; total: number }) => {
+type Props ={
+   value: number;    //adet yıldız
+   total: number;   //toplam yorum
+
+}
+
+const RatingBar = ({ value, total }: Props) => {
   const width = total ? Math.max(4, (value / total) * 100) : 0;
   return (
     <View className="w-full h-[10px] bg-neutral-200 rounded">

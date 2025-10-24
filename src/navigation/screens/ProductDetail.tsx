@@ -25,6 +25,7 @@ const ProductDetail = () => {
   const [selectedAroma, setSelectedAroma] = useState<string | null>(null);        //Seçilen aroma
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);   //Seçilen variant-boyut
   const [recent, setRecent] = useState<MiniProduct[]>([]);   //Son görüntülenenler
+  
 
  const aromas = useMemo(() => 
    [...new Set(( data?.variants ?? []).map((v: Variant) => v.aroma ?? 'Aromasız'))] as string[],
@@ -53,6 +54,8 @@ const ProductDetail = () => {
     setSelectedVariant(null);
   }
 }, [selectedAroma]);
+
+
 
 
   const fetchProduct = async () => {
@@ -200,9 +203,9 @@ const ingredients = (
         <RecentlyViewed items={recent} />
         
         <ReviewSummary 
-          averageStar={data.average_star}
-          totalComments={}
-          distribution={}
+          slug={data.slug}
+  fallbackAverage={data.average_star}
+  fallbackTotal={data.comment_count}
           />
 
       </ScrollView>
@@ -221,3 +224,7 @@ const ingredients = (
 }
 
 export default ProductDetail
+
+function commentsService(slug: string, arg1: number, arg2: number) {
+  throw new Error('Function not implemented.');
+}

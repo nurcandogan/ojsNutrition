@@ -12,37 +12,29 @@ export type CommentItem = {
 
 export type CommentsPage = {
   count: number;
-  next: string | null;
-  previous: string | null;
   results: CommentItem[];
 };
 
-export const ProductComments = async (slug:string, limit:10, offset:0):Promise<CommentsPage> => {
+export const getProductComments = async (slug:string, limit?:number, offset?:number):Promise<CommentsPage> => {
     const url = await fetch(`${API_BASE_URL}/products/:${slug}/comments?limit=${limit}&offset=${offset}`);
     const response = await url.json();
     
    
-     if (response?.status !== 'success' || !response?.data) {
-    return { count: 0, next: null, previous: null, results: [] };
-  }
-
-    const d = response.data as CommentsPage & {results: Array<any> };
+     const data = response?.data ?? response;
 
     return {
-    count: d.count ?? 0,
-    next: d.next ?? null,
-    previous: d.previous ?? null,
-    results: (d.results ?? []).map((r) => ({
-      ...r,
-      stars: Math.max(1, Math.min(5, Number(r.stars))), // normalize
+    count: data?.count ?? 0,
+    results: (data.results ?? []).map((data: any) => ({
+      ...data,
+      stars: Math.max(1, Math.min(5, Number(data.stars))), // normalize
     })),
   };
-
+  
 }
 
 
 // ReviewSummary için yardımcılar
-export function buildDistribution(items: CommentItem[]): number[] {
+export function makeDistribution(items: CommentItem[]): number[] {
   // 5,4,3,2,1 sırası
   const dist = [0, 0, 0, 0, 0];
   for (const c of items) {
