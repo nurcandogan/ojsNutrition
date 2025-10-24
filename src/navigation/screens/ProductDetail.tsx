@@ -15,6 +15,7 @@ import BackButtonOverlay from '../../components/BackButtonOverlay';
 import BackIcon from '../../Svgs/BackIcon';
 import StickyBar from '../../components/StickyBar';
 import ReviewSummary from '../../components/ReviewSummary';
+import { CommentItem, getProductComments, } from '../services/commentsService';
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -25,7 +26,9 @@ const ProductDetail = () => {
   const [selectedAroma, setSelectedAroma] = useState<string | null>(null);        //Seçilen aroma
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);   //Seçilen variant-boyut
   const [recent, setRecent] = useState<MiniProduct[]>([]);   //Son görüntülenenler
-  
+  const [comments, setComments] = useState<CommentItem[]>([]);
+  const [commentsCount, setCommentsCount] = useState<number>(0);
+
 
  const aromas = useMemo(() => 
    [...new Set(( data?.variants ?? []).map((v: Variant) => v.aroma ?? 'Aromasız'))] as string[],
@@ -55,6 +58,13 @@ const ProductDetail = () => {
   }
 }, [selectedAroma]);
 
+useEffect(() => {
+  (async () => {
+    const page = await getProductComments(slug); // limit/offset vermesen de olur
+    setComments(page.results);
+    setCommentsCount(page.count);
+  })();
+}, [slug]);
 
 
 
@@ -202,11 +212,12 @@ const ingredients = (
 
         <RecentlyViewed items={recent} />
         
-        <ReviewSummary 
-          slug={data.slug}
-  fallbackAverage={data.average_star}
-  fallbackTotal={data.comment_count}
-          />
+        <ReviewSummary
+  comments={comments}
+  totalCount={data?.comment_count ?? commentsCount}
+  averageStarOverride={data?.average_star}
+/>
+
 
       </ScrollView>
       
