@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
-import React, { use, useEffect, useMemo, useState } from 'react'
+import React, {  useEffect, useMemo, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FactItem, fetchProductDetail, NutritionalContent, Variant } from '../services/productService';
 import { addRecentlyViewed, getRecentlyViewed, MiniProduct } from '../../storage-helper/recentlyViewed';
@@ -12,10 +12,10 @@ import IconHighlights from '../../components/IconHighlights';
 import CollapseSection from '../../components/CollapseSection';
 import RecentlyViewed from '../../components/RecentlyViewed';
 import BackButtonOverlay from '../../components/BackButtonOverlay';
-import BackIcon from '../../Svgs/BackIcon';
 import StickyBar from '../../components/StickyBar';
 import ReviewSummary from '../../components/ReviewSummary';
-import { CommentItem, getProductComments, } from '../services/commentsService';
+import { CommentItem, getProductComments } from '../services/commentsService';
+
 
 const ProductDetail = () => {
   const route = useRoute();
@@ -28,6 +28,9 @@ const ProductDetail = () => {
   const [recent, setRecent] = useState<MiniProduct[]>([]);   //Son görüntülenenler
   const [comments, setComments] = useState<CommentItem[]>([]);
   const [commentsCount, setCommentsCount] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const pageSize = 10;
+
 
 
  const aromas = useMemo(() => 
@@ -58,15 +61,22 @@ const ProductDetail = () => {
   }
 }, [selectedAroma]);
 
-useEffect(() => {
-  (async () => {
-    const page = await getProductComments(slug); // limit/offset vermesen de olur
-    setComments(page.results);
-    setCommentsCount(page.count);
-  })();
-}, [slug]);
 
+// yorumları yükle
+  useEffect(() => {
+    const loadComments = async () => {
+      try {
+        const offset = (page - 1) * pageSize;
+        const res = await getProductComments(slug, pageSize, offset);
+        setComments(res.comments);
+        setCommentsCount(res.count);
+      } catch (err) {
+        console.error('comments load error', err);
+      }
+    };
 
+    loadComments();
+  }, [slug, page]);
 
   const fetchProduct = async () => {
     try { 
@@ -122,6 +132,27 @@ useEffect(() => {
     };
   }, [selectedVariant]);
   
+
+    // yorumları (ve sayısını) çek
+  useEffect(() => {
+    const loadComments = async () => {
+      if (!slug) return;
+      const offset = (page - 1) * pageSize;
+      try {
+        const { count, results } = await getProductComments(slug, pageSize, offset);
+        setComments(results || []);
+        setCommentsCount(count || 0);
+      } catch (err) {
+        console.error('Yorumlar alınırken hata:', err);
+        setComments([]);
+        setCommentsCount(0);
+      }
+    };
+
+    loadComments();
+  }, [slug, page]);
+
+
 
   if (loading) {
     return (
@@ -212,11 +243,15 @@ const ingredients = (
 
         <RecentlyViewed items={recent} />
         
+         {/* Yorumlar + dağılım + pagination */}
         <ReviewSummary
-  comments={comments}
-  totalCount={data?.comment_count ?? commentsCount}
-  averageStarOverride={data?.average_star}
-/>
+          comments={comments}
+          totalCount={commentsCount || data.comment_count || 0}
+          averageStarOverride={data.average_star ?? 0}
+          page={page}
+          pageSize={pageSize}
+          onPageChange={setPage}
+        />
 
 
       </ScrollView>

@@ -1,7 +1,8 @@
+// services/commentsService.ts
 import { API_BASE_URL } from '@env';
 
 export type CommentItem = {
-  stars: number;                // API '5' (string) döndürebilir; number'a çeviriyoruz
+  stars: number;
   comment: string;
   title: string;
   created_at: string;
@@ -11,25 +12,38 @@ export type CommentItem = {
 };
 
 export type CommentsPage = {
-  count: number;
-  results: CommentItem[];
+  count: number;          // toplam yorum adedi (ör: 16)
+  results: CommentItem[]; // bu sayfada gösterilecekler (ör: ilk 10)
 };
 
-export const getProductComments = async (slug:string, limit?:number, offset?:number):Promise<CommentsPage> => {
-    const url = await fetch(`${API_BASE_URL}/products/:${slug}/comments?limit=${limit}&offset=${offset}`);
-    const response = await url.json();
-    
-   
-     const data = response?.data ?? response;
+export const getProductComments = async (
+  productSlug: string,
+  limit = 10,
+  offset = 0
+): Promise<CommentsPage> => {
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}/products/${productSlug}/comments?limit=${limit}&offset=${offset}`
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+
+    const json = await res.json();
+    // API: { status: "success", data: { count, results: [...] } }
+    const data = json?.data ?? json;
 
     return {
-    count: data?.count ?? 0,
-    results: (data.results ?? []).map((data: any) => ({
-      ...data,
-      stars: Math.max(1, Math.min(5, Number(data.stars))), // normalize
-    })),
-  };
-  
-}
-
-
+      count: data?.count ?? 0,
+      results: (data?.results ?? []).map((it: any) => ({
+        ...it,
+        // stars api'de "5" string gelebilir
+        stars: Math.max(1, Math.min(5, Number(it.stars) || 0)),
+      })),
+    };
+  } catch (err) {
+    console.error('getProductComments hata:', err);
+    return { count: 0, results: [] };
+  }
+};
