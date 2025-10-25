@@ -16,14 +16,9 @@ export type CommentsPage = {
   results: CommentItem[]; // bu sayfada gösterilecekler (ör: ilk 10)
 };
 
-export const getProductComments = async (
-  productSlug: string,
-  limit = 10,
-  offset = 0
-): Promise<CommentsPage> => {
+export const getProductComments = async (productSlug: string, limit = 10, offset = 0): Promise<CommentsPage> => {
   try {
-    const res = await fetch(
-      `${API_BASE_URL}/products/${productSlug}/comments?limit=${limit}&offset=${offset}`
+    const res = await fetch(`${API_BASE_URL}/products/${productSlug}/comments?limit=${limit}&offset=${offset}`
     );
 
     if (!res.ok) {
@@ -31,7 +26,6 @@ export const getProductComments = async (
     }
 
     const json = await res.json();
-    // API: { status: "success", data: { count, results: [...] } }
     const data = json?.data ?? json;
 
     return {

@@ -13,8 +13,8 @@ import CollapseSection from '../../components/CollapseSection';
 import RecentlyViewed from '../../components/RecentlyViewed';
 import BackButtonOverlay from '../../components/BackButtonOverlay';
 import StickyBar from '../../components/StickyBar';
-import ReviewSummary from '../../components/ReviewSummary';
 import { CommentItem, getProductComments } from '../services/commentsService';
+import ReviewSummary from '../../components/ReviewSummary';
 
 
 const ProductDetail = () => {
@@ -62,21 +62,7 @@ const ProductDetail = () => {
 }, [selectedAroma]);
 
 
-// yorumları yükle
-  useEffect(() => {
-    const loadComments = async () => {
-      try {
-        const offset = (page - 1) * pageSize;
-        const res = await getProductComments(slug, pageSize, offset);
-        setComments(res.comments);
-        setCommentsCount(res.count);
-      } catch (err) {
-        console.error('comments load error', err);
-      }
-    };
 
-    loadComments();
-  }, [slug, page]);
 
   const fetchProduct = async () => {
     try { 
@@ -133,7 +119,7 @@ const ProductDetail = () => {
   }, [selectedVariant]);
   
 
-    // yorumları (ve sayısını) çek
+ /*   // yorumları (ve sayısını) çek
   useEffect(() => {
     const loadComments = async () => {
       if (!slug) return;
@@ -150,7 +136,7 @@ const ProductDetail = () => {
     };
 
     loadComments();
-  }, [slug, page]);
+  }, [slug, page]); */
 
 
 
