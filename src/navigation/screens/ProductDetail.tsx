@@ -62,8 +62,6 @@ const ProductDetail = () => {
 }, [selectedAroma]);
 
 
-
-
   const fetchProduct = async () => {
     try { 
       setLoading(true);
@@ -119,7 +117,7 @@ const ProductDetail = () => {
   }, [selectedVariant]);
   
 
- /*   // yorumları (ve sayısını) çek
+   // yorumları (ve sayısını) çek
   useEffect(() => {
     const loadComments = async () => {
       if (!slug) return;
@@ -136,7 +134,7 @@ const ProductDetail = () => {
     };
 
     loadComments();
-  }, [slug, page]); */
+  }, [slug, page]); 
 
 
 

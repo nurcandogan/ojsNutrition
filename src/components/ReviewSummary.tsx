@@ -121,7 +121,7 @@ const totalPage = Math.max(1 , Math.ceil
                   {[...Array(5)].map((_, i2) => (
                     <AntDesign
                       key={i2}
-                      name={i2 < Math.round(c.stars) ? 'star' : 'staro'}
+                      name={i2 < Math.round(comment.stars) ? 'star' : 'staro'}
                       size={16}
                       color="#FDD835"
                     />
