@@ -100,6 +100,61 @@ const totalPage = Math.max(1 , Math.ceil
         ))}
       </View>
 
+         {/* Yorum kartları */}
+
+         {safeComments.length > 0 && (
+          <View>
+            {safeComments.map((comment,idx) => {
+              const nameParts = [comment.first_name, comment.last_name].filter(Boolean);
+              const displayName = nameParts.length > 0 ? nameParts.join(' ') : 'Anonim';
+              
+              let dateText = '';
+               if (comment.created_at) {
+              const d = new Date(comment.created_at);
+              // sabit TR format istersen 'tr-TR' koy.
+               dateText = d.toLocaleDateString('tr-TR');
+            }
+            return(
+              <View key={`${comment.created_at}-${idx}`} className="border-b border-gray-300 pb-4 mb-4 mx-4">
+                {/* yıldızlar */}
+                <View className="flex-row items-center mb-1">
+                  {[...Array(5)].map((_, i2) => (
+                    <AntDesign
+                      key={i2}
+                      name={i2 < Math.round(c.stars) ? 'star' : 'staro'}
+                      size={16}
+                      color="#FDD835"
+                    />
+                  ))}
+                </View>
+
+                 {/* isim + tarih */}
+                <Text className="text-[12px] text-neutral-500">
+                  {displayName} • {dateText}
+                </Text>
+
+                {/* başlık */}
+                {!!comment.title && (
+                  <Text className="mt-1 font-semibold">{comment.title}</Text>
+                )}
+
+                   {/* asıl yorum */}
+                {!!comment.comment && <Text className="mt-1">{comment.comment}</Text>}
+
+                {/* aroma bilgisi */}
+                {!!comment.aroma && (
+                  <Text className="mt-1 text-[12px] text-neutral-500">
+                    Aroma: {comment.aroma}
+                  </Text>
+                )}
+
+              </View>
+
+            )
+            })}
+          </View>
+         )}
+    
 
     </View>
   )
