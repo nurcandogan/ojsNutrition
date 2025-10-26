@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, { use, useMemo } from 'react'
 import { CommentItem } from '../navigation/services/commentsService';
 import AntDesign from '@expo/vector-icons/AntDesign';
@@ -155,6 +155,62 @@ const totalPage = Math.max(1 , Math.ceil
           </View>
          )}
     
+
+    {/* Pagination */}
+      {totalPage > 1 && (
+        <View className="flex-row items-center justify-center mt-4">
+          {/* prev */}
+          <TouchableOpacity
+            disabled={page <= 1}
+            onPress={() => onPageChange(page - 1)}
+            className="px-2"
+          >
+            <Text
+              className={`text-[14px] ${
+                page <= 1 ? 'text-neutral-400' : 'text-black'
+              }`}
+            >
+              {'<'}
+            </Text>
+          </TouchableOpacity>
+
+          {/* sayfa numaraları */}
+          {[...Array(totalPage)].map((_, i) => {
+            const pageNum = i + 1;
+            const active = pageNum === page;
+            return (
+              <TouchableOpacity
+                key={pageNum}
+                onPress={() => onPageChange(pageNum)}
+                className="px-2"
+              >
+                <Text
+                  className={`text-[14px] ${
+                    active ? 'font-bold text-black' : 'text-neutral-500'
+                  }`}
+                >
+                  {pageNum}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+
+          {/* next */}
+          <TouchableOpacity
+            disabled={page >= totalPage}
+            onPress={() => onPageChange(page + 1)}
+            className="px-2"
+          >
+            <Text
+              className={`text-[14px] ${
+                page >= totalPage ? 'text-neutral-400' : 'text-black'
+              }`}
+            >
+              {'>'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
 
     </View>
   )
