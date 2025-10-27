@@ -38,7 +38,7 @@ const calcAverage = (items:CommentItem[]): number => {
 
 
 const ReviewSummary = ({comments, totalCount, averageStarOverride, page, pageSize, onPageChange}:Props) => {
-  const safeComments = Array.isArray(comments) ?  comments : [];
+  const safeComments = Array.isArray(comments) ?  comments : [];    //hata olmaması için kontrol yapıyoruz.
 
 
  // ortalama yıldız
