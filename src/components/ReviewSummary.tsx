@@ -29,6 +29,7 @@ const makeDistribution = (items:CommentItem[]):number[] => {
    return dist;
 }
 
+// ortalama puanını hesapla
 const calcAverage = (items:CommentItem[]): number => {
   if (!items.length) return 0;
   const sum = items.reduce((a, b) => a + (b.stars || 0), 0);
@@ -41,18 +42,20 @@ const ReviewSummary = ({comments, totalCount, averageStarOverride, page, pageSiz
   const safeComments = Array.isArray(comments) ?  comments : [];    //hata olmaması için kontrol yapıyoruz.
 
 
- // ortalama yıldız
+ // ortalama puan/yıldız
 const avg = useMemo(() => {
 if (typeof averageStarOverride === 'number') {
   return averageStarOverride  || 0; 
 }
 return calcAverage(safeComments) || 0;
+
 }, [averageStarOverride, safeComments]);
 
 
   // toplam yorum sayısı (16 gibi)
 const total = totalCount ?? safeComments.length ?? 0;
 
+// yıldız dağılımı 5-4-3-2-1 
 const distribution = useMemo(() => 
  makeDistribution(safeComments), 
 [safeComments]
