@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from 'react-native'
-import React, { use, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { CommentItem } from '../navigation/services/commentsService';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import RatingBar from './RatingBar';
