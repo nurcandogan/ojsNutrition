@@ -67,7 +67,6 @@ const totalPage = Math.max(1 , Math.ceil
 
 );
 
-
   return (
     <View>
       <Text className='text-2xl text-center'>{avg.toFixed(1)}</Text>
@@ -88,7 +87,6 @@ const totalPage = Math.max(1 , Math.ceil
 
 
             {/* Bar dağılımı */}
-
       <View className='mt-4'>
         {[5,4,3,2,1].map((star, idx) => (
           
