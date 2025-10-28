@@ -31,7 +31,7 @@ const ProductDetail = () => {
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
 
-
+  const STICKY_H = 76;
 
  const aromas = useMemo(() => 
    [...new Set(( data?.variants ?? []).map((v: Variant) => v.aroma ?? 'Aromasız'))] as string[],
@@ -47,7 +47,6 @@ const ProductDetail = () => {
   [data, selectedAroma]
  ); 
 
-  const STICKY_H = 76;
 
   useEffect(() => {
     fetchProduct();
