@@ -29,7 +29,7 @@ const makeDistribution = (items:CommentItem[]):number[] => {
    return dist;
 }
 
-// (ortalama puanını hesapla.  )   !! averageStarOverride = data.average_stars'ı döneceğiz eğer bu parametre verilmemiş ise calcAverage kullanacağız..
+// (ortalama puanını hesapla. )   !! averageStarOverride = data.average_stars'ı döneceğiz eğer bu parametre dönmez ise calcAverage çalışacak..
 const calcAverage = (items:CommentItem[]): number => {
   if (!items.length) return 0;
   const sum = items.reduce((a, b) => a + (b.stars || 0), 0);
