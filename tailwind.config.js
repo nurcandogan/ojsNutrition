@@ -22,6 +22,8 @@ module.exports = {
         hindistanCevizi:'#BA9051',
         cheesecake:'#CC1E5F',
         çilek:'#D61F33',
+        commentBg:'#F7F7F7',
+        comment:'#333333',
       }
     },
   },

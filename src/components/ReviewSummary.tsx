@@ -111,13 +111,14 @@ const totalPage = Math.max(1 , Math.ceil
               let dateText = '';
                if (comment.created_at) {
               const d = new Date(comment.created_at);
-              // sabit TR format istersen 'tr-TR' koy.
                dateText = d.toLocaleDateString('tr-TR');
             }
             return(
-              <View key={`${comment.created_at}-${idx}`} className="border-b border-gray-300 pb-4 mb-4 mx-4">
-                {/* yıldızlar */}
-                <View className="flex-row items-center mb-1">
+              <View key={`${comment.created_at}-${idx}`} className="rounded-[7px] border-gray-300 bg-commentBg w-[349px] h-[173px]  mx-auto mt-5">
+                
+               <View className='mx-3 my-3'>
+                    {/* yıldızlar */}
+                   <View className="flex-row items-center mb-1  ">
                   {[...Array(5)].map((_, i2) => (
                     <AntDesign
                       key={i2}
@@ -129,25 +130,27 @@ const totalPage = Math.max(1 , Math.ceil
                 </View>
 
                  {/* isim + tarih */}
-                <Text className="text-[12px] text-neutral-500">
-                  {displayName} • {dateText}
+                <Text className="text-[16px] font-bold mt-2 ">
+                  {displayName}
                 </Text>
+                 <Text className='text-xs font-bold mt-1 text-comment'> {dateText}</Text>
 
                 {/* başlık */}
                 {!!comment.title && (
-                  <Text className="mt-1 font-semibold">{comment.title}</Text>
+                  <Text className="font-bold text-lg mt-2 ">{comment.title}</Text>
                 )}
 
                    {/* asıl yorum */}
-                {!!comment.comment && <Text className="mt-1">{comment.comment}</Text>}
+                {!!comment.comment && <Text className=" text-xs text-comment mt-2">{comment.comment}</Text>}
 
                 {/* aroma bilgisi */}
                 {!!comment.aroma && (
-                  <Text className="mt-1 text-[12px] text-neutral-500">
+                  <Text className="mt-2  text-[12px] text-comment">
                     Aroma: {comment.aroma}
                   </Text>
                 )}
 
+               </View>
               </View>
 
             )
