@@ -61,7 +61,6 @@ const distribution = useMemo(() =>
 [safeComments]
 );
 
-
 const totalPage = Math.max(1 , Math.ceil
   ((total || 0) / (pageSize || 1))
 
