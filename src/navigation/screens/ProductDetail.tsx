@@ -17,6 +17,7 @@ import { CommentItem, getProductComments } from '../services/commentsService';
 import ReviewSummary from '../../components/ReviewSummary';
 
 
+
 const ProductDetail = () => {
   const route = useRoute();
   const navigation = useNavigation();
