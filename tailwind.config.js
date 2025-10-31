@@ -25,6 +25,7 @@ module.exports = {
         commentBg:'#F7F7F7',
         comment:'#333333',
         ratingBg:'#EDEDED',
+        lineColor:'#C0C0C0',
       }
     },
   },
