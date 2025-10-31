@@ -41,6 +41,8 @@ const HomeTabs = createBottomTabNavigator({
             style={{
               width: size,
               height: size,
+              bottom: 3,
+
             }}
           />
         ),
@@ -49,8 +51,8 @@ const HomeTabs = createBottomTabNavigator({
 
     SearchProduct: {
       screen: SearchProduct,
-      title: 'Ürün Ara',
       options: {
+        title: 'Ürün Ara',
         tabBarIcon: ({ color, size }) => (
           <Image
             source={bell}
@@ -58,6 +60,7 @@ const HomeTabs = createBottomTabNavigator({
             style={{
               width: size,
               height: size,
+              bottom: 3,
             }}
           />
         ),
@@ -74,6 +77,8 @@ const HomeTabs = createBottomTabNavigator({
             style={{
               width: size,
               height: size,
+              bottom: 3,
+
             }}
           />
         ),
@@ -91,6 +96,7 @@ const HomeTabs = createBottomTabNavigator({
             style={{
               width: size,
               height: size,
+              bottom: 3,
             }}
           />
         ),
@@ -129,6 +135,7 @@ const RootStack = createNativeStackNavigator({
       options: {
         title: 'Home',
         headerShown: false,
+       
       },
     },
   }})
