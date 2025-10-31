@@ -48,8 +48,8 @@ const Menu = () => {
             <View className='flex-row items-center border-b border-lineColor  '>
               <QuestionIcon/>
            <MenuItem label={'S.S.S.'} onPress={() => nav.navigate('AccountInfo')}/>
-
             </View>
+            
          </View>
       </ScrollView>
     </SafeAreaView>
