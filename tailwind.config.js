@@ -24,6 +24,7 @@ module.exports = {
         çilek:'#D61F33',
         commentBg:'#F7F7F7',
         comment:'#333333',
+        ratingBg:'#EDEDED',
       }
     },
   },

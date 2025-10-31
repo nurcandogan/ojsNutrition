@@ -10,7 +10,7 @@ type Props ={
 const RatingBar = ({ value, total }: Props) => {
   const width = total ? Math.max(4, (value / total) * 100) : 0;  // minimum genişlik 4% olacak şekilde ayarla dedik çünkü 1 yorumda görünmüyordu 4 kişi vermiş gibi yazdık
   return (
-    <View className="w-full h-[10px] bg-neutral-200 ">
+    <View className="w-full h-[10px] bg-ratingBg ">
       <View style={{ width: `${width}%` }} className="h-[10px]  bg-logintext" />
     </View>
   );
