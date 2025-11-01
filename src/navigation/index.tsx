@@ -18,6 +18,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from "expo-splash-screen";
 import ProductDetail from './screens/ProductDetail';
 import ProductList from './screens/ProductList';
+import AccountInfo from './screens/AccountInfo';
+import Orders from './screens/Orders';
+import AddressForm from './screens/AddressForm';
+import AboutUs from './screens/AboutUs';
+import ContactUs from './screens/ContactUs';
+import Faq from './screens/FAQ';
 
 
 
@@ -130,6 +136,7 @@ const RootStack = createNativeStackNavigator({
       },
     },
     
+    
     HomeTabs: {
       screen: HomeTabs,
       options: {
@@ -172,8 +179,14 @@ function RootNavigation() {
     screenOptions: { headerShown: false },
     screens: isLoggedIn
       ? { HomeTabs: { screen: HomeTabs }, 
-          ProductList: { screen: ProductList },   //  buraya ekle!!
-          ProductDetail: { screen: ProductDetail  }  //  buraya ekle!!
+          ProductList: { screen: ProductList },   
+          ProductDetail: { screen: ProductDetail  },  
+          AccountInfo:  { screen: AccountInfo },
+          AddressForm:  { screen: AddressForm },
+          Orders:       { screen: Orders },
+          AboutUs:      { screen: AboutUs },
+          ContactUs:    { screen: ContactUs },
+          Faq:          { screen: Faq },
         }
 
       : { Login: { screen: LoginRegister } },

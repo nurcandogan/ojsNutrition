@@ -27,29 +27,28 @@ const Menu = () => {
 
            <View className='flex-row items-center border-b border-lineColor  '>
              <BillIcon/>
-           <MenuItem label={'Siparişlerim'} onPress={() => nav.navigate('AccountInfo')}/>
+           <MenuItem label={'Siparişlerim'} onPress={() => nav.navigate('Orders')}/>
            </View>
 
             <View className='flex-row items-center border-b border-lineColor  '>
               <AdressIcon/>
-           <MenuItem label={'Adresim'} onPress={() => nav.navigate('AccountInfo')}/>
+           <MenuItem label={'Adresim'} onPress={() => nav.navigate('AddressForm')}/>
             </View>
             
             <View className='flex-row items-center border-b border-lineColor  '>
                <AboutIcon/>
-           <MenuItem label={'Hakkımızda'} onPress={() => nav.navigate('AccountInfo')}/>
+           <MenuItem label={'Hakkımızda'} onPress={() => nav.navigate('AboutUs')}/>
             </View>
            
            <View className='flex-row items-center border-b border-lineColor  '>
              <ContactIcon/>
-           <MenuItem label={'Bize Ulaşın'} onPress={() => nav.navigate('AccountInfo')}/>
+           <MenuItem label={'Bize Ulaşın'} onPress={() => nav.navigate('ContactUs')}/>
            </View>
             
             <View className='flex-row items-center border-b border-lineColor  '>
               <QuestionIcon/>
-           <MenuItem label={'S.S.S.'} onPress={() => nav.navigate('AccountInfo')}/>
+           <MenuItem label={'S.S.S.'} onPress={() => nav.navigate('Faq')}/>
             </View>
-            
          </View>
       </ScrollView>
     </SafeAreaView>
