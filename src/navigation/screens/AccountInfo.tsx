@@ -5,6 +5,9 @@ const AccountInfo = () => {
   return (
     <View>
       <Text>AccountInfo</Text>
+     
+
+     
     </View>
   )
 }
