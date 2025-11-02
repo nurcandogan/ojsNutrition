@@ -23,7 +23,7 @@ import Orders from './screens/Orders';
 import AddressForm from './screens/AddressForm';
 import AboutUs from './screens/AboutUs';
 import ContactUs from './screens/ContactUs';
-import Faq from './screens/FAQ';
+import Sss from './screens/Sss';
 
 
 
@@ -186,7 +186,7 @@ function RootNavigation() {
           Orders:       { screen: Orders },
           AboutUs:      { screen: AboutUs },
           ContactUs:    { screen: ContactUs },
-          Faq:          { screen: Faq },
+          Sss:          { screen: Sss },
         }
 
       : { Login: { screen: LoginRegister } },

@@ -12,7 +12,7 @@ import ContactIcon from '../../Svgs/ContactIcon';
 import QuestionIcon from '../../Svgs/QuestionIcon';
 
 const Menu = () => {
-  const nav = useNavigation();
+  const nav = useNavigation<any>();
   return (
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
@@ -47,7 +47,7 @@ const Menu = () => {
             
             <View className='flex-row items-center border-b border-lineColor  '>
               <QuestionIcon/>
-           <MenuItem label={'S.S.S.'} onPress={() => nav.navigate('Faq')}/>
+           <MenuItem label={'S.S.S.'} onPress={() => nav.navigate('Sss')}/>
             </View>
          </View>
       </ScrollView>
