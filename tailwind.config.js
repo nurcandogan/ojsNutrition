@@ -26,6 +26,7 @@ module.exports = {
         comment:'#333333',
         ratingBg:'#EDEDED',
         lineColor:'#C0C0C0',
+        answerBorder:'#F5F5F5',
       }
     },
   },

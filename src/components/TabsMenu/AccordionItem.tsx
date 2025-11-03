@@ -6,23 +6,25 @@ interface Props {
   question: string;
   answer: string;
   isOpen: boolean;
-  onToggle: () => void;
+  onPress: () => void;
 }
 
-const AccordionItem: React.FC<Props> = ({ question, answer, isOpen, onToggle }) => {
+const AccordionItem: React.FC<Props> = ({ question, answer, isOpen, onPress }) => {
   return (
-    <View className="border-b border-lineColor">
+    <View className="border-b border-answerBorder mx-2 ">
       <TouchableOpacity
-        onPress={onToggle}
+        onPress={onPress}
         className="flex-row justify-between items-center px-4 py-5"
+        activeOpacity={0.6}
+        
       >
-        <Text className="font-semibold text-[14px] flex-1 mr-2">{question}</Text>
+        <Text className="font-bold text-[14.18px] flex-1 mr-2 ">{question}</Text>
         <Text className="text-[18px]">{isOpen ? '-' : '+'}</Text>
       </TouchableOpacity>
 
       {isOpen && (
         <View className="px-4 pb-5 pt-1">
-          <Text className="text-[13px] text-gray-600">{answer}</Text>
+          <Text className="text-[12px] text-black">{answer}</Text>
         </View>
       )}
     </View>
