@@ -2,11 +2,10 @@ import { View, Text, SafeAreaView, TouchableOpacity } from 'react-native'
 import React, { useMemo, useState } from 'react'
 import { Category, sssData } from '../../data/sssData'
 import { ScrollView } from 'react-native-gesture-handler'
-import BackButtonOverlay from '../../components/BackButtonOverlay'
 import { useNavigation } from '@react-navigation/native'
-import BackHeader from '../../components/TabsMenu/BackHeader'
-import UnderTabs from '../../components/TabsMenu/UnderTabs'
-import AccordionItem from '../../components/TabsMenu/AccordionItem'
+import BackHeader from '../../components/TabsMenu/SSS/BackHeader'
+import UnderTabs from '../../components/TabsMenu/SSS/UnderTabs'
+import AccordionItem from '../../components/TabsMenu/SSS/AccordionItem'
 
 
 const tabs: Category[] = ['Genel', 'Ürünler', 'Kargo']

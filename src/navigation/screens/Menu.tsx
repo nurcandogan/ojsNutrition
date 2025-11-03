@@ -3,7 +3,7 @@ import React from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { ScrollView } from 'react-native-gesture-handler';
-import MenuItem from '../../components/TabsMenu/MenuItem';
+import MenuItem from '../../components/TabsMenu/SSS/MenuItem';
 import AccountIcon from '../../Svgs/AccountIcon';
 import BillIcon from '../../Svgs/BillIcon';
 import AdressIcon from '../../Svgs/AdressIcon';

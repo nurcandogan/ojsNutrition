@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import UnderTabsIcon from '../../Svgs/UnderTabsIcon'
+import UnderTabsIcon from '../../../Svgs/UnderTabsIcon'
 
 const UnderTabs = ({title}:any) => {
   return (

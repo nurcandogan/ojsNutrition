@@ -27,6 +27,7 @@ module.exports = {
         ratingBg:'#EDEDED',
         lineColor:'#C0C0C0',
         answerBorder:'#F5F5F5',
+        placeHolderText:'#A1A1AA',
       }
     },
   },

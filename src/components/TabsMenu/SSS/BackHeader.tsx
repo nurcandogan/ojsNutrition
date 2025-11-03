@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
-import BackIcon from '../../Svgs/BackIcon';
+import BackIcon from '../../../Svgs/BackIcon'
 
 const BackHeader = ({onPress,title}: any) => {
   return (
