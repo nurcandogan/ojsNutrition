@@ -3,6 +3,7 @@ import React from 'react'
 import BackHeader from '../../components/TabsMenu/SSS/BackHeader';
 import { useNavigation } from '@react-navigation/native';
 import İnput from '../../components/TabsMenu/BizeUlasin/İnput';
+import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput';
 
 const ContactUs = () => {
   const [name, setName] = React.useState('');
@@ -20,14 +21,16 @@ const ContactUs = () => {
         </Text>
        </View>
        
-        <View>
-          <İnput
-           name={name}
-           surname={surname}
-           email={email}
-           message={message}
-          />
+        <View className='mt-10'>
+          <İnput value={name} onChangeText={setName} placeholder="İsim *" />
+          <İnput value={surname} onChangeText={setSurname} placeholder="Soyad" />
+          <İnput value={email} onChangeText={setEmail} placeholder="E-Posta" />
+          <İnput value={message} onChangeText={setMessage} placeholder="Mesaj" multiline />
+
         </View>
+        <View className='justify-center items-center mt-2'> 
+          <OkInput title='Gönder' onPress={() => ('')}/>
+         </View>
          
          <View className='mx-6'>
            <Text className='text-[12.14px] mt-10  leading-5 font-medium'>
