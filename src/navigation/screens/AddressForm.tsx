@@ -3,7 +3,7 @@ import React from 'react'
 import İnput from '../../components/TabsMenu/BizeUlasin/İnput';
 
 const AddressForm = () => {
-  const [adressName, setAddressName] = React.useState('');
+  const [adressName, setAdressName] = React.useState('');
   const [name, setName] = React.useState('');
   const [surname, setSurname] = React.useState('');
   const [adress, setAdress] = React.useState('');
@@ -14,7 +14,15 @@ const AddressForm = () => {
   return (
     <SafeAreaView>
       <View>
-        <İnput name={'name'} surname={'surname'} email={undefined} message={''}/>
+        <İnput value={adressName} onChangeText={setAdressName} placeholder="Adres Adı" />
+<İnput value={name} onChangeText={setName} placeholder="Ad" />
+<İnput value={surname} onChangeText={setSurname} placeholder="Soyad" />
+<İnput value={adress} onChangeText={setAdress} placeholder="Adres" />
+<İnput value={apartment} onChangeText={setApartment} placeholder="Apartman / Daire" />
+<İnput value={city} onChangeText={setCity} placeholder="Şehir" />
+<İnput value={district} onChangeText={setDistrict} placeholder="İlçe" />
+<İnput value={phoneNumber} onChangeText={setPhoneNumber} placeholder="Telefon" />
+
       </View>
     </SafeAreaView>
   )
