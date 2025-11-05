@@ -1,4 +1,4 @@
-import { View, TextInput } from 'react-native'
+import { View, TextInput, Text } from 'react-native'
 import React from 'react'
 
 interface SingleInputProps {
@@ -6,10 +6,16 @@ interface SingleInputProps {
   onChangeText: (text: string) => void;
   placeholder: string;
   multiline?: boolean;
+  title?: string;
 }
 
-const İnput = ({ value, onChangeText, placeholder, multiline = false }: SingleInputProps) => {
+const İnput = ({ value, onChangeText, placeholder, multiline = false, title }: SingleInputProps) => {
   return (
+     
+      <View className='mt-4'>
+        <Text className='px-5 mb-3 text-[13.75px] font-medium'>{title}</Text>
+
+
     <View className="mb-4 items-center">
       <TextInput
         value={value}
@@ -21,6 +27,7 @@ const İnput = ({ value, onChangeText, placeholder, multiline = false }: SingleI
       />
       
     </View>
+      </View>
     
     
   );
