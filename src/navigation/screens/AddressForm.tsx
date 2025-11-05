@@ -12,8 +12,8 @@ const AddressForm = () => {
   const [district, setDistrict] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView className='flex-1 bg-white '>
+      <View className='mt-10'>
         <İnput value={adressName} onChangeText={setAdressName} placeholder="Adres Adı" />
 <İnput value={name} onChangeText={setName} placeholder="Ad" />
 <İnput value={surname} onChangeText={setSurname} placeholder="Soyad" />
