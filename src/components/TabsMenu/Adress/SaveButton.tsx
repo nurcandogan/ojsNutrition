@@ -8,5 +8,4 @@ const SaveButton = () => {
     </TouchableOpacity>
   )
 }
-
 export default SaveButton
