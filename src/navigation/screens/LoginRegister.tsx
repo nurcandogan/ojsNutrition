@@ -82,15 +82,15 @@ const LoginRegister = () => {
 				await loginSchema.validate({ username: email, password }, { abortEarly: false });
 				const res = await loginService(email, password);
 			    console.log("API Cevabı:", res);
+
 				if (!res.success) {
 				Alert.alert("Giriş Hatası", res.message || "Hata oluştu");
 				return;
 			    }
 				// TOKEN SAKLA
                 try {
-                await AsyncStorage.setItem("accessToken", res.data.access_token);
+                await AsyncStorage.setItem("access_token", res.data.access_token);
                 console.log("Token başarıyla saklandı");
-				
                 } catch (err) {
                 console.error("Token kaydedilirken hata:", err);
                 }

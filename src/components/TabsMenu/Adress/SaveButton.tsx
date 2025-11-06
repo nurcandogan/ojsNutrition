@@ -1,10 +1,23 @@
-import { View, Text, Touchable, TouchableOpacity } from 'react-native'
+import { View, Text, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React from 'react'
 
-const SaveButton = () => {
+type SaveButtonProps = {
+  onPress?: () => void;
+  loading?: boolean;
+}
+
+const SaveButton = ({onPress, loading}:SaveButtonProps) => {
   return (
-    <TouchableOpacity className='bg-black  h-[55px] w-[101.28px] justify-center items-center rounded-[4px] '>  
-         <Text className='text-white font-semibold text-[18.13px]'>Kaydet</Text>
+    <TouchableOpacity
+      onPress={onPress}
+      disabled={loading}
+      className='bg-black h-[55px] w-[101.28px] justify-center items-center rounded-[4px]'
+    >
+      {loading ? (
+        <ActivityIndicator color="#fff" />
+      ) : (
+        <Text className='text-white font-semibold text-[18.13px]'>Kaydet</Text>
+      )}
     </TouchableOpacity>
   )
 }

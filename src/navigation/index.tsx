@@ -157,7 +157,7 @@ function RootNavigation() {
   // 🔸 Token kontrol fonksiyonu
   const checkToken = async () => {
     try {
-      const token = await AsyncStorage.getItem('accessToken');
+      const token = await AsyncStorage.getItem('access_token');
       setIsLoggedIn(!!token);
     } catch (err) {
       console.log("Token kontrol hatası:", err);

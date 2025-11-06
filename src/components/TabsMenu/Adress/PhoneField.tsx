@@ -6,6 +6,8 @@ import ModalArrowIcon from "../../../Svgs/ModalArrowIcon";
 type PhoneFieldProps = {
   value: string;
   onChange: (text: string) => void;
+   country: any;
+  setCountry: (c: any) => void;
 };
 
 const formatPhone = (text: string) => {
@@ -38,12 +40,9 @@ const formatPhone = (text: string) => {
   return formatted;
 };
 
-const PhoneField = ({ value, onChange }: PhoneFieldProps) => {
+const PhoneField = ({ value, onChange, country, setCountry }: PhoneFieldProps) => {
   const [isPickerVisible, setIsPickerVisible] = useState(false);
-  const [country, setCountry] = useState({
-    cca2: "TR",
-    callingCode: ["90"],
-  });
+  
 
   return (
     <View className="mx-5 mt-6">
