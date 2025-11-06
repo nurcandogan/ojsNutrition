@@ -10,7 +10,7 @@ const AccountInfo = () => {
   const handleLogout = async () => {
     try {
       // Token'ı sil
-      await AsyncStorage.removeItem('accessToken');
+      await AsyncStorage.removeItem('access_token');
       
       // Uygulamayı yeniden başlat ki login ekranına dönsün
       navigation.reset({

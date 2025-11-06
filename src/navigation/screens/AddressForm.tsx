@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Alert } from 'react-native'
+import { View, Text, SafeAreaView, Alert, Touchable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import İnput from '../../components/TabsMenu/BizeUlasin/İnput';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -8,6 +8,47 @@ import PhoneField from '../../components/TabsMenu/Adress/PhoneField';
 import { API_BASE_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SaveButton from '../../components/TabsMenu/Adress/SaveButton';
+
+
+
+
+
+interface AddressProps {
+  id: string;
+  title: string;
+  first_name: string;
+  last_name: string;
+  full_address: string;
+  phone_number: string;
+
+  country: {
+    id: number;
+    name: string;
+  };
+
+  region: {
+    id: number;
+    name: string;
+    country: {
+      id: number;
+      name: string;
+    };
+  };
+
+  subregion: {
+    id: number;
+    name: string;
+    region: {
+      id: number;
+      name: string;
+      country: {
+        id: number;
+        name: string;
+      };
+    };
+  };
+}
+
 
 const AddressForm = () => {
   const [adressName, setAdressName] = useState('');
@@ -21,6 +62,7 @@ const AddressForm = () => {
   const [loading, setLoading] = useState(false);
   const [hasAddress, setHasAddress] = useState(true); // Kullanıcının adresi var mı?
   const navigation = useNavigation<any>();
+  const [adresses, setAdresses] = useState<AddressProps[]>([]);
   
   const [country, setCountry] = useState({
     cca2: "TR",
@@ -35,14 +77,15 @@ const AddressForm = () => {
   const checkAddresses = async () => {
     try {
       const token = await AsyncStorage.getItem("access_token");
-      const response = await fetch(`${API_BASE_URL}/users/addresses`, {
+      const response = await fetch(`${API_BASE_URL}/users/addresses?limit=10&offset=0`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`,
         },
       });
-      
       const json = await response.json();
+      console.log("Adres Kontrolü:", json.data);
+      setAdresses(json.data.results);
       
       if (response.ok && json.length > 0) {
         setHasAddress(true);
@@ -134,8 +177,29 @@ const AddressForm = () => {
       <ScrollView className='mb-10'>
         <BackHeader onPress={() => navigation.goBack()} title="Adres Oluştur"/>
         
-        {/* Dinamik mesaj */}
-        {!hasAddress && (
+
+        
+
+       {adresses.length > 0
+       
+       ? (
+            <View>
+               <Text>
+              mevcut adresleriniz:
+              {adresses.map((address:any, index:number) => (
+                <Text key={index}>{"\n"}- {address.title}: {address.full_address}</Text>
+                
+              ))}
+             </Text>
+             <TouchableOpacity onPress={() => setHasAddress(false)} className='bg-black h-[55px] w-[200px] justify-center items-center rounded-[4px] mt-10 mx-5'>
+              <Text className='text-white font-semibold text-[18.13px]'>Yeni Adres Ekle</Text>
+             </TouchableOpacity>
+            </View>
+             )
+       :(
+      <View>
+         {/* Dinamik mesaj */}
+        {adresses.length < 0 && (
           <View className='mx-5 mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200'>
             <Text className='text-indigo-800 text-sm'>
               Kayıtlı bir adresiniz yok. Lütfen aşağıdaki kısımdan adres oluşturunuz.
@@ -157,6 +221,17 @@ const AddressForm = () => {
         <View className='items-end mx-5 mt-14'>
           <SaveButton onPress={handleSave} loading={loading}/>
         </View>
+      </View>
+       
+       )
+       }
+
+
+
+
+
+
+       
       </ScrollView>
     </SafeAreaView>
   )
