@@ -74,6 +74,7 @@ const AddressForm = () => {
     checkAddresses();
   }, []);
 
+  // Kullanıcının mevcut adreslerini sunucudan çekmek ekranda göstermek için attığımız istek
   const checkAddresses = async () => {
     try {
       const token = await AsyncStorage.getItem("access_token");
@@ -139,6 +140,9 @@ const AddressForm = () => {
 
     console.log("📦 Gönderilen Body:", body);
 
+
+
+// Gönderme isteği
     const response = await fetch(`${API_BASE_URL}/users/addresses`, {
       method: "POST",
       headers: {
@@ -206,6 +210,10 @@ const AddressForm = () => {
             </Text>
           </View>
         )}
+
+
+
+
 
         <View className='mt-10'>
           <İnput value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." title='*Adres Başlığı' />
