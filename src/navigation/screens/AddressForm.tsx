@@ -60,9 +60,10 @@ const AddressForm = () => {
   const [district, setDistrict] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
-  const [hasAddress, setHasAddress] = useState(true); // Kullanıcının adresi var mı?
   const navigation = useNavigation<any>();
   const [adresses, setAdresses] = useState<AddressProps[]>([]);
+  const [isFormVisible, setIsFormVisible] = useState(false); // 🔥 FORM AÇIK MI?
+
   
   const [country, setCountry] = useState({
     cca2: "TR",
@@ -89,15 +90,13 @@ const AddressForm = () => {
        const results = json?.data?.results ?? [];  
       setAdresses(results);
 
-      if (response.ok && json.length > 0) {
-        setHasAddress(true);
-      } else {
-        setHasAddress(false);
-      }
+      // Eğer hiç adres yoksa form otomatik açılsın
+      setIsFormVisible(results.length === 0);
 
     } catch (error) {
       console.log("Adres kontrolü hatası:", error);
        setAdresses([]); // hata durumunda boş dizi
+       setIsFormVisible(true); // hata durumunda formu aç
     }
   };
 
@@ -160,7 +159,8 @@ const AddressForm = () => {
 
     if (response.ok) {
       Alert.alert("Başarılı ", "Adres kaydedildi");
-      navigation.goBack();
+      await checkAddresses(); // Adresleri güncelle
+      setIsFormVisible(false); // Formu kapat
     } else if (response.status === 401) {
       Alert.alert("Oturum Hatası ", "Oturumunuz sonlanmış");
       await AsyncStorage.removeItem("access_token");
@@ -183,12 +183,7 @@ const AddressForm = () => {
       <ScrollView className='mb-10'>
         <BackHeader onPress={() => navigation.goBack()} title="Adres Oluştur"/>
         
-
-        
-
-       {adresses.length > 0
-       
-       ? (
+          {!isFormVisible && adresses.length > 0 && (       
             <View>
                <Text>
               mevcut adresleriniz:
@@ -197,21 +192,22 @@ const AddressForm = () => {
                 
               ))}
              </Text>
-             <TouchableOpacity onPress={() => setAdresses([])} className='bg-black h-[55px] w-[200px] justify-center items-center rounded-[4px] mt-10 mx-5'>
+             <TouchableOpacity onPress={() =>  setIsFormVisible(true)} className='bg-black h-[55px] w-[200px] justify-center items-center rounded-[4px] mt-10 mx-5'>
               <Text className='text-white font-semibold text-[18.13px]'>Yeni Adres Ekle</Text>
              </TouchableOpacity>
             </View>
-             )
-       :(
-      <View>
+             )}
+      
+      
          {/* Dinamik mesaj */}
-        {adresses.length < 0 && (
+        {isFormVisible && (
+          <View>
           <View className='mx-5 mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200'>
             <Text className='text-indigo-800 text-sm'>
-              Kayıtlı bir adresiniz yok. Lütfen aşağıdaki kısımdan adres oluşturunuz.
-            </Text>
+               Kayıtlı bir adresiniz yok. Lütfen aşağıdaki kısımdan adres oluşturunuz.
+             </Text>
           </View>
-        )}
+       
 
 
 
@@ -232,10 +228,8 @@ const AddressForm = () => {
           <SaveButton onPress={handleSave} loading={loading}/>
         </View>
       </View>
-       
-       )
-       }
-
+        )}
+     
 
 
 
