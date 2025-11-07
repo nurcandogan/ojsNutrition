@@ -86,16 +86,18 @@ const AddressForm = () => {
       });
       const json = await response.json();
       console.log("Adres Kontrolü:", json.data);
-      setAdresses(json.data.results);
-      
+       const results = json?.data?.results ?? [];  
+      setAdresses(results);
+
       if (response.ok && json.length > 0) {
         setHasAddress(true);
       } else {
         setHasAddress(false);
       }
+
     } catch (error) {
       console.log("Adres kontrolü hatası:", error);
-      setHasAddress(false);
+       setAdresses([]); // hata durumunda boş dizi
     }
   };
 
@@ -115,8 +117,8 @@ const AddressForm = () => {
       return;
     }
 
-         const cleanPhone = phoneNumber.replace(/\D/g, "");
-    const phoneFormats = [
+     const cleanPhone = phoneNumber.replace(/\D/g, "");
+     const phoneFormats = [
       `+90${cleanPhone}`,              // +905551234567
       `+${country.callingCode[0]}${cleanPhone}`, // +905551234567
       `0${cleanPhone}`,                // 05551234567
@@ -157,21 +159,21 @@ const AddressForm = () => {
     console.log("📊 Status Code:", response.status);
 
     if (response.ok) {
-      Alert.alert("Başarılı ✅", "Adres kaydedildi");
+      Alert.alert("Başarılı ", "Adres kaydedildi");
       navigation.goBack();
     } else if (response.status === 401) {
-      Alert.alert("Oturum Hatası ❌", "Oturumunuz sonlanmış");
+      Alert.alert("Oturum Hatası ", "Oturumunuz sonlanmış");
       await AsyncStorage.removeItem("access_token");
     } else if (response.status === 400 && json.reason) {
       // Backend'den gelen hata mesajlarını göster
       const errors = Object.values(json.reason).flat().join("\n");
-      Alert.alert("Hata ❌", errors);
+      Alert.alert("Hata ", errors);
     } else {
-      Alert.alert("Hata ❌", json.message || "Adres kaydedilemedi");
+      Alert.alert("Hata ", json.message || "Adres kaydedilemedi");
     }
   } catch (error) {
     console.log("❌ Kaydetme Hatası:", error);
-    Alert.alert("Hata ❌", "Bir sorun oluştu");
+    Alert.alert("Hata ", "Bir sorun oluştu");
   }
   setLoading(false);
 };
@@ -195,7 +197,7 @@ const AddressForm = () => {
                 
               ))}
              </Text>
-             <TouchableOpacity onPress={() => setHasAddress(false)} className='bg-black h-[55px] w-[200px] justify-center items-center rounded-[4px] mt-10 mx-5'>
+             <TouchableOpacity onPress={() => setAdresses([])} className='bg-black h-[55px] w-[200px] justify-center items-center rounded-[4px] mt-10 mx-5'>
               <Text className='text-white font-semibold text-[18.13px]'>Yeni Adres Ekle</Text>
              </TouchableOpacity>
             </View>
