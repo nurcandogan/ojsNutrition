@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import Feather from '@expo/vector-icons/Feather';
 import { MEDIA_BASE_URL } from '@env';
 import { useCartStore } from '../../store/cartStore';
+import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput';
 
 const Basket = () => {
   const navigation = useNavigation();
@@ -68,11 +69,11 @@ const Basket = () => {
         </View>
 
         {/* Ürün Listesi */}
-        <View className="px-5 mt-4">
+      <View className="px-5 mt-4">
           {Productitems.map((item) => (
             <View 
               key={item.variantId} 
-              className="flex-row pb-4 mb-4 border-b border-gray-100"
+              className="flex-row pb-4 mb-4 "
             >
               {/* Ürün Resmi */}
               <Image
@@ -82,10 +83,10 @@ const Basket = () => {
               />
 
               {/* Ürün Bilgileri */}
-              <View className="flex-1 items-end  ml-4">
+            <View className="flex-1 items-end  ml-4">
                 {/* Ürün Adı ve Fiyat - Üst Kısım */}
-                <View className="flex-row justify-between items-start mb-2">
-                  <View className="flex-1 mr-2">
+                <View className="flex-row justify-between items-start  mb-2">
+                  <View className=" mr-2">
                     <Text className="text-base font-bold mb-1" numberOfLines={2}>
                       {item.productName.toUpperCase()}
                     </Text>
@@ -103,9 +104,10 @@ const Basket = () => {
                       </Text>
                     )}
                   </View>
-
+             
+              <View className='flex-col gap-6 '>
                   {/* Fiyat */}
-                  <View className="items-end">
+                  <View className="items-end mx-2">
                     <Text className="text-base font-bold">
                       {Math.round(item.price)} TL
                     </Text>
@@ -115,11 +117,10 @@ const Basket = () => {
                       </Text>
                     )}
                   </View>
-                </View>
 
-                {/* Miktar Kontrolü - Alt Kısım */}
+                     {  /* Miktar Kontrolü - Alt Kısım */}
                 <View className='w-[135px] h-[37px] bg-white rounded-l  items-center justify-between mx-2 '
-                 style={{
+                  style={{
                    shadowColor: "#000",
                    shadowOffset: { width: 0, height: 2 }, // daha yumuşak ve aşağı
                    shadowOpacity: 0.08,
@@ -150,27 +151,24 @@ const Basket = () => {
                 </View>
               </View>
             </View>
+            </View>
+          </View>
           ))}
-        </View>
+      </View>
       </ScrollView>
 
       {/* Sticky Bottom Bar - Dolu Sepet */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-5 py-4">
-        <View className="flex-row items-center justify-between">
-          <Text className="text-base font-semibold">
-            TOPLAM {Math.round(totalPrice)} TL
-          </Text>
-          <TouchableOpacity
-            className="bg-black px-6 py-3 rounded flex-row items-center"
-            onPress={() => {
-              // Ödeme sayfasına yönlendirme buraya gelecek
-              console.log("Ödeme sayfasına yönlendiriliyor...");
-            }}
-          >
-            <Text className="text-white font-semibold mr-2">DEVAM ET</Text>
-            <Feather name="arrow-right" size={16} color="white" />
-          </TouchableOpacity>
-        </View>
+      <View className="">
+          <View className='items-end '>
+             <Text className="text-[14.25px] font-bold mx-6 my-2 ">
+                 TOPLAM {Math.round(totalPrice)} TL
+             </Text>
+          </View>
+
+         <View className='content-center items-center mt-4 mb-6 '>
+          <OkInput title='DEVAM ET'/>
+         </View>
+       
       </View>
     </SafeAreaView>
   );
