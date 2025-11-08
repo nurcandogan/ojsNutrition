@@ -29,7 +29,7 @@ const ContactUs = () => {
 
         </View>
         <View className='justify-center items-center mt-2'> 
-          <OkInput title='Gönder' onPress={() => ('')}/>
+          <OkInput title='Gönder' onPress={() => ('')} />
          </View>
          
          <View className='mx-6'>

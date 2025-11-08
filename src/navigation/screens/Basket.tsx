@@ -31,33 +31,33 @@ const Basket = () => {
       <SafeAreaView className="flex-1 bg-white">
         {/* Header */}
         <View className="px-5 pt-6 pb-4">
-          <Text className="text-2xl font-bold text-center mb-4">SEPETİM</Text>
+          <Text className="text-[17.66px] font-bold text-center mb-4">SEPETİM</Text>
           <View className="h-[1px] bg-gray-200" />
         </View>
 
         {/* Boş Sepet İçeriği */}
-        <View className="flex-1 items-center justify-center px-6">
-          <Text className="text-base text-gray-600 text-center">
+        <View className="mt-2 items-center justify-center px-6">
+          <Text className="text-[13.5px] text-black text-center">
             Sepetinizde Ürün Bulunmamaktadır
           </Text>
         </View>
 
         {/* Sticky Bottom Bar - Boş Sepet */}
-        <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-5 py-4">
-          <View className="flex-row items-center justify-between">
-            <Text className="text-base font-semibold">TOPLAM 0 TL</Text>
-            <TouchableOpacity
-              className="bg-gray-300 px-6 py-3 rounded flex-row items-center"
-              disabled
-            >
-              <Text className="text-gray-600 font-semibold mr-2">DEVAM ET</Text>
-              <Feather name="arrow-right" size={16} color="#6b7280" />
-            </TouchableOpacity>
-          </View>
+        <View className='absolute bottom-10 w-full bg-white '>
+           <View className="items-end">
+            <Text className="text-[14.25px] font-bold mx-6 my-2 ">TOPLAM 0 TL</Text>
+           </View>
+           <View className='content-center items-center mt-4 mb-6 '>
+               <OkInput title='DEVAM ET'  disabled={Productitems.length === 0}/>
+           </View>
         </View>
       </SafeAreaView>
     );
   }
+
+
+
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -158,7 +158,7 @@ const Basket = () => {
       </ScrollView>
 
       {/* Sticky Bottom Bar - Dolu Sepet */}
-      <View className="">
+      <View >
           <View className='items-end '>
              <Text className="text-[14.25px] font-bold mx-6 my-2 ">
                  TOPLAM {Math.round(totalPrice)} TL
