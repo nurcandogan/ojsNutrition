@@ -198,21 +198,17 @@ const AddressForm = () => {
             </View>
              )}
       
-      
+        
          {/* Dinamik mesaj */}
-        {isFormVisible && (
-          <View>
-          <View className='mx-5 mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200'>
+        {isFormVisible &&   (
+        <View>
+          {adresses.length === 0 && (
+         <View className='mx-5 mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200'>
             <Text className='text-indigo-800 text-sm'>
                Kayıtlı bir adresiniz yok. Lütfen aşağıdaki kısımdan adres oluşturunuz.
              </Text>
-          </View>
-       
-
-
-
-
-
+          </View>)}
+          
         <View className='mt-10'>
           <İnput value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." title='*Adres Başlığı' />
           <İnput value={name} onChangeText={setName} placeholder='' title='*Ad' />

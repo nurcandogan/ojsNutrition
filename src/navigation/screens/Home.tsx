@@ -1,5 +1,6 @@
 import { View, Text, SafeAreaView, Image, TouchableOpacity, Dimensions, ActivityIndicator, ScrollView, ImageBackground } from 'react-native'
 import React, { use, useEffect, useState } from 'react'
+import { useNavigation } from '@react-navigation/native';
 import Feather from '@expo/vector-icons/Feather';
 import { TextInput } from 'react-native-gesture-handler';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
@@ -7,6 +8,7 @@ import { Category, fetchCategories } from '../services/categoryService';
 import { BestSellerProps, fetchBestSellers } from '../services/bestSeller';
 import BestSeller from '../../components/BestSeller';
 import CategoryCard from '../../components/CategoryCard';
+import { useCartStore } from '../../store/cartStore';
 
 
 const images = [
@@ -22,10 +24,12 @@ const aminoAcidImage = require("../../assets/amino-asit-paket.png");
 
 
 const Home = () => {
+    const navigation = useNavigation();
     const [searchText, setSearchText] = useState("");                
     const [categories, setCategories] = useState<Category[]>([]);     // category servıce'den gelen veri
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState<BestSellerProps[]>([]);        //bestseller servıce'den gelen veri
+    const { Productitems} = useCartStore();
 
   useEffect(() => {
     categoriesFetch();
@@ -56,8 +60,11 @@ const categoriesFetch = async () => {
    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} >
     <View className='flex-row justify-between items-center px-6 mt-3 shadow-lg bg-neutral-200 ' >
         <Image source={require('../../assets/ojslogo2.png')} className='w-32 h-16 items-start' resizeMode="contain"  />
-       <TouchableOpacity>
+       <TouchableOpacity onPress={() => navigation.navigate('Basket' as never)}>
          <Feather name="shopping-cart" size={24} color="black" />
+         <View className='absolute top-[-7] right-[-7] bg-discountText rounded-full w-[18px] h-[18px] flex items-center justify-center '>
+           <Text className='text-[12px] text-white text-center items-center justify-center '>{Productitems.length}</Text>
+         </View>
        </TouchableOpacity>
     </View>
     

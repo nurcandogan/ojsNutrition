@@ -24,6 +24,7 @@ import AddressForm from './screens/AddressForm';
 import AboutUs from './screens/AboutUs';
 import ContactUs from './screens/ContactUs';
 import Sss from './screens/Sss';
+import Basket from './screens/Basket';
 
 
 
@@ -135,7 +136,12 @@ const RootStack = createNativeStackNavigator({
         headerShown: false,
       },
     },
-    
+    Basket: {
+      screen: Basket,
+      options: {
+        headerShown: false,
+      },
+    },
     
     HomeTabs: {
       screen: HomeTabs,
@@ -181,6 +187,7 @@ function RootNavigation() {
       ? { HomeTabs: { screen: HomeTabs }, 
           ProductList: { screen: ProductList },   
           ProductDetail: { screen: ProductDetail  },  
+          Basket:       { screen: Basket },
           AccountInfo:  { screen: AccountInfo },
           AddressForm:  { screen: AddressForm },
           Orders:       { screen: Orders },

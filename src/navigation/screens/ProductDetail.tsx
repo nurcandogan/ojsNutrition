@@ -15,6 +15,7 @@ import BackButtonOverlay from '../../components/BackButtonOverlay';
 import StickyBar from '../../components/StickyBar';
 import { CommentItem, getProductComments } from '../services/commentsService';
 import ReviewSummary from '../../components/ReviewSummary';
+import { useCartStore } from '../../store/cartStore';
 
 
 
@@ -31,6 +32,7 @@ const ProductDetail = () => {
   const [commentsCount, setCommentsCount] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
+  const { addItem } = useCartStore();
 
   const STICKY_H = 76;
 
@@ -244,7 +246,20 @@ const ingredients = (
         newPrice={price ? price.final : null}
         oldPrice={price?.old ?? null}
         services={price?.perServices ?? null}
-        onAddToCart={() => console.log("Sepete eklendi!")} // buraya sepet ekleme fonksiyonun gelecek
+        onAddToCart={() => {
+          if (data && selectedVariant) {
+            // Sepete ürün ekle
+            addItem({
+              productId: data.id,
+              productName: data.name,
+              slug: data.slug,
+              photo_src: data.variants?.[0]?.photo_src || '',
+              variant: selectedVariant,
+            });
+            // Sepet sayfasına yönlendir
+            navigation.navigate('Basket' as never);
+          }
+        }}
        
       />
        
