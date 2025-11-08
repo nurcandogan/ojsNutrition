@@ -77,12 +77,12 @@ const Basket = () => {
               {/* Ürün Resmi */}
               <Image
                 source={{ uri: `${MEDIA_BASE_URL}${item.photo_src}` }}
-                className="w-20 h-20 rounded"
+                className="w-[87px] h-[87px] "
                 resizeMode="cover"
               />
 
               {/* Ürün Bilgileri */}
-              <View className="flex-1 ml-4">
+              <View className="flex-1 items-end  ml-4">
                 {/* Ürün Adı ve Fiyat - Üst Kısım */}
                 <View className="flex-row justify-between items-start mb-2">
                   <View className="flex-1 mr-2">
@@ -92,13 +92,13 @@ const Basket = () => {
                     
                     {/* Aroma ve Boyut */}
                     {item.aroma && (
-                      <Text className="text-sm text-gray-600 mb-1">
+                      <Text className="text-[15.13px] font-bold text-basketText mb-3">
                         {item.aroma}
                       </Text>
                     )}
                     
                     {item.size && (
-                      <Text className="text-sm text-gray-600">
+                      <Text className="text-[15.13px] font-bold text-basketText ">
                         {formatSize(item.size)}
                       </Text>
                     )}
@@ -118,13 +118,20 @@ const Basket = () => {
                 </View>
 
                 {/* Miktar Kontrolü - Alt Kısım */}
-                <View className="flex-row items-center mt-3">
+                <View className='w-[135px] h-[37px] bg-white rounded-l  items-center justify-between mx-2 '
+                 style={{
+                   shadowColor: "#000",
+                   shadowOffset: { width: 0, height: 2 }, // daha yumuşak ve aşağı
+                   shadowOpacity: 0.08,
+                   shadowRadius: 8,
+                     }}>
+                  <View className="flex-row gap-6 items-center justify-center h-full px-3">
                   {/* Silme Butonu */}
                   <TouchableOpacity
                     onPress={() => removeItem(item.variantId)}
                     className="mr-3"
                   >
-                    <Feather name="trash-2" size={18} color="#6b7280" />
+                    <Feather name="trash-2" size={18} color="#000" />
                   </TouchableOpacity>
 
                   {/* Miktar Sayısı */}
@@ -139,6 +146,7 @@ const Basket = () => {
                   >
                     <Feather name="plus" size={18} color="black" />
                   </TouchableOpacity>
+                </View>
                 </View>
               </View>
             </View>
