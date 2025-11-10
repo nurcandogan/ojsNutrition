@@ -8,7 +8,7 @@ import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput';
 
 const Basket = () => {
   const navigation = useNavigation();
-  const { Productitems, increaseQuantity, decreaseQuantity, removeItem, getTotalPrice } = useCartStore();
+  const { ProductItems, increaseQuantity, decreaseQuantity, removeItem, getTotalPrice } = useCartStore();
   const totalPrice = getTotalPrice();
 
   // Boyut formatı (250g, 60 tablet gibi)
@@ -26,7 +26,7 @@ const Basket = () => {
   };
 
   // Boş sepet görünümü
-  if (Productitems.length === 0) {
+  if (ProductItems.length === 0) {
     return (
       <SafeAreaView className="flex-1 bg-white">
         {/* Header */}
@@ -48,7 +48,7 @@ const Basket = () => {
             <Text className="text-[14.25px] font-bold mx-6 my-2 ">TOPLAM 0 TL</Text>
            </View>
            <View className='content-center items-center mt-4 mb-6 '>
-               <OkInput title='DEVAM ET'  disabled={Productitems.length === 0}/>
+               <OkInput title='DEVAM ET'  disabled={ProductItems.length === 0}/>
            </View>
         </View>
       </SafeAreaView>
@@ -70,7 +70,7 @@ const Basket = () => {
 
         {/* Ürün Listesi */}
       <View className="px-5 mt-4">
-          {Productitems.map((item) => (
+          {ProductItems.map((item) => (
             <View 
               key={item.variantId} 
               className="flex-row pb-4 mb-4 "

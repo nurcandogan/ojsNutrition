@@ -8,7 +8,6 @@ export interface CartItem {
   productName: string;
   slug: string;
   photo_src: string;
-  
   // Variant bilgileri
   variantId: string;
   aroma: string | null;
@@ -28,7 +27,7 @@ export interface CartItem {
 }
 
 interface CartState {
-    Productitems: CartItem[];
+    ProductItems: CartItem[];
   
   // Sepete ürün ekleme
   addItem: (product: {
@@ -62,19 +61,19 @@ interface CartState {
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
-    Productitems: [],
+    ProductItems: [],
   
   addItem: (product) => {
-    const { Productitems } = get();
+    const { ProductItems } = get();
     const { productId, productName, slug, photo_src, variant } = product;
     
     // Aynı variant zaten sepette var mı kontrol et
-    const existingItem = Productitems.find(item => item.variantId === variant.id);
+    const existingItem = ProductItems.find(item => item.variantId === variant.id);
     
     if (existingItem) {
       // Varsa miktarı artır
       set({
-        Productitems: Productitems.map(item =>
+        ProductItems: ProductItems.map(item =>
           item.variantId === variant.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
@@ -101,13 +100,13 @@ export const useCartStore = create<CartState>((set, get) => ({
         quantity: 1,
       };
       
-      set({ Productitems: [...Productitems, newItem] });
+      set({ ProductItems: [...ProductItems, newItem] });
     }
   },
   
   increaseQuantity: (variantId) => {
     set({
-      Productitems: get().Productitems.map(item =>
+      ProductItems: get().ProductItems.map(item =>
         item.variantId === variantId
           ? { ...item, quantity: item.quantity + 1 }
           : item
@@ -117,7 +116,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   
   decreaseQuantity: (variantId) => {
     set({
-      Productitems: get().Productitems.map(item =>
+      ProductItems: get().ProductItems.map(item =>
         item.variantId === variantId && item.quantity > 1
           ? { ...item, quantity: item.quantity - 1 }
           : item
@@ -127,24 +126,24 @@ export const useCartStore = create<CartState>((set, get) => ({
   
   removeItem: (variantId) => {
     set({
-      Productitems: get().Productitems.filter(item => item.variantId !== variantId),
+      ProductItems: get().ProductItems.filter(item => item.variantId !== variantId),
     });
   },
   
   clearCart: () => {
-    set({ Productitems: [] });
+    set({ ProductItems: [] });
   },
   
   getTotalPrice: () => {
-    return get().Productitems.reduce((total, item) => total + item.price * item.quantity, 0);
+    return get().ProductItems.reduce((total, item) => total + item.price * item.quantity, 0);
   },
   
   getTotalItems: () => {
-    return get().Productitems.reduce((total, item) => total + item.quantity, 0);
+    return get().ProductItems.reduce((total, item) => total + item.quantity, 0);
   },
   
   setItemsFromBackend: (items) => {
-    set({ Productitems: items });
+    set({ ProductItems: items });
   },
 }));
 

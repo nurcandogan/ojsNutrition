@@ -29,7 +29,7 @@ const Home = () => {
     const [categories, setCategories] = useState<Category[]>([]);     // category servıce'den gelen veri
     const [loading, setLoading] = useState(true);
     const [items, setItems] = useState<BestSellerProps[]>([]);        //bestseller servıce'den gelen veri
-    const { Productitems} = useCartStore();
+    const { ProductItems} = useCartStore();
 
   useEffect(() => {
     categoriesFetch();
@@ -63,7 +63,7 @@ const categoriesFetch = async () => {
        <TouchableOpacity onPress={() => navigation.navigate('Basket' as never)}>
          <Feather name="shopping-cart" size={24} color="black" />
          <View className='absolute top-[-7] right-[-7] bg-discountText rounded-full w-[18px] h-[18px] flex items-center justify-center '>
-           <Text className='text-[12px] text-white text-center items-center justify-center '>{Productitems.length}</Text>
+           <Text className='text-[12px] text-white text-center items-center justify-center '>{ProductItems.length}</Text>
          </View>
        </TouchableOpacity>
     </View>
