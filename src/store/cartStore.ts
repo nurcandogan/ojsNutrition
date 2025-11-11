@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { Variant } from '../navigation/services/productService';
 
-// Sepet ürünü tipi
+// Sepet ürünü tipi (yenı eklenecekse!!!!)
 export interface CartItem {
   // Ürün bilgileri
   productId: string;
@@ -28,7 +28,7 @@ export interface CartItem {
 
 
 
-type AddItemPayload = {
+type AddItemPayload = {         // addItem ıle productDetaılden gelen
   productId: string;
   productName: string;
   slug: string;
@@ -87,14 +87,17 @@ export const useCartStore = create<CartState>((set, get) => ({
         price,
         oldPrice,
         discountPercentage: variant.price.discount_percentage,
-        quantity: 1,    //sepete bı tan eklendı dıyoruz. yenı kart olusturdugumuz ıcın bu kısımda 1 tane vardı demek ıstıyoruz..
+        quantity: 1,    //sepete bı tane eklendı dıyoruz. yenı kart olusturdugumuz ıcın bu kısımda 1 tane vardı demek ıstıyoruz..
       };
       
       set({ ProductItems: [...ProductItems, newItem] });
     }
   },
   
-  increaseQuantity: (variantId) => {
+
+
+  //Sepet ekranındaki “+” butonu için yukarıdaki ise Sadece aynı varyant zaten sepetteyse o satırın quantity’sini +1 yapıyor
+  increaseQuantity: (variantId) => {           
     set({
       ProductItems: get().ProductItems.map(item =>
         item.variantId === variantId
