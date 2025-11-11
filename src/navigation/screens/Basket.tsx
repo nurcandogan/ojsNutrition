@@ -127,7 +127,7 @@ const Basket = () => {
                   <View className="flex-row gap-6 items-center justify-center h-full px-3">
                   {/* Silme Butonu */}
                   <TouchableOpacity
-                    onPress={() => removeItem(item.variantId)}
+                    onPress={() => decreaseQuantity(item.variantId)}
                     className="mr-3"
                   >
                     <Feather name="trash-2" size={18} color="#000" />
