@@ -26,38 +26,28 @@ export interface CartItem {
   quantity: number;
 }
 
+
+
+type AddItemPayload = {
+  productId: string;
+  productName: string;
+  slug: string;
+  photo_src: string;
+  variant: Variant;
+};
+
+
 interface CartState {
-    ProductItems: CartItem[];
-  
-  // Sepete ürün ekleme
-  addItem: (product: {
-    productId: string;
-    productName: string;
-    slug: string;
-    photo_src: string;
-    variant: Variant;
-  }) => void;
-  
-  // Miktar artırma
-  increaseQuantity: (variantId: string) => void;
-  
-  // Miktar azaltma
-  decreaseQuantity: (variantId: string) => void;
-  
-  // Ürün silme
-  removeItem: (variantId: string) => void;
-  
-  // Sepeti temizleme
-  clearCart: () => void;
-  
-  // Toplam fiyat
-  getTotalPrice: () => number;
-  
-  // Toplam ürün sayısı
-  getTotalItems: () => number;
-  
-  // Backend'den sepete ürün ekleme (gelecekte kullanılacak)
-  setItemsFromBackend: (items: CartItem[]) => void;
+   ProductItems: CartItem[];
+   addItem: (product:AddItemPayload ) => void;             // Sepete ürün ekleme
+  increaseQuantity: (variantId: string) => void;            // Miktar artırma
+  decreaseQuantity: (variantId: string) => void;               // Miktar azaltma
+  removeItem: (variantId: string) => void;                       // Ürün silme
+  clearCart: () => void;                                   // Sepeti temizleme
+  getTotalPrice: () => number;                             // Toplam fiyat
+  getTotalItems: () => number;                                // Toplam ürün sayısı
+  setItemsFromBackend: (items: CartItem[]) => void;            // Backend'den sepete ürün ekleme (gelecekte kullanılacak)
+
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
