@@ -69,6 +69,7 @@ const ProductDetail = () => {
       setLoading(true);
       const detail = await fetchProductDetail(slug);
       setData(detail);
+      
 
       const defaultAroma = detail?.variants?.[0]?.aroma ?? 'Aromasız';
       setSelectedAroma(defaultAroma);

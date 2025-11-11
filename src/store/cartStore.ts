@@ -87,7 +87,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         price,
         oldPrice,
         discountPercentage: variant.price.discount_percentage,
-        quantity: 1,
+        quantity: 1,    //sepete bı tan eklendı dıyoruz. yenı kart olusturdugumuz ıcın bu kısımda 1 tane vardı demek ıstıyoruz..
       };
       
       set({ ProductItems: [...ProductItems, newItem] });
