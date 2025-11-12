@@ -28,12 +28,12 @@ export interface CartItem {
 
 
 
-type AddItemPayload = {         // addItem ıle productDetaılden gelen
+type AddItemPayload = {         // addItem ıle productDetail den gelen
   productId: string;
   productName: string;
   slug: string;
   photo_src: string;
-  variant: Variant;
+  variant: Variant;          //seçilen varyant
 };
 
 
