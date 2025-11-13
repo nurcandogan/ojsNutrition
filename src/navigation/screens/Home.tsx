@@ -56,7 +56,7 @@ const categoriesFetch = async () => {
 
   return (
 
-  <SafeAreaView >
+  <SafeAreaView className='bg-white'>
    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} >
     <View className='flex-row justify-between items-center px-6 mt-3 shadow-lg bg-neutral-200 ' >
         <Image source={require('../../assets/ojslogo2.png')} className='w-32 h-16 items-start' resizeMode="contain"  />

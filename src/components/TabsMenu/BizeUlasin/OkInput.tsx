@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
+import Entypo from '@expo/vector-icons/build/Entypo';
 
 type OkInputProps = {
   title?: string;
@@ -18,6 +19,7 @@ const OkInput = ({ title, onPress, disabled }: OkInputProps) => {
     >
       <Text className={`text-white text-[18.13px] font-semibold`}>
         {title}
+         <Entypo name="controller-play" size={20} color="#F5F5F5" />
       </Text>
     </TouchableOpacity>
   );
