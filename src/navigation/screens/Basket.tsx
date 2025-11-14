@@ -138,13 +138,9 @@ const Basket = () => {
 
                       </View>
                     </View>
-
                   </View>
-
                 </View>
-
               </View>
-
             </View>
            </SwipeableItem>
             
