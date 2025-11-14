@@ -13,7 +13,7 @@ const İnput = ({ value, onChangeText, placeholder, multiline = false, title }: 
   return (
      
       <View className='mt-4'>
-        <Text className='px-5 mb-3 text-[13.75px] font-medium'>{title}</Text>
+      {title && <Text className="px-5 mb-3 text-[13.75px] font-medium">{title}</Text>}
 
     <View className="mb-4 items-center">
       <TextInput
