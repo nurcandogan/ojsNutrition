@@ -10,9 +10,6 @@ import SaveButton from '../../components/TabsMenu/Adress/SaveButton';
 import Input from '../../components/TabsMenu/BizeUlasin/Input';
 
 
-
-
-
 interface AddressProps {
   id: string;
   title: string;
