@@ -27,23 +27,11 @@ interface AddressProps {
   region: {
     id: number;
     name: string;
-    country: {
-      id: number;
-      name: string;
-    };
   };
 
   subregion: {
     id: number;
     name: string;
-    region: {
-      id: number;
-      name: string;
-      country: {
-        id: number;
-        name: string;
-      };
-    };
   };
 }
 
@@ -58,6 +46,7 @@ const AddressForm = () => {
   const [district, setDistrict] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
+  
   const navigation = useNavigation<any>();
   const [adresses, setAdresses] = useState<AddressProps[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false); // 🔥 FORM AÇIK MI?
