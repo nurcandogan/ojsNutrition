@@ -1,21 +1,20 @@
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HeaderButton, Text } from '@react-navigation/elements';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
   createStaticNavigation,
-  StaticParamList,
+  StaticParamList
 } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ActivityIndicator, Image, View } from 'react-native';
-import bell from '../assets/bell.png';
-import newspaper from '../assets/newspaper.png';
-import SearchProduct from './screens/SearchProduct';
-import AllProducts from './screens/AllProducts';
-import Menu from './screens/Menu';
-import Home from './screens/Home';
-import LoginRegister from './screens/LoginRegister';
+import { Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SplashScreen from "expo-splash-screen";
+
+import Home from './screens/Home';
+import SearchProduct from './screens/SearchProduct';
+import AllProducts from './screens/AllProducts';
+import Menu from './screens/Menu';
+import LoginRegister from './screens/LoginRegister';
 import ProductDetail from './screens/ProductDetail';
 import ProductList from './screens/ProductList';
 import AccountInfo from './screens/AccountInfo';
@@ -26,187 +25,116 @@ import ContactUs from './screens/ContactUs';
 import Sss from './screens/Sss';
 import Basket from './screens/Basket';
 
-
-
+import bell from '../assets/bell.png';
+import newspaper from '../assets/newspaper.png';
 
 SplashScreen.preventAutoHideAsync();
 
+/* ----------------------- 1) TABS ------------------------- */
 
-const HomeTabs = createBottomTabNavigator({
-   screenOptions: {
+const BottomTabs = createBottomTabNavigator({
+  screenOptions: {
     headerShown: false,
   },
   screens: {
     Home: {
       screen: Home,
       options: {
-        title: 'Anasayfa',
+        title: "Anasayfa",
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-
-            }}
-          />
-        ),
-      },
+          <Image source={newspaper} tintColor={color} style={{ width: size, height: size }} />
+        )
+      }
     },
 
     SearchProduct: {
       screen: SearchProduct,
       options: {
-        title: 'Ürün Ara',
+        title: "Ürün Ara",
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={bell}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-            }}
-          />
-        ),
-      },
+          <Image source={bell} tintColor={color} style={{ width: size, height: size }} />
+        )
+      }
     },
+
     AllProducts: {
       screen: AllProducts,
       options: {
-        title: 'Tüm Ürünler',
+        title: "Tüm Ürünler",
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-
-            }}
-          />
-        ),
-      },
+          <Image source={newspaper} tintColor={color} style={{ width: size, height: size }} />
+        )
+      }
     },
- 
+
     Menu: {
       screen: Menu,
       options: {
-        title: 'Menü',
+        title: "Menü",
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-            }}
-          />
-        ),
-      },
-    },
-  },
+          <Image source={newspaper} tintColor={color} style={{ width: size, height: size }} />
+        )
+      }
+    }
+  }
 });
 
-const RootStack = createNativeStackNavigator({
-  screenOptions: {
-    headerShown: false,
-  },
+/* ----------------------- 2) AUTH & APP STACK ------------------------- */
+
+// 🎯 Bu stack'ler component DIŞINDA TANIMLANIR → her render’da yeniden oluşturulmaz!
+
+const AppStack = createNativeStackNavigator({
+  screenOptions: { headerShown: false },
   screens: {
-    Login: {
-      screen: LoginRegister,
-      options: {
-        //title: 'Home',
-        headerShown: false,
-      },
-    },
-     ProductList: {
-      screen: ProductList,
-      options: {
-        headerShown: false,
-      },
-    },
-     ProductDetail: {
-      screen: ProductDetail,
-      options: {
-        headerShown: false,
-      },
-    },
-    Basket: {
-      screen: Basket,
-      options: {
-        headerShown: false,
-      },
-    },
-    
-    HomeTabs: {
-      screen: HomeTabs,
-      options: {
-        title: 'Home',
-        headerShown: false,
-       
-      },
-    },
-  }})
+    HomeTabs: { screen: BottomTabs },
+    ProductList: { screen: ProductList },
+    ProductDetail: { screen: ProductDetail },
+    Basket: { screen: Basket },
+    AccountInfo: { screen: AccountInfo },
+    AddressForm: { screen: AddressForm },
+    Orders: { screen: Orders },
+    AboutUs: { screen: AboutUs },
+    ContactUs: { screen: ContactUs },
+    Sss: { screen: Sss }
+  }
+});
+
+const AuthStack = createNativeStackNavigator({
+  screenOptions: { headerShown: false },
+  screens: {
+    Login: { screen: LoginRegister }
+  }
+});
+
+// 🎯 Navigation instance’ları da DIŞARIDA olmalı
+const AppNavigation = createStaticNavigation(AppStack);
+const AuthNavigation = createStaticNavigation(AuthStack);
 
 
-    
-// ------------------- Navigation Wrapper -------------------
+/* ----------------------- 3) ROOT NAVIGATION ------------------------- */
 
-function RootNavigation() {
+export default function RootNavigation() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
-  // 🔸 Token kontrol fonksiyonu
   const checkToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      setIsLoggedIn(!!token);
-    } catch (err) {
-      console.log("Token kontrol hatası:", err);
-      setIsLoggedIn(false);
-    } finally {
-      await SplashScreen.hideAsync(); // splash her durumda kapatılır
-    }
+    const token = await AsyncStorage.getItem('access_token');
+    setIsLoggedIn(!!token);
+
+    await SplashScreen.hideAsync();
   };
 
   useEffect(() => {
-    checkToken();
-    const interval = setInterval(checkToken, 1000); // 1 saniyede bir kontrol
-    return () => clearInterval(interval);
+    checkToken(); // sadece 1 kere çalışır
   }, []);
 
-  if (isLoggedIn === null) return null;
+  if (isLoggedIn === null) return null; // splash ekranı bekler
 
-  const StackWithAuth = createNativeStackNavigator({
-    screenOptions: { headerShown: false },
-    screens: isLoggedIn
-      ? { HomeTabs: { screen: HomeTabs }, 
-          ProductList: { screen: ProductList },   
-          ProductDetail: { screen: ProductDetail  },  
-          Basket:       { screen: Basket },
-          AccountInfo:  { screen: AccountInfo },
-          AddressForm:  { screen: AddressForm },
-          Orders:       { screen: Orders },
-          AboutUs:      { screen: AboutUs },
-          ContactUs:    { screen: ContactUs },
-          Sss:          { screen: Sss },
-        }
-
-      : { Login: { screen: LoginRegister } },
-  });
-
-  const Navigation = createStaticNavigation(StackWithAuth);
-  return <Navigation />;
+  return isLoggedIn ? <AppNavigation /> : <AuthNavigation />;
 }
 
+/* --------------------- Type Tanımları ------------------ */
 
-export const Navigation = RootNavigation;
-
-type RootStackParamList = StaticParamList<typeof RootStack>;
+type RootStackParamList = StaticParamList<typeof AppStack>;
 
 declare global {
   namespace ReactNavigation {
