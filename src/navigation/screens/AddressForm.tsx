@@ -46,7 +46,7 @@ const AddressForm = () => {
   const [district, setDistrict] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [loading, setLoading] = useState(false);
-  
+
   const navigation = useNavigation<any>();
   const [adresses, setAdresses] = useState<AddressProps[]>([]);
   const [isFormVisible, setIsFormVisible] = useState(false); // 🔥 FORM AÇIK MI?
@@ -62,15 +62,12 @@ const AddressForm = () => {
     checkAddresses();
   }, []);
 
-  // Kullanıcının mevcut adreslerini sunucudan çekmek ekranda göstermek için attığımız istek
   const checkAddresses = async () => {
     try {
       const token = await AsyncStorage.getItem("access_token");
       const response = await fetch(`${API_BASE_URL}/users/addresses?limit=10&offset=0`, {
         method: "GET",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
+        headers: {"Authorization": `Bearer ${token}`,},
       });
       const json = await response.json();
       console.log("Adres Kontrolü:", json.data);
@@ -89,7 +86,7 @@ const AddressForm = () => {
 
  const handleSave = async () => {
   if (!adressName || !name || !surname || !adress || !city || !district || !phoneNumber) {
-    Alert.alert("Uyarı ⚠️", "Lütfen tüm zorunlu alanları doldurun");
+    Alert.alert("Uyarı ", "Lütfen tüm zorunlu alanları doldurun");
     return;
   }
 
@@ -98,19 +95,13 @@ const AddressForm = () => {
     const token = await AsyncStorage.getItem("access_token");
     
     if (!token) {
-      Alert.alert("Hata ❌", "Oturum bulunamadı, lütfen giriş yapın");
+      Alert.alert("Hata ", "Oturum bulunamadı, lütfen giriş yapın");
       setLoading(false);
       return;
     }
 
      const cleanPhone = phoneNumber.replace(/\D/g, "");
-     const phoneFormats = [
-      `+90${cleanPhone}`,              // +905551234567
-      `+${country.callingCode[0]}${cleanPhone}`, // +905551234567
-      `0${cleanPhone}`,                // 05551234567
-      cleanPhone,                      // 5551234567
-      `90${cleanPhone}`,               // 905551234567
-    ];
+    
 
 
     const body = {
@@ -122,14 +113,12 @@ const AddressForm = () => {
       subregion_id: 39395,
       full_address: adress,
       apartment: apartment,
-      phone_number: phoneFormats[0] // İlk format
+      phone_number: `+90${cleanPhone}`
     };
 
     console.log("📦 Gönderilen Body:", body);
 
 
-
-// Gönderme isteği
     const response = await fetch(`${API_BASE_URL}/users/addresses`, {
       method: "POST",
       headers: {
@@ -147,80 +136,112 @@ const AddressForm = () => {
       Alert.alert("Başarılı ", "Adres kaydedildi");
       await checkAddresses(); // Adresleri güncelle
       setIsFormVisible(false); // Formu kapat
+
     } else if (response.status === 401) {
       Alert.alert("Oturum Hatası ", "Oturumunuz sonlanmış");
       await AsyncStorage.removeItem("access_token");
+
     } else if (response.status === 400 && json.reason) {
       // Backend'den gelen hata mesajlarını göster
       const errors = Object.values(json.reason).flat().join("\n");
       Alert.alert("Hata ", errors);
+
     } else {
       Alert.alert("Hata ", json.message || "Adres kaydedilemedi");
     }
   } catch (error) {
-    console.log("❌ Kaydetme Hatası:", error);
+    console.log(" Kaydetme Hatası:", error);
     Alert.alert("Hata ", "Bir sorun oluştu");
   }
   setLoading(false);
 };
 
   return (
-    <SafeAreaView className='flex-1 bg-white'>
-      <ScrollView className='mb-10'>
-        <BackHeader onPress={() => navigation.goBack()} title="Adres Oluştur"/>
+    <SafeAreaView className="flex-1 bg-white">
+      <ScrollView className="mb-10">
         
-          {!isFormVisible && adresses.length > 0 && (       
-            <View>
-               <Text>
-              mevcut adresleriniz:
-              {adresses.map((address:any, index:number) => (
-                <Text key={index}>{"\n"}- {address.title}: {address.full_address}</Text>
-                
-              ))}
-             </Text>
-             <TouchableOpacity onPress={() =>  setIsFormVisible(true)} className='bg-black h-[55px] w-[200px] justify-center items-center rounded-[4px] mt-10 mx-5'>
-              <Text className='text-white font-semibold text-[18.13px]'>Yeni Adres Ekle</Text>
-             </TouchableOpacity>
-            </View>
-             )}
-      
-        
-         {/* Dinamik mesaj */}
-        {isFormVisible &&   (
-        <View>
-          {adresses.length === 0 && (
-         <View className='mx-5 mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200'>
-            <Text className='text-indigo-800 text-sm'>
-               Kayıtlı bir adresiniz yok. Lütfen aşağıdaki kısımdan adres oluşturunuz.
-             </Text>
-          </View>)}
-          
-        <View className='mt-10'>
-          <Input value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." title='*Adres Başlığı' />
-          <Input value={name} onChangeText={setName} placeholder='' title='*Ad' />
-          <Input value={surname} onChangeText={setSurname} placeholder='' title='*Soyad'/>
-          <Input value={adress} onChangeText={setAdress} placeholder='' title='*Adres'/>
-          <Input value={apartment} onChangeText={setApartment} placeholder='' title='Apartman, Daire' />
-          <Input value={city} onChangeText={setCity} placeholder='' title='*Şehir' />
-          <Input value={district} onChangeText={setDistrict} placeholder='' title='*İlçe'/>
-          <PhoneField value={phoneNumber} onChange={setPhoneNumber} country={country} setCountry={setCountry} />
-        </View>
+        <BackHeader 
+          title={isFormVisible ? "Adres Ekle" : "Adreslerim"}
+          onPress={() => navigation.goBack()}
+        />
 
-        <View className='items-end mx-5 mt-14'>
-          <SaveButton onPress={handleSave} loading={loading}/>
-        </View>
-      </View>
+        {/* --- ADRES LİSTELEME (TRENDYOL TARZI) --- */}
+        {!isFormVisible && adresses.length > 0 && (
+          <View className="px-4 mt-5">
+
+            <View className="flex-row justify-between items-center mb-4">
+              <Text className="text-[20px] font-semibold">Adreslerim</Text>
+
+              <TouchableOpacity onPress={() => setIsFormVisible(true)}>
+                <Text className="text-orange-500 font-semibold text-[16px]">Adres Ekle</Text>
+              </TouchableOpacity>
+            </View>ad
+
+            {adresses.map((item, index) => (
+              <View
+                key={index}
+                className="bg-white border border-gray-200 rounded-lg p-4 mb-4 shadow-sm"
+              >
+
+                <View className="flex-row justify-between">
+                  <Text className="text-orange-500 font-semibold">{item.title}</Text>
+
+                  <TouchableOpacity onPress={() => setIsFormVisible(true)}>
+                    <Text className="text-orange-500 font-semibold">Düzenle</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <Text className="text-[16px] font-semibold mt-2">
+                  {item.first_name} {item.last_name}
+                </Text>
+
+                <Text className="text-gray-700 mt-1">{item.phone_number}</Text>
+
+                <Text className="text-gray-600 mt-1 leading-5">
+                  {item.full_address}
+                </Text>
+
+                <Text className="text-gray-900 font-semibold mt-2">
+                  {item.region?.name} / {item.country?.name}
+                </Text>
+
+              </View>
+            ))}
+          </View>
         )}
-     
 
+        {/* --- ADRES EKLEME FORMU --- */}
+        {isFormVisible && (
+          <View>
 
+            {adresses.length === 0 && (
+              <View className="mx-5 mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
+                <Text className="text-indigo-800 text-sm">
+                  Kayıtlı adresiniz yok. Lütfen yeni adres oluşturun.
+                </Text>
+              </View>
+            )}
 
+            <View className="mt-10">
+              <Input title="*Adres Başlığı" value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." />
+              <Input title="*Ad" value={name} onChangeText={setName} placeholder="" />
+              <Input title="*Soyad" value={surname} onChangeText={setSurname} placeholder="" />
+              <Input title="*Adres" value={adress} onChangeText={setAdress} placeholder="" multiline />
+              <Input title="Apartman, Daire" value={apartment} onChangeText={setApartment} placeholder="" />
+              <Input title="*Şehir" value={city} onChangeText={setCity} placeholder="" />
+              <Input title="*İlçe" value={district} onChangeText={setDistrict} placeholder="" />
+              <PhoneField value={phoneNumber} onChange={setPhoneNumber} country={country} setCountry={setCountry} />
+            </View>
 
+            <View className="items-end mx-5 mt-14">
+              <SaveButton loading={loading} onPress={handleSave} />
+            </View>
+          </View>
+        )}
 
-       
       </ScrollView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 export default AddressForm
