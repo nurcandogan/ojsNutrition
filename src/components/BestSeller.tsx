@@ -14,7 +14,7 @@ type RootStackParamList = {
   ProductDetail: { slug: string; name?: string };
 };
 
-const BestSeller = ({ items }: Props) => {
+const BestSeller = ({items}: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
  
   return (
