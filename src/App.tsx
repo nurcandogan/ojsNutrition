@@ -6,7 +6,7 @@ import * as React from 'react';
 import { useColorScheme } from 'react-native';
 import "./global.css"
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import Navigation from './navigation';
+import {Navigation }from './navigation';
  
 
 Asset.loadAsync([
