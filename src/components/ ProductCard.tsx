@@ -31,7 +31,7 @@ const  ProductCard = ({ product }:ProductCardProps) => {
         
 
   return (
-    <View className='w-[182px] h-[344px] justify-center mx-auto'>
+    <View className='w-[179px] h-[344px] justify-center mx-auto'>
             <View className='items-center relative  '>
              <Image
               source={{uri: `${MEDIA_BASE_URL}${product.photo_src}`}}
@@ -77,3 +77,6 @@ const  ProductCard = ({ product }:ProductCardProps) => {
 }
 
 export default  ProductCard
+
+
+
