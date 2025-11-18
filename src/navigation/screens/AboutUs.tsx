@@ -8,7 +8,6 @@ import { CommentItem, getProductComments } from '../services/commentsService'
 
 const AboutUs = () => {
   const navigation = useNavigation()
-
   const [comments, setComments] = useState<CommentItem[]>([]);
   const [commentsCount, setCommentsCount] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
@@ -25,7 +24,7 @@ const AboutUs = () => {
     try {
       const offset = (page - 1) * pageSize;
       
-      console.log("İstek atılan slug:", FIXED_SLUG); // Konsoldan kontrol edin, null olmamalı
+      console.log("İstek atılan slug:", FIXED_SLUG); //  null olmamalı
 
       // Eğer FIXED_SLUG boş ise isteği hiç atma
       if (!FIXED_SLUG) {
