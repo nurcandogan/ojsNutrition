@@ -8,31 +8,47 @@ import { CommentItem, getProductComments } from '../services/commentsService'
 
 const AboutUs = () => {
   const navigation = useNavigation()
-  const route = useRoute();
-const productSlug = route?.params?.productSlug ?? null;
-   const [comments, setComments] = useState<CommentItem[]>([]);
+
+  const [comments, setComments] = useState<CommentItem[]>([]);
   const [commentsCount, setCommentsCount] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
+  
+  const FIXED_SLUG = "pea-protein"; // spesifik bır urunuyn yorumlrını cektık. tum yorumlar backendde yok !!
 
  useEffect(() => {
     loadComments();
   }, [page]);
 
- const loadComments = async () => {
-    // offset hesaplama
-    const offset = (page - 1) * pageSize;
+ // yorumları (ve sayısını) çek
+     const loadComments = async () => {
+    try {
+      const offset = (page - 1) * pageSize;
+      
+      console.log("İstek atılan slug:", FIXED_SLUG); // Konsoldan kontrol edin, null olmamalı
 
-    const { count, results } = await getProductComments(
-      productSlug,
-      pageSize,
-      offset
-    );
+      // Eğer FIXED_SLUG boş ise isteği hiç atma
+      if (!FIXED_SLUG) {
+        console.warn("Uyarı: AboutUs sayfasında slug tanımlanmamış!");
+        return;
+      }
 
-    setComments(results || []);
-    setCommentsCount(count || 0);
+      const { count, results } = await getProductComments(
+        FIXED_SLUG,
+        pageSize,
+        offset
+      );
+
+      setComments(results || []);
+      setCommentsCount(count || 0);
+
+    } catch (error) {
+      console.error("Yorumlar çekilemedi (404 Hatası Muhtemel):", error);
+      setComments([]);
+      setCommentsCount(0);
+    }
   };
-
+  
 
   return (
    <SafeAreaView className='flex-1 bg-white'>
@@ -42,7 +58,7 @@ const productSlug = route?.params?.productSlug ?? null;
           onPress={() => navigation.goBack()}
         />
         <View className='mx-5'>
-           <Text className='font-semibold text-[22px] mt-12 '>
+           <Text className='font-semibold text-[22px] mt-8 '>
           Sağlıklı ve Fit Yaşamayı  
           {"\n"}Zevkli ve Kolay Hale  
           {"\n"}Getirmek İçin Varız     
@@ -68,7 +84,7 @@ const productSlug = route?.params?.productSlug ?? null;
         <Text className=" leading-6 text-[13.88px] font-normal mt-3">Kalite politikamıza ulaşmak için tıklayın.</Text> 
         <Text className='leading-6 text-[13.88px] font-normal mt-5'>Firmamızın sahip olduğu sertifikalara aşağıdaki görsellere tıklayarak ulaşabilirsiniz.</Text>
     
-       <View className='flex-row flex-wrap justify-between mx-2 mt-8'>
+       <View className='flex-row flex-wrap justify-between mx-2 mt-8 mb-10'>
         <Image source={require('../../assets/1.png')}
         className="w-[100px] h-[100px] mb-4"
           resizeMode="contain"
@@ -99,23 +115,19 @@ const productSlug = route?.params?.productSlug ?? null;
           resizeMode="contain"
         />
        </View>
-        </View>
+      </View>
 
        {/* Yorumlar + dağılım + pagination */}
         <ReviewSummary
           comments={comments}
-          totalCount={commentsCount}
-          averageStarOverride={4.8}
+          totalCount={commentsCount || 0}
+          averageStarOverride={4.9}
           page={page}
           pageSize={pageSize}
           onPageChange={setPage}
         />
 
-       
-    
-    
-    
-    
+
     
     </ScrollView>
    </SafeAreaView>
