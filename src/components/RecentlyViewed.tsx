@@ -36,7 +36,7 @@ const RecentlyViewed = ({ items }: RecentlyViewedProps) => {
               activeOpacity={0.7}
               className='w-1/2 py-2 h-[344px] mb-6'
             >
-           { /* ProductCard'da ki ve son görüntülenenler için yazdıgımız helper servisinin type'ını uyumla hale getirdik. */}
+           { /* ProductCard'da ki ve son görüntülenenler için yazdıgımız helper servisinin type'ını uyumlu hale getirdik. */}
               <ProductCard product={item}/>   
 
             </TouchableOpacity>

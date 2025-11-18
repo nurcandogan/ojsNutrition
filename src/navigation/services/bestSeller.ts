@@ -32,14 +32,5 @@ if (!response.ok) {
     
   } ;
   
-
-  
-  const fixedData = json.data.map(item => ({
-    ...item,
-    photo_src: item.photo_src.startsWith('http')
-      ? item.photo_src
-      : `${MEDIA_BASE_URL}${item.photo_src}`,
-  }));
-
-  return fixedData;
+return json.data;
 };
