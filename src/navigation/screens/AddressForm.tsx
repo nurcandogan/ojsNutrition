@@ -175,7 +175,7 @@ const AddressForm = () => {
               <TouchableOpacity onPress={() => setIsFormVisible(true)}>
                 <Text className="text-orange-500 font-semibold text-[16px]">Adres Ekle</Text>
               </TouchableOpacity>
-            </View>ad
+            </View>
 
             {adresses.map((item, index) => (
               <View

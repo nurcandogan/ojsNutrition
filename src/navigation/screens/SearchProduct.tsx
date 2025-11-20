@@ -5,6 +5,7 @@ const SearchProduct = () => {
   return (
     <View>
       <Text>SearchProduct</Text>
+      <Text> </Text>
     </View>
   )
 }

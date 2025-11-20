@@ -25,6 +25,11 @@ import AboutUs from './screens/AboutUs';
 import ContactUs from './screens/ContactUs';
 import Sss from './screens/Sss';
 import Basket from './screens/Basket';
+import HomeTabsIcon from '../Svgs/HomeTabsIcon';
+import { SearchBar } from 'react-native-screens';
+import SearchTabs from '../Svgs/SearchTabs';
+import AllTabs from '../Svgs/AllTabs';
+import MenuTabs from '../Svgs/MenuTabs';
 
 
 
@@ -35,23 +40,36 @@ SplashScreen.preventAutoHideAsync();
 const HomeTabs = createBottomTabNavigator({
    screenOptions: {
     headerShown: false,
+
+    tabBarStyle: {
+       height: 90,
+    },
+
+    tabBarActiveTintColor: "#000",     //title color
+    tabBarInactiveTintColor: "#9E9E9E",
+
+    tabBarLabelStyle: {
+      fontSize: 12.91,
+      
+    },
+
+    tabBarItemStyle: {
+      justifyContent: "center",   // 📌 Dikeyde ortalama
+      alignItems: "center",
+      paddingVertical: 10,    
+      
+    },
+  
   },
+
+
   screens: {
     Home: {
       screen: Home,
       options: {
         title: 'Anasayfa',
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-
-            }}
-          />
+         <HomeTabsIcon color={color}/>
         ),
       },
     },
@@ -61,15 +79,7 @@ const HomeTabs = createBottomTabNavigator({
       options: {
         title: 'Ürün Ara',
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={bell}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-            }}
-          />
+          <SearchTabs/>
         ),
       },
     },
@@ -78,16 +88,7 @@ const HomeTabs = createBottomTabNavigator({
       options: {
         title: 'Tüm Ürünler',
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-
-            }}
-          />
+          <AllTabs/>
         ),
       },
     },
@@ -97,15 +98,7 @@ const HomeTabs = createBottomTabNavigator({
       options: {
         title: 'Menü',
         tabBarIcon: ({ color, size }) => (
-          <Image
-            source={newspaper}
-            tintColor={color}
-            style={{
-              width: size,
-              height: size,
-              bottom: 3,
-            }}
-          />
+          <MenuTabs/>
         ),
       },
     },
@@ -146,7 +139,6 @@ const RootStack = createNativeStackNavigator({
     HomeTabs: {
       screen: HomeTabs,
       options: {
-        title: 'Home',
         headerShown: false,
        
       },

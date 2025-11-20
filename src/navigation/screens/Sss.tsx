@@ -33,6 +33,7 @@ const toggle = (id: string) => {
    <SafeAreaView className='bg-white flex-1'>
     <ScrollView>
       <BackHeader onPress={() => navigation.goBack()} title=" S.S.S."/>
+        
 
      <View className='mx-6 mt-10 mb-4 '>
        <View className='flex-row space-x-2 gap-4 '>
