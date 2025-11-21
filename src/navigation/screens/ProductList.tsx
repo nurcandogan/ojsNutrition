@@ -76,7 +76,7 @@ const ProductList = () => {
         </View>
 
         {products.length === 0 && (
-          <Text className="text-center text-gray-500 mt-10">Bu kategoride ürün bulunamadı.</Text>
+          <Text className="text-center text-gray-500 mt-10">Bu kategoride ürün bulunamadı..</Text>
         )}
       </ScrollView>
     </SafeAreaView>

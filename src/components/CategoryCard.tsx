@@ -52,13 +52,18 @@ const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryC
                 </Text>
 
                 <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate('ProductList', {
-                      id: categorie.id,
-                      name: categorie.name,
-                      slug: categorie.slug,
-                    })
+                  onPress={() => {
+                  if (categorie.name === 'TÜM ÜRÜNLER') {
+                  navigation.navigate('AllProducts' as never);
+                  return;
                   }
+
+                navigation.navigate('ProductList', {
+                 id: categorie.id,
+                 name: categorie.name,
+                 slug: categorie.slug,
+                 });
+                }}
                   className="bg-black px-4 py-1 rounded-full"
                 >
                   <Text className="text-white font-bold text-sm">İNCELE</Text>
