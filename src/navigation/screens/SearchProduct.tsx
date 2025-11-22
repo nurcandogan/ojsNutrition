@@ -21,10 +21,7 @@ const SearchProduct = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      handleSearch();
-    }, 400);
-
+    const timer = setTimeout(() => {handleSearch()}, 400);
     return () => clearTimeout(timer);
   }, [query]);
 
@@ -37,6 +34,7 @@ const SearchProduct = () => {
     setLoading(true);
     const data = await searchProducts(query);
     setResults(data);
+    //console.log('data', data)
     setLoading(false);
   };
 
@@ -52,8 +50,8 @@ const SearchProduct = () => {
           placeholderTextColor='#000'
           className="flex-1 text-black ml-2 "
           value={query}
-          onChangeText={setQuery}
-          style={{
+          onChangeText={setQuery}        // onChangeText={(text) => { setQuery(text);
+          style={{                       //                setResults([]); }}. eski sonucları temizler 
           minHeight: 0,
           paddingVertical: 0,
         }}
