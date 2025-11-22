@@ -29,6 +29,7 @@ module.exports = {
         answerBorder:'#F5F5F5',
         placeHolderText:'#A1A1AA',
         basketText:'#919191',
+        searchBg:'#F3F3F3',
         
       }
     },

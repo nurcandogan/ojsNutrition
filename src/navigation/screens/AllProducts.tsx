@@ -6,7 +6,7 @@ import BackButtonOverlay from "../../components/BackButtonOverlay";
 import ProductCard from "../../components/ ProductCard";
 
 type RootStackParamList = {
-  ProductDetail: { slug: string; name?: string };
+ProductDetail: { slug: string; name?: string };
 };
 
 const AllProducts = () => {
