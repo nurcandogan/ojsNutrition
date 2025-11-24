@@ -53,7 +53,6 @@ const categoriesFetch = async () => {
     setItems(data);
 };
 
-
   return (
 
   <SafeAreaView className='bg-white'>

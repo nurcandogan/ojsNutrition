@@ -57,7 +57,12 @@ const SearchProduct = () => {
         }}
         />
 
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => {
+           setQuery("");
+           setResults([]);
+           setLoading(false);
+           }}
+        >
           <Text className="ml-3 text-[16px] text-logintext bg-searchBg ">Vazgeç</Text>
         </TouchableOpacity>
        </View>
