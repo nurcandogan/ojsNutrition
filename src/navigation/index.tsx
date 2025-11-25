@@ -19,7 +19,6 @@ import * as SplashScreen from "expo-splash-screen";
 import ProductDetail from './screens/ProductDetail';
 import ProductList from './screens/ProductList';
 import AccountInfo from './screens/AccountInfo';
-import Orders from './screens/Orders';
 import AddressForm from './screens/AddressForm';
 import AboutUs from './screens/AboutUs';
 import ContactUs from './screens/ContactUs';
@@ -30,6 +29,8 @@ import { SearchBar } from 'react-native-screens';
 import SearchTabs from '../Svgs/SearchTabs';
 import AllTabs from '../Svgs/AllTabs';
 import MenuTabs from '../Svgs/MenuTabs';
+import CheckoutScreen from './screens/CheckoutScreen';
+import OrderSuccessScreen from './screens/OrderSuccessScreen';
 
 
 
@@ -182,7 +183,8 @@ function RootNavigation() {
           Basket:       { screen: Basket },
           AccountInfo:  { screen: AccountInfo },
           AddressForm:  { screen: AddressForm },
-          Orders:       { screen: Orders },
+          CheckoutScreen:{ screen: CheckoutScreen },
+          OrderSuccessScreen: {screen: OrderSuccessScreen},
           AboutUs:      { screen: AboutUs },
           ContactUs:    { screen: ContactUs },
           Sss:          { screen: Sss },

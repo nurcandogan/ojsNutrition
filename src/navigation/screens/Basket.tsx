@@ -20,6 +20,9 @@ const Basket = () => {
     return '';
   };
 
+    const onClick = () => navigation.navigate('CheckoutScreen' as any)
+
+
   // ----- BOŞ SEPET -----
   if (ProductItems.length === 0) {
     return (
@@ -156,8 +159,8 @@ const Basket = () => {
             TOPLAM {Math.round(totalPrice)} TL
           </Text>
         </View>
-        <View className="content-center items-center mt-2">
-          <OkInput title="DEVAM ET  " />
+        <View  className="content-center items-center mt-2">
+          <OkInput onPress={onClick} title="DEVAM ET  " />
         </View>
       </View>
 
