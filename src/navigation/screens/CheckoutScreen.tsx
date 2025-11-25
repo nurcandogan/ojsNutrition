@@ -12,6 +12,7 @@ import { AddressProps, fetchAddresses } from '../services/addressService';
 import { useCartStore } from '../../store/cartStore'; 
 import { createOrder } from '../services/orderService';
 import CardFormInputs from '../../components/TabsMenu/Order/CardFormInputs';
+import OrderSummaryCollapse from '../../components/TabsMenu/Order/OrderSummaryCollapse';
 
 
 const SHIPPING_FEE = 20; 
@@ -128,11 +129,12 @@ const CheckoutScreen = () => {
     <SafeAreaView className="flex-1 bg-white">
       <BackHeader title="Satın Al / Ödeme" onPress={() => navigation.goBack()} />
 
-      {/* --- ÜRÜN ÖZETİ (Sürekli Açık) --- */}
-      {/* Not: OrderSummaryCollapse bileşeni yerine basitleştirilmiş bir başlık kullanıldı. */}
-      <View className="bg-white border-b border-gray-200 px-5 py-4">
-          <Text className="text-xl font-bold">Özet: {Math.round(finalPrice)} TL ({ProductItems.reduce((sum, item) => sum + item.quantity, 0)} ürün)</Text>
-      </View>
+      <OrderSummaryCollapse
+          totalAmount={totalPrice}
+          itemCount={ProductItems.reduce((sum, item) => sum + item.quantity, 0)}
+          paymentFee={paymentFee}
+          shipmentFee={SHIPPING_FEE}
+      />
 
 
       <ScrollView className="flex-1 px-5" contentContainerStyle={{ paddingBottom: 50 }}>

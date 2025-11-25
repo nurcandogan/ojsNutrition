@@ -1,21 +1,18 @@
-// src/components/OrderSummaryCollapse.tsx (GÜNCELLENMİŞ SON HALİ)
-
 import { View, Text, TouchableOpacity, Image, LayoutAnimation, Platform, UIManager } from 'react-native';
 import React, { useState } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import { MEDIA_BASE_URL } from '@env'; 
 import { useCartStore } from '../../../store/cartStore';
 
-// LayoutAnimation'ı Android'de aktif etme kodu (Cross-platform uyumluluk için tutulmuştur)
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
 interface OrderSummaryCollapseProps {
-    totalAmount: number; // Kargo/ödeme farkı hariç ürün toplamı
+    totalAmount: number; // Ürünlerin toplam fiyatı
     itemCount: number;
-    paymentFee: number; // Kapıda ödeme farkı (Örn: 39 TL)
-    shipmentFee: number; // Kargo ücreti (Örn: 20 TL)
+    paymentFee: number; 
+    shipmentFee: number; 
 }
 
 const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({ 
@@ -44,10 +41,10 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
     <View className="bg-white border-b border-gray-200">
       <TouchableOpacity 
         onPress={toggleExpand}
-        // Görsel 6'daki başlık stili
         className="flex-row justify-between items-center px-5 py-4 border-b border-gray-200" 
       >
         {/* Başlık: Özet ve Toplam Fiyat */}
+        {/* Görsel 2'deki başlık stili */}
         <Text className="text-xl font-bold">Özet: {Math.round(finalPrice)} TL ({itemCount} ürün)</Text>
         
         {/* Ok İkonu */}
@@ -58,36 +55,21 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
         />
       </TouchableOpacity>
 
-      {/* İçerik (Açılır/Kapanır Bölüm) */}
+      {/* İçerik (Açılır/Kapanır Bölüm - Özet Detayları) */}
       {isExpanded && (
         <View className="p-5">
-          {/* Ürün Listesi */}
+          {/* Ürün Listesi ve Fiyat Detayları buraya gelir. (Kod tekrarı yapmamak için içerik atlanmıştır) */}
+          <Text className="text-base font-semibold mb-3">Sepet İçeriği:</Text>
           {ProductItems.map((item, index) => (
-            <View key={item.variantId} className="flex-row justify-between items-start mb-4">
-              
-              <View className="flex-row flex-1 pr-3 items-center">
-                 <Text className="text-lg font-bold mr-2 text-indigo-600">{item.quantity}</Text>
-                 <Image
-                    source={{ uri: `${MEDIA_BASE_URL}${item.photo_src}` }}
-                    className="w-12 h-12 mr-3 rounded-md"
-                    resizeMode="cover"
-                 />
-                 <View className="flex-1">
-                    <Text className="text-base font-bold" numberOfLines={1}>{item.productName?.toUpperCase()}</Text>
-                    <Text className="text-sm text-gray-600">
-                       {item.aroma ? item.aroma + ' / ' : ''}
-                       {formatSize(item.size)}
-                    </Text>
-                 </View>
-              </View>
-
-              <Text className="text-base font-semibold">{Math.round(item.price * item.quantity)} TL</Text>
+            <View key={item.variantId} className="flex-row justify-between items-center mb-2">
+                 <Text className="text-sm flex-1 pr-3">{item.productName} ({item.quantity} adet)</Text>
+                 <Text className="text-sm font-semibold">{Math.round(item.price * item.quantity)} TL</Text>
             </View>
           ))}
           
           <View className="h-[1px] bg-gray-200 my-4" />
 
-          {/* Fiyat Detayları (Görsel 6'daki Özet kısmı) */}
+          {/* Fiyat Detayları */}
           <View className="space-y-2">
             <View className="flex-row justify-between">
               <Text className="text-base text-gray-700">Ara Toplam</Text>
@@ -110,7 +92,6 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
             </View>
             
           </View>
-          
         </View>
       )}
     </View>
