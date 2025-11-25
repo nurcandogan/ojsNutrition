@@ -8,6 +8,7 @@ import { API_BASE_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SaveButton from '../../components/TabsMenu/Adress/SaveButton';
 import Input from '../../components/TabsMenu/BizeUlasin/Input';
+import AddressCard from '../../components/TabsMenu/Adress/AddressCard';
 
 
 
@@ -45,45 +46,26 @@ const AddressForm = () => {
   const [city, setCity] = useState('');
   const [district, setDistrict] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const navigation = useNavigation<any>();
-  const [adresses, setAdresses] = useState<AddressProps[]>([]);
-  const [isFormVisible, setIsFormVisible] = useState(false); // 🔥 FORM AÇIK MI?
-
-  
   const [country, setCountry] = useState({
     cca2: "TR",
     callingCode: ["90"],
   });
 
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation<any>();
+  const [adresses, setAdresses] = useState<AddressProps[]>([]);
+  const [isFormVisible, setIsFormVisible] = useState(false); // 🔥 FORM AÇIK MI?
+
+  
+  
+
   // Sayfa açılınca kayıtlı adres var mı kontrol et
   useEffect(() => {
-    checkAddresses();
+  
   }, []);
+    
 
-  const checkAddresses = async () => {
-    try {
-      const token = await AsyncStorage.getItem("access_token");
-      const response = await fetch(`${API_BASE_URL}/users/addresses?limit=10&offset=0`, {
-        method: "GET",
-        headers: {"Authorization": `Bearer ${token}`,},
-      });
-      const json = await response.json();
-      console.log("Adres Kontrolü:", json.data);
-       const results = json?.data?.results ?? [];  
-      setAdresses(results);
-
-      // Eğer hiç adres yoksa form otomatik açılsın
-      setIsFormVisible(results.length === 0);
-
-    } catch (error) {
-      console.log("Adres kontrolü hatası:", error);
-       setAdresses([]); // hata durumunda boş dizi
-       setIsFormVisible(true); // hata durumunda formu aç
-    }
-  };
-
+  
  const handleSave = async () => {
   if (!adressName || !name || !surname || !adress || !city || !district || !phoneNumber) {
     Alert.alert("Uyarı ", "Lütfen tüm zorunlu alanları doldurun");
@@ -118,43 +100,9 @@ const AddressForm = () => {
 
     console.log("📦 Gönderilen Body:", body);
 
+   
 
-    const response = await fetch(`${API_BASE_URL}/users/addresses`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    });
-
-    const json = await response.json();
-    console.log("🧾 Backend Response:", json);
-    console.log("📊 Status Code:", response.status);
-
-    if (response.ok) {
-      Alert.alert("Başarılı ", "Adres kaydedildi");
-      await checkAddresses(); // Adresleri güncelle
-      setIsFormVisible(false); // Formu kapat
-
-    } else if (response.status === 401) {
-      Alert.alert("Oturum Hatası ", "Oturumunuz sonlanmış");
-      await AsyncStorage.removeItem("access_token");
-
-    } else if (response.status === 400 && json.reason) {
-      // Backend'den gelen hata mesajlarını göster
-      const errors = Object.values(json.reason).flat().join("\n");
-      Alert.alert("Hata ", errors);
-
-    } else {
-      Alert.alert("Hata ", json.message || "Adres kaydedilemedi");
-    }
-  } catch (error) {
-    console.log(" Kaydetme Hatası:", error);
-    Alert.alert("Hata ", "Bir sorun oluştu");
-  }
-  setLoading(false);
-};
+    
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -165,7 +113,7 @@ const AddressForm = () => {
           onPress={() => navigation.goBack()}
         />
 
-        {/* --- ADRES LİSTELEME (TRENDYOL TARZI) --- */}
+        {/* --- ADRES LİSTELEME --- */}
         {!isFormVisible && adresses.length > 0 && (
           <View className="px-4 mt-5">
 
@@ -175,37 +123,15 @@ const AddressForm = () => {
               <TouchableOpacity onPress={() => setIsFormVisible(true)}>
                 <Text className="text-orange-500 font-semibold text-[16px]">Adres Ekle</Text>
               </TouchableOpacity>
-            </View>
+            </View>a
 
             {adresses.map((item, index) => (
-              <View
-                key={index}
-                className="bg-white border border-gray-200 rounded-lg p-4 mb-4 shadow-sm"
-              >
-
-                <View className="flex-row justify-between">
-                  <Text className="text-orange-500 font-semibold">{item.title}</Text>
-
-                  <TouchableOpacity onPress={() => setIsFormVisible(true)}>
-                    <Text className="text-orange-500 font-semibold">Düzenle</Text>
-                  </TouchableOpacity>
-                </View>
-
-                <Text className="text-[16px] font-semibold mt-2">
-                  {item.first_name} {item.last_name}
-                </Text>
-
-                <Text className="text-gray-700 mt-1">{item.phone_number}</Text>
-
-                <Text className="text-gray-600 mt-1 leading-5">
-                  {item.full_address}
-                </Text>
-
-                <Text className="text-gray-900 font-semibold mt-2">
-                  {item.region?.name} / {item.country?.name}
-                </Text>
-
-              </View>
+             <AddressCard 
+             address={undefined}
+              isSelected={false}
+               onSelect={ } 
+               onEdit={ }
+               />
             ))}
           </View>
         )}
