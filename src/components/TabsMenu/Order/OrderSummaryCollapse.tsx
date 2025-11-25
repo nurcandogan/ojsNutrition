@@ -1,17 +1,21 @@
+// src/components/OrderSummaryCollapse.tsx (GÜNCELLENMİŞ SON HALİ)
+
 import { View, Text, TouchableOpacity, Image, LayoutAnimation, Platform, UIManager } from 'react-native';
 import React, { useState } from 'react';
 import Feather from '@expo/vector-icons/Feather';
-// Not: MEDIA_BASE_URL'ın @env dosyanızdan geldiği varsayılmıştır.
 import { MEDIA_BASE_URL } from '@env'; 
 import { useCartStore } from '../../../store/cartStore';
 
-
+// LayoutAnimation'ı Android'de aktif etme kodu (Cross-platform uyumluluk için tutulmuştur)
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 interface OrderSummaryCollapseProps {
     totalAmount: number; // Kargo/ödeme farkı hariç ürün toplamı
     itemCount: number;
-    paymentFee: number; // Kapıda ödeme farkı
-    shipmentFee: number; // Kargo ücreti
+    paymentFee: number; // Kapıda ödeme farkı (Örn: 39 TL)
+    shipmentFee: number; // Kargo ücreti (Örn: 20 TL)
 }
 
 const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({ 
@@ -29,7 +33,6 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
     setIsExpanded(!isExpanded);
   };
   
-  // Boyut formatı (Daha önce sepet sayfanızda tanımlanmıştı)
   const formatSize = (size: { gram: number | null; pieces: number | null; total_services: number | null; }) => {
     if (size?.gram) return `${size.gram}g`;
     if (size?.pieces) return `${size.pieces} tablet`;
@@ -41,10 +44,11 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
     <View className="bg-white border-b border-gray-200">
       <TouchableOpacity 
         onPress={toggleExpand}
-        className="flex-row justify-between items-center px-5 py-4 border-b border-gray-200"
+        // Görsel 6'daki başlık stili
+        className="flex-row justify-between items-center px-5 py-4 border-b border-gray-200" 
       >
         {/* Başlık: Özet ve Toplam Fiyat */}
-        <Text className="text-xl font-bold">{Math.round(finalPrice)} TL ({itemCount} ürün)</Text>
+        <Text className="text-xl font-bold">Özet: {Math.round(finalPrice)} TL ({itemCount} ürün)</Text>
         
         {/* Ok İkonu */}
         <Feather 
@@ -61,7 +65,7 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
           {ProductItems.map((item, index) => (
             <View key={item.variantId} className="flex-row justify-between items-start mb-4">
               
-              <View className="flex-row flex-1 pr-3">
+              <View className="flex-row flex-1 pr-3 items-center">
                  <Text className="text-lg font-bold mr-2 text-indigo-600">{item.quantity}</Text>
                  <Image
                     source={{ uri: `${MEDIA_BASE_URL}${item.photo_src}` }}
@@ -83,7 +87,7 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
           
           <View className="h-[1px] bg-gray-200 my-4" />
 
-          {/* Fiyat Detayları */}
+          {/* Fiyat Detayları (Görsel 6'daki Özet kısmı) */}
           <View className="space-y-2">
             <View className="flex-row justify-between">
               <Text className="text-base text-gray-700">Ara Toplam</Text>
@@ -100,9 +104,9 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
                 </View>
             )}
             
-            <View className="flex-row justify-between pt-2 border-t border-gray-100">
+            <View className="flex-row justify-between pt-2 mt-2 border-t border-gray-300">
               <Text className="text-xl font-bold">TOPLAM</Text>
-              <Text className="text-xl font-bold text-indigo-600">{Math.round(finalPrice)} TL}</Text>
+              <Text className="text-xl font-bold text-indigo-600">{Math.round(finalPrice)} TL</Text>
             </View>
             
           </View>
