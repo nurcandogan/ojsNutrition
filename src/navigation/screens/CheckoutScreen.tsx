@@ -1,19 +1,15 @@
-// src/screens/CheckoutScreen.tsx (GÜNCELLENMİŞ VE SON HALİ)
 
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Feather from '@expo/vector-icons/Feather';
 import BackHeader from '../../components/TabsMenu/SSS/BackHeader';
-
-// Diğer Bileşenler ve Servisler
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput'; 
 import { AddressProps, fetchAddresses } from '../services/addressService';
 import { useCartStore } from '../../store/cartStore'; 
 import { createOrder } from '../services/orderService';
 import CardFormInputs from '../../components/TabsMenu/Order/CardFormInputs';
 import OrderSummaryCollapse from '../../components/TabsMenu/Order/OrderSummaryCollapse';
-
 
 const SHIPPING_FEE = 20; 
 const CASH_ON_DELIVERY_FEE = 39; 
