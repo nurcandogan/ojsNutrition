@@ -1,41 +1,24 @@
-import { View, Text, TouchableOpacity, TextInput, KeyboardTypeOptions } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Feather from '@expo/vector-icons/Feather';
 
-// Temel Input Öğesi Bileşeni (Yalnızca bu dosya içinde kullanılır)
-interface BasicCardInputProps {
-    label: string; 
-    value: string; 
-    onChangeText: (text: string) => void; 
-    placeholder?: string; 
-    keyboardType?: KeyboardTypeOptions; 
-    isHalf?: boolean; 
-    secureTextEntry?: boolean;
-}
-
-const BasicCardInput: React.FC<BasicCardInputProps> = 
-  ({ label, value, onChangeText, placeholder, keyboardType = 'default', isHalf = false, secureTextEntry = false }) => (
-    // Dikey boşluk (mb-5) ve genişlik yönetimi
-    <View className={`mb-5 ${isHalf ? 'w-1/2 pr-2' : 'w-full'}`}> 
-      
-      {/* Etiket */}
-      <Text className='ml-1 mb-1 text-sm font-semibold text-gray-800'>{label}</Text> 
-      
-      {/* TextInput kullanımı */}
-      <View className='rounded-md h-[50px] border border-gray-300 bg-white px-3 justify-center'>
-        <TextInput 
-           className='text-base w-full h-full' 
-           value={value} 
-           onChangeText={onChangeText} 
-           placeholder={placeholder} 
-           keyboardType={keyboardType}
-           secureTextEntry={secureTextEntry}
-           placeholderTextColor="#A0AEC0"
-        />
-      </View>
+// Yardımcı Input Parçası (Kaymayı önlemek için sabit stil)
+const CardInputItem = ({ label, value, onChangeText, placeholder, keyboardType = 'default', isHalf = false, secureTextEntry = false }: any) => (
+    <View className={`mb-4 ${isHalf ? 'w-[48%]' : 'w-full'}`}>
+        <Text className="text-sm font-medium text-gray-700 mb-2 ml-1">{label}</Text>
+        <View className="h-[50px] bg-white border border-gray-300 rounded-lg justify-center px-3">
+            <TextInput
+                value={value}
+                onChangeText={onChangeText}
+                placeholder={placeholder}
+                keyboardType={keyboardType}
+                secureTextEntry={secureTextEntry}
+                style={{ fontSize: 14, color: '#000', height: '100%' }}
+                placeholderTextColor="#9CA3AF"
+            />
+        </View>
     </View>
 );
-
 
 interface CardFormInputsProps {
     cardNumber: string; setCardNumber: (text: string) => void;
@@ -51,26 +34,20 @@ const CardFormInputs: React.FC<CardFormInputsProps> = ({
     cardCvc, setCardCvc,
 }) => {
     return (
-        <View className="mt-4 pt-4 border-t border-gray-200">
+        <View className="mt-2 pt-4 border-t border-gray-100">
+            <CardInputItem label="Kart Numarası" value={cardNumber} onChangeText={setCardNumber} placeholder="XXXX XXXX XXXX XXXX" keyboardType="numeric" />
             
-            <BasicCardInput label="Kart Numarası" value={cardNumber} onChangeText={setCardNumber} placeholder="XXXX XXXX XXXX XXXX" keyboardType="numeric" />
+            <CardInputItem label="Kart Üzerindeki İsim" value={cardHolder} onChangeText={setCardHolder} placeholder="Ad Soyad" />
             
-            <BasicCardInput label="Kart Üzerindeki İsim" value={cardHolder} onChangeText={setCardHolder} placeholder="Ad Soyad" />
-            
-            {/* Yatay Yapı: Ay/Yıl ve CVC */}
-            <View className="flex-row justify-between w-full">
-                <BasicCardInput label="Ay / Yıl" value={cardExpire} onChangeText={setCardExpire} placeholder="AA / YY" keyboardType="numeric" isHalf />
-                
-                <View className="w-1/2 pl-2">
-                    <BasicCardInput label="CVC" value={cardCvc} onChangeText={setCardCvc} placeholder="XXX" keyboardType="numeric" secureTextEntry />
-                </View>
+            <View className="flex-row justify-between">
+                <CardInputItem label="Ay / Yıl" value={cardExpire} onChangeText={setCardExpire} placeholder="AA/YY" keyboardType="numeric" isHalf />
+                <CardInputItem label="CVC" value={cardCvc} onChangeText={setCardCvc} placeholder="XXX" keyboardType="numeric" isHalf secureTextEntry />
             </View>
-            
-            {/* Masterpass Checkbox */}
-            <TouchableOpacity onPress={() => {/* Masterpass State Güncellemesi */}} className="flex-row items-center mt-3">
+
+            <TouchableOpacity className="flex-row items-start mt-1">
                 <Feather name="square" size={20} color="#4F46E5" />
-                <Text className="ml-2 text-sm text-gray-700">
-                    Kartımı <Text className="font-bold text-red-500">masterpass</Text> altyapısında saklamak <Text className="text-indigo-600 font-semibold">istiyorum.</Text>
+                <Text className="ml-2 text-xs text-gray-600 flex-1">
+                    Kartımı <Text className="font-bold text-black">Masterpass</Text> altyapısında saklamak istiyorum.
                 </Text>
             </TouchableOpacity>
         </View>

@@ -1,9 +1,7 @@
 import { View, Text, TouchableOpacity, Image, LayoutAnimation, Platform, UIManager } from 'react-native';
 import React, { useState } from 'react';
 import Feather from '@expo/vector-icons/Feather';
-// Not: Bu bileşen, ProductItems'ı çağırmak için useCartStore'a bağımlıdır.
 import { useCartStore } from '../../../store/cartStore'; 
-// Not: MEDIA_BASE_URL'ın @env dosyanızdan geldiği varsayılmıştır.
 import { MEDIA_BASE_URL } from '@env'; 
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -11,7 +9,7 @@ if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental
 }
 
 interface OrderSummaryCollapseProps {
-    totalAmount: number; // Ürünlerin toplam fiyatı
+    totalAmount: number;
     itemCount: number;
     paymentFee: number; 
     shipmentFee: number; 
@@ -40,58 +38,105 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
   };
 
   return (
-    <View className="bg-white border-b border-gray-200">
+    // z-50 ile en üstte kalmasını sağlıyoruz
+    <View className="relative z-50 bg-white border-b border-gray-200">
+      
+      {/* --- BAŞLIK (HEADER) --- */}
       <TouchableOpacity 
         onPress={toggleExpand}
-        className="flex-row justify-between items-center px-5 py-4 border-b border-gray-200" 
+        activeOpacity={0.9}
+        className="flex-row justify-between items-center px-5 py-4 bg-white z-50 relative"
       >
-        {/* Başlık: Solda Özet, Sağda Tutar */}
-        <Text className="text-xl font-bold">Özet: {Math.round(finalPrice)} TL ({itemCount} ürün)</Text>
+        <Text className="text-lg font-bold text-black">Özet</Text>
         
-        {/* Ok İkonu */}
-        <Feather 
-          name={isExpanded ? "chevron-up" : "chevron-down"} 
-          size={24} 
-          color="#4F46E5"
-        />
+        <View className="flex-row items-center">
+            <Text className="text-lg font-bold text-black mr-2">
+                {Math.round(finalPrice)} TL ({itemCount} ürün)
+            </Text>
+            <Feather 
+              name={isExpanded ? "chevron-up" : "chevron-down"} 
+              size={24} 
+              color="#000"
+            />
+        </View>
       </TouchableOpacity>
 
-      {/* İçerik (Açılır/Kapanır Bölüm - Özet Detayları) */}
+      {/* --- AÇILIR MENÜ (TOP SHEET / DROPDOWN) --- */}
       {isExpanded && (
-        <View className="p-5">
+        <View className="absolute top-[100%] left-0 right-0 bg-white px-5 pb-6 pt-5 shadow-xl border-b border-gray-200 rounded-b-2xl z-40">
+          
           {/* Ürün Listesi */}
-          <Text className="text-base font-semibold mb-3">Sepet İçeriği:</Text>
-          {ProductItems.map((item, index) => (
-            <View key={item.variantId} className="flex-row justify-between items-center mb-2">
-                 <Text className="text-sm flex-1 pr-3">{item.productName} ({item.quantity} adet)</Text>
-                 <Text className="text-sm font-semibold">{Math.round(item.price * item.quantity)} TL</Text>
+          {ProductItems.map((item) => (
+            <View key={item.variantId} className="flex-row justify-between items-start mb-6">
+                 
+                 <View className="flex-row flex-1 pr-3">
+                    
+                    {/* RESİM VE ROZET ALANI */}
+                    <View className="relative mr-4">
+                        {/* Ürün Resmi */}
+                        <Image
+                            source={{ uri: `${MEDIA_BASE_URL}${item.photo_src}` }}
+                            className="w-16 h-16 rounded-md bg-gray-100 border border-gray-200"
+                            resizeMode="cover"
+                        />
+                        
+                        {/* Miktar Rozeti (Sağ Üst Köşe - Absolute) */}
+                        <View className="absolute -top-2 -right-2 bg-gray-600 rounded-full h-6 w-6 justify-center items-center z-10 border border-white">
+                            <Text className="text-white text-xs font-bold">{item.quantity}</Text>
+                        </View>
+                    </View>
+
+                    {/* Ürün Bilgileri */}
+                    <View className="flex-1 justify-center space-y-1">
+                        <Text className="text-sm font-bold text-black" numberOfLines={2}>
+                            {item.productName?.toUpperCase()}
+                        </Text>
+                        <Text className="text-xs text-gray-500">
+                           {item.aroma ? item.aroma + ' / ' : ''}
+                           {formatSize(item.size)}
+                        </Text>
+                    </View>
+                 </View>
+
+                 {/* Fiyat */}
+                 <Text className="text-sm font-bold text-black mt-1">
+                    {Math.round(item.price * item.quantity)} TL
+                 </Text>
             </View>
           ))}
           
-          <View className="h-[1px] bg-gray-200 my-4" />
+          <View className="h-[1px] bg-gray-200 mb-4" />
+
+          {/* İndirim Kodu Ekle */}
+          <TouchableOpacity className="mb-4">
+             <Text className="text-gray-500 text-sm">İndirim kodu ekle</Text>
+          </TouchableOpacity>
+
+          <View className="h-[1px] bg-gray-200 mb-4" />
 
           {/* Fiyat Detayları */}
-          <View className="space-y-2">
-            <View className="flex-row justify-between">
-              <Text className="text-base text-gray-700">Ara Toplam</Text>
-              <Text className="text-base font-semibold">{Math.round(totalAmount)} TL</Text>
+          <View>
+            <View className="flex-row justify-between mb-2">
+              <Text className="text-gray-600 text-[15px]">Ara Toplam</Text>
+              <Text className="font-bold text-[15px] text-black">{Math.round(totalAmount)} TL</Text>
             </View>
-            <View className="flex-row justify-between">
-              <Text className="text-base text-gray-700">Teslimat / Kargo</Text>
-              <Text className="text-base font-semibold">{shipmentFee > 0 ? `${shipmentFee} TL` : 'Ücretsiz'}</Text>
+            
+            <View className="flex-row justify-between mb-2">
+              <Text className="text-gray-600 text-[15px]">Teslimat / Kargo</Text>
+              <Text className="font-bold text-[15px] text-black">{shipmentFee > 0 ? `${shipmentFee} TL` : 'Ücretsiz'}</Text>
             </View>
+            
             {paymentFee > 0 && (
-                <View className="flex-row justify-between">
-                    <Text className="text-base text-gray-700">Kapıda Ödeme Farkı</Text>
-                    <Text className="text-base font-semibold text-red-500">{paymentFee} TL</Text>
+                <View className="flex-row justify-between mb-2">
+                    <Text className="text-gray-600 text-[15px]">Kapıda Ödeme Farkı</Text>
+                    <Text className="font-bold text-[15px] text-red-500">{paymentFee} TL</Text>
                 </View>
             )}
             
-            <View className="flex-row justify-between pt-2 mt-2 border-t border-gray-300">
-              <Text className="text-xl font-bold">TOPLAM</Text>
-              <Text className="text-xl font-bold text-indigo-600">{Math.round(finalPrice)} TL</Text>
+            <View className="flex-row justify-between mt-3 pt-3 border-t border-gray-200">
+              <Text className="text-lg font-bold text-indigo-700">TOPLAM</Text>
+              <Text className="text-lg font-bold text-indigo-700">{Math.round(finalPrice)} TL</Text>
             </View>
-            
           </View>
         </View>
       )}
