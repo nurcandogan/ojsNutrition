@@ -1,6 +1,7 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
 import Feather from '@expo/vector-icons/Feather';
+import MasterIcons from '../../../Svgs/MasterIcons';
 
 // Yardımcı Input Parçası (Kaymayı önlemek için sabit stil)
 const CardInputItem = ({ label, value, onChangeText, placeholder, keyboardType = 'default', isHalf = false, secureTextEntry = false }: any) => (
@@ -25,6 +26,7 @@ interface CardFormInputsProps {
     cardHolder: string; setCardHolder: (text: string) => void;
     cardExpire: string; setCardExpire: (text: string) => void;
     cardCvc: string; setCardCvc: (text: string) => void;
+   isMasterpass: boolean; onToggleMasterpass: () => void;
 }
 
 const CardFormInputs: React.FC<CardFormInputsProps> = ({
@@ -32,6 +34,9 @@ const CardFormInputs: React.FC<CardFormInputsProps> = ({
     cardHolder, setCardHolder,
     cardExpire, setCardExpire,
     cardCvc, setCardCvc,
+    isMasterpass,       
+    onToggleMasterpass
+    
 }) => {
     return (
         <View className="mt-2 pt-4 border-t border-gray-100">
@@ -44,11 +49,14 @@ const CardFormInputs: React.FC<CardFormInputsProps> = ({
                 <CardInputItem label="CVC" value={cardCvc} onChangeText={setCardCvc} placeholder="XXX" keyboardType="numeric" isHalf secureTextEntry />
             </View>
 
-            <TouchableOpacity className="flex-row items-start mt-1">
-                <Feather name="square" size={20} color="#4F46E5" />
-                <Text className="ml-2 text-xs text-gray-600 flex-1">
-                    Kartımı <Text className="font-bold text-black">Masterpass</Text> altyapısında saklamak istiyorum.
-                </Text>
+            <TouchableOpacity 
+               onPress={onToggleMasterpass} 
+               activeOpacity={0.7}
+               className="flex-row items-start mt-2 p-1 ">
+                   <Feather name={isMasterpass ? "check-square" : "square"} size={20} color="#4F46E5" />
+                   <Text className="ml-2 text-xs text-gray-600 flex-1">
+                      Kartımı <MasterIcons/> altyapısında saklamak istiyorum.
+                   </Text>
             </TouchableOpacity>
         </View>
     );

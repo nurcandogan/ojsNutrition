@@ -32,6 +32,7 @@ const CheckoutScreen = () => {
   const [cardHolder, setCardHolder] = useState('');
   const [cardExpire, setCardExpire] = useState('');
   const [cardCvc, setCardCvc] = useState('');
+  const [isMasterpass, setIsMasterpass] = useState(false);
 
   const paymentFee = (selectedPaymentType === 'cash_on_delivery_cash' || selectedPaymentType === 'cash_on_delivery_card') ? CASH_ON_DELIVERY_FEE : 0;
   const finalPrice = totalPrice + SHIPPING_FEE + paymentFee;
@@ -166,6 +167,8 @@ const CheckoutScreen = () => {
                             cardHolder={cardHolder} setCardHolder={setCardHolder}
                             cardExpire={cardExpire} setCardExpire={setCardExpire}
                             cardCvc={cardCvc} setCardCvc={setCardCvc}
+                            isMasterpass={isMasterpass}
+                            onToggleMasterpass={() => setIsMasterpass(!isMasterpass)}
                         />
                     </View>
                 )}
@@ -205,7 +208,10 @@ const CheckoutScreen = () => {
 
             {/* SÖZLEŞME ONAYI */}
             <View className="mt-4 mb-6">
-                <TouchableOpacity onPress={() => setIsContractChecked(!isContractChecked)} className="flex-row items-start">
+                <TouchableOpacity 
+                  onPress={() => setIsContractChecked(!isContractChecked)}
+                   activeOpacity={0.7}
+                  className="flex-row items-start">
                     <Feather name={isContractChecked ? "check-square" : "square"} size={22} color="#2126AB" /> 
                     <Text className="ml-2 text-xs text-gray-600 flex-1 leading-4">
                         Ön Bilgilendirme Formu ve Mesafeli Satış Sözleşmesi'ni okudum, onaylıyorum.
