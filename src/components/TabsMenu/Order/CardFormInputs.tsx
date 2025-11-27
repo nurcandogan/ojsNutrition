@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, TextInput, KeyboardTypeOptions } from 're
 import React from 'react';
 import Feather from '@expo/vector-icons/Feather';
 
-// Temel Input Öğesi Bileşeni (Dikey boşluğu garantiler)
+// Temel Input Öğesi Bileşeni (Yalnızca bu dosya içinde kullanılır)
 interface BasicCardInputProps {
     label: string; 
     value: string; 
@@ -15,7 +15,7 @@ interface BasicCardInputProps {
 
 const BasicCardInput: React.FC<BasicCardInputProps> = 
   ({ label, value, onChangeText, placeholder, keyboardType = 'default', isHalf = false, secureTextEntry = false }) => (
-    // Dikey boşluk (mb-5) ve genişlik yönetimi ile üst üste binme engellenir
+    // Dikey boşluk (mb-5) ve genişlik yönetimi
     <View className={`mb-5 ${isHalf ? 'w-1/2 pr-2' : 'w-full'}`}> 
       
       {/* Etiket */}

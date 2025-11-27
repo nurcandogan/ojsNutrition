@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity, Image, LayoutAnimation, Platform, UIManager } from 'react-native';
 import React, { useState } from 'react';
 import Feather from '@expo/vector-icons/Feather';
+// Not: Bu bileşen, ProductItems'ı çağırmak için useCartStore'a bağımlıdır.
+import { useCartStore } from '../../../store/cartStore'; 
+// Not: MEDIA_BASE_URL'ın @env dosyanızdan geldiği varsayılmıştır.
 import { MEDIA_BASE_URL } from '@env'; 
-import { useCartStore } from '../../../store/cartStore';
 
 if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -43,8 +45,7 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
         onPress={toggleExpand}
         className="flex-row justify-between items-center px-5 py-4 border-b border-gray-200" 
       >
-        {/* Başlık: Özet ve Toplam Fiyat */}
-        {/* Görsel 2'deki başlık stili */}
+        {/* Başlık: Solda Özet, Sağda Tutar */}
         <Text className="text-xl font-bold">Özet: {Math.round(finalPrice)} TL ({itemCount} ürün)</Text>
         
         {/* Ok İkonu */}
@@ -58,7 +59,7 @@ const OrderSummaryCollapse: React.FC<OrderSummaryCollapseProps> = ({
       {/* İçerik (Açılır/Kapanır Bölüm - Özet Detayları) */}
       {isExpanded && (
         <View className="p-5">
-          {/* Ürün Listesi ve Fiyat Detayları buraya gelir. (Kod tekrarı yapmamak için içerik atlanmıştır) */}
+          {/* Ürün Listesi */}
           <Text className="text-base font-semibold mb-3">Sepet İçeriği:</Text>
           {ProductItems.map((item, index) => (
             <View key={item.variantId} className="flex-row justify-between items-center mb-2">
