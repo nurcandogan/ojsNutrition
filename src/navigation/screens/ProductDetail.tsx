@@ -16,6 +16,7 @@ import StickyBar from '../../components/StickyBar';
 import { CommentItem, getProductComments } from '../services/commentsService';
 import ReviewSummary from '../../components/ReviewSummary';
 import { useCartStore } from '../../store/cartStore';
+import { addToCartService } from '../services/basketService';
 
 
 
@@ -157,6 +158,32 @@ const ProductDetail = () => {
     );
   }
 
+
+const handleAddToCart = async () => {
+    if (!data || !selectedVariant) return;
+
+    try {
+      // 1. Backend'e Ekle
+      // 🔥 DÜZELTME: Artık 'data.id'yi (Ürün ID) de gönderiyoruz!
+      await addToCartService(data.id, selectedVariant.id, 1);
+
+      // 2. Telefona Ekle
+      addItem({
+        productId: data.id,
+        productName: data.name,
+        slug: data.slug,
+        photo_src: data.variants?.[0]?.photo_src || '',
+        variant: selectedVariant,
+      });
+
+      // 3. Sepete Git
+      navigation.navigate('Basket' as never);
+
+    } catch (error) {
+      console.error("Sepet hatası:", error);
+    }
+  };
+
   
 const ingredients = (
   data?.explanation?.nutritional_content?.ingredients ?? []
@@ -247,20 +274,7 @@ const ingredients = (
         newPrice={price ? price.final : null}
         oldPrice={price?.old ?? null}
         services={price?.perServices ?? null}
-        onAddToCart={() => {
-          if (data && selectedVariant) {
-            // Sepete ürün ekle
-            addItem({
-              productId: data.id,
-              productName: data.name,
-              slug: data.slug,
-              photo_src: data.variants?.[0]?.photo_src || '',
-              variant: selectedVariant,
-            });
-            // Sepet sayfasına yönlendir
-            navigation.navigate('Basket' as never);
-          }
-        }}
+        onAddToCart={handleAddToCart}
        
       />
        

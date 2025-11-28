@@ -35,7 +35,6 @@ const BestSeller = ({items}: Props) => {
         })}
       </View>
 
-     p
     </View>
   );
 }
