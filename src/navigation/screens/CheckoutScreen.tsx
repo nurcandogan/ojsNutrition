@@ -11,6 +11,7 @@ import { useCartStore } from '../../store/cartStore';
 import { createOrder } from '../services/orderService'; 
 import OrderSummaryCollapse from '../../components/TabsMenu/Order/OrderSummaryCollapse';
 import CardFormInputs from '../../components/TabsMenu/Order/CardFormInputs';
+import { useAddressStore } from '../../store/addressStore';
 
 const SHIPPING_FEE = 0; // Görsele göre Kargo Ücretsiz (0 TL)
 const CASH_ON_DELIVERY_FEE = 39; 
@@ -49,7 +50,7 @@ const CheckoutScreen = () => {
 
   // --- State'ler ---
   const [addresses, setAddresses] = useState<AddressProps[]>([]);
-  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
+  const { selectedAddressId, setSelectedAddressId } = useAddressStore();  
   
   const [selectedPaymentType, setSelectedPaymentType] = useState<'credit_card_form' | 'cash_on_delivery_cash' | 'cash_on_delivery_card'>('credit_card_form');
   const [isBillingSame, setIsBillingSame] = useState(true); 
@@ -143,7 +144,12 @@ const CheckoutScreen = () => {
                 <StepIndicator step={1} isCompleted={isAddressDone} />
                 <Text className="text-xl font-bold text-black flex-1">Adres</Text>
                 {isAddressDone && (
-                    <TouchableOpacity onPress={() => navigation.navigate('AddressForm', { isNew: false, addressToEdit: selectedAddress })}>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate('AddressForm', { 
+                            isNew: false, 
+                            addressToEdit: null, 
+                            isSelectionMode: true 
+                        })}>
                         <Text className="text-gray-600 font-medium">Düzenle</Text>
                     </TouchableOpacity>
                 )}

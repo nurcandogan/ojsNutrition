@@ -1,26 +1,31 @@
 import { View, Text, SafeAreaView, Alert, TouchableOpacity, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState, useCallback } from 'react';
 import BackHeader from '../../components/TabsMenu/SSS/BackHeader';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/native';
 import PhoneField from '../../components/TabsMenu/Adress/PhoneField';
 import SaveButton from '../../components/TabsMenu/Adress/SaveButton';
 import Input from '../../components/TabsMenu/BizeUlasin/Input';
-// 🔥 Servis ve Bileşen Çağrıları
 import { AddressProps, fetchAddresses, saveAddress } from '../services/addressService'; 
 import AddressCard from '../../components/TabsMenu/Adress/AddressCard';
-// Not: useCartStore ve CheckoutSummary ödeme akışı için gerekli olacaktır, 
-// ancak sadece adres formunu istediğiniz için bu dosyada dahil edilmemiştir.
+import { useAddressStore } from '../../store/addressStore';
+// 🔥 Store'u import etmeyi unutmayın (Seçimi kaydetmek için)
 
 const AddressForm = () => {
   const navigation = useNavigation<any>();
+  const route = useRoute<any>(); // Route parametrelerini almak için
+  
+  // 🔥 PARAMETRE KONTROLÜ: Ödeme sayfasından mı geldik?
+  // CheckoutScreen'den { isSelectionMode: true } gönderilecek.
+  const isSelectionMode = route.params?.isSelectionMode || false;
+
+  const { selectedAddressId, setSelectedAddressId } = useAddressStore(); // Store kullanımı
+
   const [adresses, setAdresses] = useState<AddressProps[]>([]);
   const [loading, setLoading] = useState(false);
-  
-  // --- Adres Yönetim State'leri ---
-  const [isFormVisible, setIsFormVisible] = useState(false); // Form açık mı? (Yeni Ekle/Düzenle)
-  const [addressToEdit, setAddressToEdit] = useState<AddressProps | null>(null); // Düzenlenecek adres
+  const [isFormVisible, setIsFormVisible] = useState(false); 
+  const [addressToEdit, setAddressToEdit] = useState<AddressProps | null>(null);
 
-  // --- Form input state'leri ---
+  // ... (Input state'leri aynı: adressName, name, surname vb.) ...
   const [adressName, setAdressName] = useState('');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
@@ -29,24 +34,17 @@ const AddressForm = () => {
   const [city, setCity] = useState('');
   const [district, setDistrict] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  
   const [country] = useState({ cca2: "TR", callingCode: ["90"] });
 
-  // --- Adresleri Çekme İşlevi (addressService.ts'den çağrılır) ---
   const loadAddresses = async () => {
     setLoading(true);
     try {
-      // 🔥 Servis çağrısı
       const results = await fetchAddresses();
       setAdresses(results);
-      
-      // ORİJİNAL MANTIK: Kayıtlı adres yoksa formu otomatik aç
       if (results.length === 0) {
         handleAddNewAddress();
       }
-
     } catch (error) {
-      console.error("Adres kontrolü hatası:", error);
       setAdresses([]);
       handleAddNewAddress();
     } finally {
@@ -54,12 +52,11 @@ const AddressForm = () => {
     }
   };
 
-  // Sayfaya her odaklanıldığında adresleri yeniden çek
   useFocusEffect(useCallback(() => {
     loadAddresses();
   }, []));
   
-  // --- Yardımcı Fonksiyonlar ---
+  // --- Yardımcı Fonksiyonlar (resetForm vb.) AYNI KALACAK ---
   const resetForm = (address?: AddressProps) => {
     setAddressToEdit(address || null);
     setAdressName(address?.title || '');
@@ -82,17 +79,25 @@ const AddressForm = () => {
     setIsFormVisible(true);
   }
 
-  // --- Kaydetme İşlevi (saveAddress servisini çağırır) ---
+  // 🔥 ADRES SEÇİM FONKSİYONU
+  const handleSelectAddress = (address: AddressProps) => {
+      // Sadece seçim modundaysak çalışır
+      if (isSelectionMode) {
+          setSelectedAddressId(address.id); // Store'u güncelle
+          setTimeout(() => {navigation.goBack(); 
+          }, 350);            // Geri dönmeden önce kısa bir bekle seçilgiğini gör sonra dön
+      }
+  };
+
   const handleSave = async () => {
-    if (!adressName || !name || !surname || !adress || !city || !district || !phoneNumber) {
+     // ... (Kaydetme mantığı AYNI kalacak) ...
+     if (!adressName || !name || !surname || !adress || !city || !district || !phoneNumber) {
       Alert.alert("Uyarı ", "Lütfen tüm zorunlu alanları doldurun");
       return;
     }
-
     setLoading(true);
     try {
       const cleanPhone = phoneNumber.replace(/\D/g, "");
-
       const body = {
         ...(addressToEdit ? { address_id: addressToEdit.id } : {}), 
         title: adressName,
@@ -105,34 +110,25 @@ const AddressForm = () => {
         apartment: apartment,
         phone_number: `+90${cleanPhone}`
       };
-
-      // 🔥 Servis çağrısı
       await saveAddress(body);
-
       Alert.alert("Başarılı ", `Adres başarıyla ${addressToEdit ? 'güncellendi' : 'kaydedildi'}.`);
-      setIsFormVisible(false); // Formu kapat
+      setIsFormVisible(false); 
       resetForm(); 
-      loadAddresses(); // Listeyi güncelle
-
+      loadAddresses(); 
     } catch (error: any) {
-      console.log("Kaydetme Hatası:", error);
       Alert.alert("Hata ", error.message || "Bir sorun oluştu");
     }
     setLoading(false);
   };
   
-  // --- HEADER BAŞLIĞI ---
   const headerTitle = isFormVisible 
     ? (addressToEdit ? "Adresi Düzenle" : "Yeni Adres Ekle")
     : "Adreslerim";
 
-
-  // --- İLK YÜKLEME GÖSTERGESİ ---
   if (loading && adresses.length === 0 && !isFormVisible) {
       return (
         <SafeAreaView className="flex-1 bg-white items-center justify-center">
             <ActivityIndicator size="large" color="#4F46E5" />
-            <Text className="mt-4 text-gray-600">Adresler yükleniyor...</Text>
         </SafeAreaView>
       );
   }
@@ -141,7 +137,6 @@ const AddressForm = () => {
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView 
         className="mb-10"
-        // Listeleme modundaysa çekme (pull-to-refresh) aktif
         refreshControl={!isFormVisible && <RefreshControl refreshing={loading} onRefresh={loadAddresses} />}
       >
         
@@ -150,46 +145,41 @@ const AddressForm = () => {
           onPress={() => isFormVisible ? setIsFormVisible(false) : navigation.goBack()}
         />
 
-        {/* -------------------- ADRES LİSTELEME GÖRÜNÜMÜ -------------------- */}
+        {/* --- ADRES LİSTELEME --- */}
         {!isFormVisible && (
           <View className="px-4 mt-5">
 
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-[20px] font-semibold">Adreslerim</Text>
-
               <TouchableOpacity onPress={handleAddNewAddress}>
                 <Text className="text-orange-500 font-semibold text-[16px]">Adres Ekle</Text>
               </TouchableOpacity>
             </View>
 
-            {/* 🔥 AddressCard bileşenini çağırıyoruz */}
             {adresses.map((item) => (
               <AddressCard
                 key={item.id}
                 address={item}
-                isSelected={false} 
-                onSelect={() => { Alert.alert("Seçim", `${item.title} seçildi.`); }}
+                
+                // 🔥 KRİTİK NOKTA: Sadece selectionMode true ise seçilebilir
+                isSelectable={isSelectionMode}
+                
+                // Seçili mi? (Store'daki ID ile karşılaştır)
+                isSelected={item.id === selectedAddressId}
+                
+                // Tıklanınca ne olsun?
+                onSelect={() => handleSelectAddress(item)}
+                
                 onEdit={() => handleEditAddress(item)} 
               />
             ))}
           </View>
         )}
 
-        {/* -------------------- ADRES EKLEME/DÜZENLEME FORMU GÖRÜNÜMÜ -------------------- */}
+        {/* --- FORM KISMI (AYNI KALACAK) --- */}
         {isFormVisible && (
           <View>
-
-            {/* Adres yoksa uyarı */}
-            {adresses.length === 0 && (
-              <View className="mx-5 mt-4 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
-                <Text className="text-indigo-800 text-sm">
-                  Kayıtlı adresiniz yok. Lütfen yeni adres oluşturun.
-                </Text>
-              </View>
-            )}
-
             <View className="mt-10">
-              {/* Input bileşenleri ile form verisi toplanır */}
               <Input title="*Adres Başlığı" value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." />
               <Input title="*Ad" value={name} onChangeText={setName} placeholder="" />
               <Input title="*Soyad" value={surname} onChangeText={setSurname} placeholder="" />
@@ -199,7 +189,6 @@ const AddressForm = () => {
               <Input title="*İlçe" value={district} onChangeText={setDistrict} placeholder="" />
               <PhoneField value={phoneNumber} onChange={setPhoneNumber} country={country} setCountry={() => {}} />
             </View>
-
             <View className="items-end mx-5 mt-14">
               <SaveButton loading={loading} onPress={handleSave} />
             </View>
@@ -212,3 +201,5 @@ const AddressForm = () => {
 };
 
 export default AddressForm;
+
+

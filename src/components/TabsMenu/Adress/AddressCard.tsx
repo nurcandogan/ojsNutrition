@@ -5,26 +5,43 @@ import { Feather } from '@expo/vector-icons';
 
 interface AddressCardProps {
     address: AddressProps;
-    isSelected: boolean;
-    onSelect: () => void;
+    isSelected?: boolean; // Opsiyonel yapıldı
+    onSelect?: () => void; // Opsiyonel yapıldı
     onEdit: () => void;
-
+    isSelectable?: boolean; // 🔥 YENİ ÖZELLİK: Seçim modu açık mı?
 }
 
-const AddressCard = ({ address, isSelected, onSelect, onEdit }: AddressCardProps) => {
+const AddressCard = ({ 
+    address, 
+    isSelected = false, 
+    onSelect, 
+    onEdit, 
+    isSelectable = true // Varsayılan olarak (Checkout'ta) seçilebilir olsun
+}: AddressCardProps) => {
   return (
-   <TouchableOpacity onPress={onSelect}
-    className={`bg-white rounded-lg p-4 mb-4 border ${isSelected ? 'border-indigo-600' : 'border-gray-200'} shadow-sm`} >
+   <TouchableOpacity 
+    // Eğer seçilebilir değilse (Profil sayfası), karta tıklayınca seçim yapma
+    onPress={isSelectable ? onSelect : undefined}
+    activeOpacity={isSelectable ? 0.7 : 1}
+    className={`bg-white rounded-lg p-4 mb-4 border ${isSelectable && isSelected ? 'border-indigo-600' : 'border-gray-200'} shadow-sm`} 
+   >
     <View className='flex-row justify-between items-start'>
         <View className="flex-row items-center flex-1 pr-4">
-          {/* Seçim durumuna göre ikon gösterimi */}
-          <Feather 
-            name={isSelected ? "check-circle" : "circle"} 
-            size={20} 
-            color={isSelected ? "#4F46E5" : "#6B7280"} 
-            className="mr-3"
-          />
-          <Text className="text-indigo-600 font-bold ml-2 text-base">{address.title}</Text>
+          
+          {/* 🔥 SADECE SEÇİLEBİLİR MODDA İSE RADYO BUTONU GÖSTER */}
+          {isSelectable && (
+              <Feather 
+                name={isSelected ? "check-circle" : "circle"} 
+                size={20} 
+                color={isSelected ? "#4F46E5" : "#6B7280"} 
+                className="mr-3"
+              />
+          )}
+          
+          {/* Başlık Rengi: Seçim modu kapalıysa (Profil) Turuncu, değilse Siyah/Mor */}
+          <Text className={`${!isSelectable ? 'text-orange-500' : (isSelected ? 'text-indigo-600' : 'text-black')} font-bold ml-2 text-base`}>
+            {address.title}
+          </Text>
         </View>
                 
                   
@@ -53,4 +70,4 @@ const AddressCard = ({ address, isSelected, onSelect, onEdit }: AddressCardProps
   )
 }
 
-export default AddressCard
+export default AddressCard;
