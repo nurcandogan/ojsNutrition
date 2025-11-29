@@ -164,7 +164,6 @@ const handleAddToCart = async () => {
 
     try {
       // 1. Backend'e Ekle
-      // 🔥 DÜZELTME: Artık 'data.id'yi (Ürün ID) de gönderiyoruz!
       await addToCartService(data.id, selectedVariant.id, 1);
 
       // 2. Telefona Ekle
