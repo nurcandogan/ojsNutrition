@@ -174,7 +174,7 @@ const handleAddToCart = async () => {
         photo_src: data.variants?.[0]?.photo_src || '',
         variant: selectedVariant,
       });
-
+ 
       // 3. Sepete Git
       navigation.navigate('Basket' as never);
 
