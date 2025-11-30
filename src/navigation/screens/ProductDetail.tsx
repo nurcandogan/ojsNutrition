@@ -160,7 +160,7 @@ const ProductDetail = () => {
 
 
 const handleAddToCart = async () => {
-    if (!data || !selectedVariant) return;
+    if (!data || !selectedVariant) return;  
 
     try {
       // 1. Backend'e Ekle

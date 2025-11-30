@@ -5,6 +5,7 @@ import Feather from '@expo/vector-icons/Feather';
 import BackHeader from '../../components/TabsMenu/SSS/BackHeader';
 import { fetchOrderDetail, OrderDetail } from '../services/orderService';
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput'; 
+import { clearRemoteCart } from '../services/basketService';
 
 interface OrderSuccessRouteParams {
     orderId: string;
@@ -32,6 +33,20 @@ const OrderSuccessScreen = () => {
     navigation.popToTop(); 
   };
 
+
+
+useEffect(() => {
+    // Sipariş detaylarını çek
+    loadOrderDetail();
+    
+    // 🔥 GÜVENLİK ÖNLEMİ:
+    // Sipariş bittiğine göre, Backend'deki sepeti de zorla temizle.
+    // (Arka planda sessizce çalışsın, await ile beklemeye gerek yok)
+    clearRemoteCart(); 
+    
+  }, [orderId]);
+
+  
   if (loading) {
     return (
       <SafeAreaView className="flex-1 bg-white items-center justify-center">
