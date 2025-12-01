@@ -159,7 +159,7 @@ const Basket = () => {
             TOPLAM {Math.round(totalPrice)} TL
           </Text>
         </View>
-        <View  className="content-center items-center mt-2">
+        <View  className="content-center mb-10 items-center mt-2">
           <OkInput onPress={onClick} title="DEVAM ET  " />
         </View>
       </View>

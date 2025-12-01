@@ -14,22 +14,22 @@ const AddressForm = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>(); // Route parametrelerini almak için
   
-  // 🔥 PARAMETRE KONTROLÜ: Ödeme sayfasından mı geldik?
+  // PARAMETRE KONTROLÜ: Ödeme sayfasından mı geldik?
   // CheckoutScreen'den { isSelectionMode: true } gönderilecek.
   const isSelectionMode = route.params?.isSelectionMode || false;
 
   const { selectedAddressId, setSelectedAddressId } = useAddressStore(); // Store kullanımı
 
-  const [adresses, setAdresses] = useState<AddressProps[]>([]);
+  const [adresses, setAdresses] = useState<AddressProps[]>([]);  //Her bir adresin listesi
   const [loading, setLoading] = useState(false);
   const [isFormVisible, setIsFormVisible] = useState(false); 
-  const [addressToEdit, setAddressToEdit] = useState<AddressProps | null>(null);
+  const [addressToEdit, setAddressToEdit] = useState<AddressProps | null>(null); // Düzenlenen adres
 
   // ... (Input state'leri aynı: adressName, name, surname vb.) ...
   const [adressName, setAdressName] = useState('');
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
-  const [adress, setAdress] = useState('');
+  const [adress, setAdress] = useState('');    // full_address
   const [apartment, setApartment] = useState('');
   const [city, setCity] = useState('');
   const [district, setDistrict] = useState('');
@@ -56,17 +56,17 @@ const AddressForm = () => {
     loadAddresses();
   }, []));
   
-  // --- Yardımcı Fonksiyonlar (resetForm vb.) AYNI KALACAK ---
-  const resetForm = (address?: AddressProps) => {
-    setAddressToEdit(address || null);
-    setAdressName(address?.title || '');
-    setName(address?.first_name || '');
-    setSurname(address?.last_name || '');
-    setAdress(address?.full_address || '');
+  // --- Yardımcı Fonksiyonlar (resetForm vb.)---
+  const resetForm = (item?: AddressProps) => {
+    setAddressToEdit(item || null);
+    setAdressName(item?.title || '');
+    setName(item?.first_name || '');
+    setSurname(item?.last_name || '');
+    setAdress(item?.full_address || '');
     setApartment(''); 
-    setCity(address?.region.name || '');
-    setDistrict(address?.subregion.name || '');
-    setPhoneNumber(address?.phone_number.replace('+90', '') || '');
+    setCity(item?.region.name || '');
+    setDistrict(item?.subregion.name || '');
+    setPhoneNumber(item?.phone_number.replace('+90', '') || '');
   };
 
   const handleAddNewAddress = () => {
@@ -74,23 +74,22 @@ const AddressForm = () => {
     setIsFormVisible(true);
   }
   
-  const handleEditAddress = (address: AddressProps) => {
-    resetForm(address);
+  const handleEditAddress = (item: AddressProps) => {
+    resetForm(item);
     setIsFormVisible(true);
   }
 
   // 🔥 ADRES SEÇİM FONKSİYONU
-  const handleSelectAddress = (address: AddressProps) => {
+  const handleSelectAddress = (item: AddressProps) => {
       // Sadece seçim modundaysak çalışır
       if (isSelectionMode) {
-          setSelectedAddressId(address.id); // Store'u güncelle
+          setSelectedAddressId(item.id); // Store'u güncelle
           setTimeout(() => {navigation.goBack(); 
           }, 350);            // Geri dönmeden önce kısa bir bekle seçilgiğini gör sonra dön
       }
   };
-
+    
   const handleSave = async () => {
-     // ... (Kaydetme mantığı AYNI kalacak) ...
      if (!adressName || !name || !surname || !adress || !city || !district || !phoneNumber) {
       Alert.alert("Uyarı ", "Lütfen tüm zorunlu alanları doldurun");
       return;
@@ -161,7 +160,7 @@ const AddressForm = () => {
                 key={item.id}
                 address={item}
                 
-                // 🔥 KRİTİK NOKTA: Sadece selectionMode true ise seçilebilir
+                //  KRİTİK NOKTA: Sadece selectionMode true ise seçilebilir
                 isSelectable={isSelectionMode}
                 
                 // Seçili mi? (Store'daki ID ile karşılaştır)
