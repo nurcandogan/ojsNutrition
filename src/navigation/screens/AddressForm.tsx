@@ -22,7 +22,7 @@ const AddressForm = () => {
 
   const [adresses, setAdresses] = useState<AddressProps[]>([]);  //Her bir adresin listesi
   const [loading, setLoading] = useState(false);
-  const [isFormVisible, setIsFormVisible] = useState(false); 
+  const [isFormVisible, setIsFormVisible] = useState(false);      // Formun görünürlüğü
   const [addressToEdit, setAddressToEdit] = useState<AddressProps | null>(null); // Düzenlenen adres
 
   // ... (Input state'leri aynı: adressName, name, surname vb.) ...
@@ -102,8 +102,8 @@ const AddressForm = () => {
     try {
       const cleanPhone = phoneNumber.replace(/\D/g, "");
       const body = {
-        ...(addressToEdit ? { address_id: addressToEdit.id } : {}), 
-        title: adressName,
+        ...(addressToEdit ? { address_id: addressToEdit.id } : {}), // Düzenleme ise ID ekle
+        title: adressName,  
         first_name: name,
         last_name: surname,
         country_id: addressToEdit?.country.id || 226, 

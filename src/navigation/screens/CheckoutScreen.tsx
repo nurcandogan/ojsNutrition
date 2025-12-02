@@ -56,8 +56,8 @@ const CheckoutScreen = () => {
   
   // Diğer State'ler
   const [selectedPaymentType, setSelectedPaymentType] = useState<'credit_card_form' | 'cash_on_delivery_cash' | 'cash_on_delivery_card'>('credit_card_form');
-  const [isBillingSame, setIsBillingSame] = useState(true); 
-  const [isContractChecked, setIsContractChecked] = useState(false);
+  const [isBillingSame, setIsBillingSame] = useState(true);   // Fatura adresi teslimat adresiyle aynı mı?
+  const [isContractChecked, setIsContractChecked] = useState(false);  // Sözleşme onay kutusu
   const [loading, setLoading] = useState(false);
   
   // Kart State'leri
