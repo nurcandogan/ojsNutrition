@@ -56,6 +56,19 @@ const AddressForm = () => {
     loadAddresses();
   }, []));
   
+
+  // Yeni adres ekleme butonuna basılınca
+ const handleAddNewAddress = () => {
+    resetForm();
+    setIsFormVisible(true);
+  }
+  
+  // Düzenleme butonuna basılınca
+   const handleEditAddress = (item: AddressProps) => {
+    resetForm(item);
+    setIsFormVisible(true);
+  }
+
   // --- Yardımcı Fonksiyonlar (resetForm vb.)---
   const resetForm = (item?: AddressProps) => {
     setAddressToEdit(item || null);
@@ -69,17 +82,8 @@ const AddressForm = () => {
     setPhoneNumber(item?.phone_number.replace('+90', '') || '');
   };
 
-  const handleAddNewAddress = () => {
-    resetForm();
-    setIsFormVisible(true);
-  }
-  
-  const handleEditAddress = (item: AddressProps) => {
-    resetForm(item);
-    setIsFormVisible(true);
-  }
 
-  // 🔥 ADRES SEÇİM FONKSİYONU
+  // ADRES SEÇİM FONKSİYONU 
   const handleSelectAddress = (item: AddressProps) => {
       // Sadece seçim modundaysak çalışır
       if (isSelectionMode) {

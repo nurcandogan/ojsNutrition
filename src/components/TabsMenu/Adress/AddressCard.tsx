@@ -5,10 +5,10 @@ import { Feather } from '@expo/vector-icons';
 
 interface AddressCardProps {
     address: AddressProps;
-    isSelected?: boolean; // Opsiyonel yapıldı
-    onSelect?: () => void; // Opsiyonel yapıldı
-    onEdit: () => void;
-    isSelectable?: boolean; // 🔥 YENİ ÖZELLİK: Seçim modu açık mı?
+    isSelected?: boolean;    // Adresin seçili olup olmama durumuna göre çerçeve olacak
+    onSelect?: () => void;   // Karta tıklanınca ne yapayım? (Seçme fonksiyonu)
+    onEdit: () => void;      // Düzenleme butonuna tıklanınca ne yapayım?
+    isSelectable?: boolean;  //  Bu kart seçilebilir mi? (Checkout'ta evet, Profilde hayır)
 }
 
 const AddressCard = ({ 
@@ -28,7 +28,7 @@ const AddressCard = ({
     <View className='flex-row justify-between items-start'>
         <View className="flex-row items-center flex-1 pr-4">
           
-          {/* 🔥 SADECE SEÇİLEBİLİR MODDA İSE RADYO BUTONU GÖSTER */}
+          {/*  SADECE SEÇİLEBİLİR MODDA İSE RADYO BUTONU GÖSTER */}
           {isSelectable && (
               <Feather 
                 name={isSelected ? "check-circle" : "circle"} 
