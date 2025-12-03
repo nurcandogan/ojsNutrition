@@ -61,7 +61,7 @@ export async function fetchOrderDetail(orderId: string): Promise<OrderDetail | n
   }
 }
 
-// 🔥 YARDIMCI FONKSİYON: Siparişten önce sepeti sunucuyla eşitle
+// YARDIMCI FONKSİYON: Siparişten önce sepeti sunucuyla eşitle
 // Sunucu "sepet boş" demesin diye ürünleri tek tek sunucuya gönderiyoruz.
 async function syncCartWithBackend(token: string, items: any[]) {
     console.log("🔄 Sepet Sunucuyla Eşitleniyor...");
@@ -103,10 +103,10 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
         return { success: false, orderNo: null, message: "Sepetiniz boş." };
     }
 
-    // 🔥 ADIM 1: Önce Sepeti Sunucuya Gönder (GARANTİLEMEK İÇİN)
+    //  ADIM 1: Önce Sepeti Sunucuya Gönder (GARANTİLEMEK İÇİN)
     await syncCartWithBackend(token, cartItems);
 
-    // 🔥 ADIM 2: Ödeme Tipini Çevir
+    //  ADIM 2: Ödeme Tipini Çevir
     let backendPaymentType = '';
     if (paymentType === 'credit_card_form') {
         backendPaymentType = 'credit_cart'; 

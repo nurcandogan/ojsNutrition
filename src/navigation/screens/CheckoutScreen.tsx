@@ -50,7 +50,7 @@ const CheckoutScreen = () => {
   const totalPrice = getTotalPrice(); 
 
   //  Seçili adresi buradan alıyoruz
-  const { selectedAddressId, setSelectedAddressId } = useAddressStore();
+  const { selectedAddressId, setSelectedAddressId } = useAddressStore();  // Store'dan seçili adres ID'si ve setter fonksiyonu
 
   const [addresses, setAddresses] = useState<AddressProps[]>([]);  // Adres listesi
   
@@ -78,7 +78,7 @@ const CheckoutScreen = () => {
     try {
       const fetchedAddresses = await fetchAddresses();
       setAddresses(fetchedAddresses);
-      // Eğer Store boşsa ve liste varsa ilkini seç
+      // Eğer Store boşsa ve liste varsa ilkini seç 
       if (!selectedAddressId && fetchedAddresses.length > 0) {
         setSelectedAddressId(fetchedAddresses[0].id);
       }
@@ -88,7 +88,7 @@ const CheckoutScreen = () => {
       setLoading(false);
     }
   };
-
+  
   useFocusEffect(useCallback(() => {
     loadAddresses();
   }, []));
