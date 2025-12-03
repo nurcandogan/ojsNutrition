@@ -49,13 +49,13 @@ const CheckoutScreen = () => {
   const { getTotalPrice, clearCart, ProductItems } = useCartStore();
   const totalPrice = getTotalPrice(); 
 
-  // 🔥 STORE KULLANIMI: Seçili adresi buradan alıyoruz
+  //  Seçili adresi buradan alıyoruz
   const { selectedAddressId, setSelectedAddressId } = useAddressStore();
 
-  const [addresses, setAddresses] = useState<AddressProps[]>([]);
+  const [addresses, setAddresses] = useState<AddressProps[]>([]);  // Adres listesi
   
   // Diğer State'ler
-  const [selectedPaymentType, setSelectedPaymentType] = useState<'credit_card_form' | 'cash_on_delivery_cash' | 'cash_on_delivery_card'>('credit_card_form');
+  const [selectedPaymentType, setSelectedPaymentType] = useState<'credit_card_form' | 'cash_on_delivery_cash' | 'cash_on_delivery_card'>('credit_card_form');   // Ödeme tipi
   const [isBillingSame, setIsBillingSame] = useState(true);   // Fatura adresi teslimat adresiyle aynı mı?
   const [isContractChecked, setIsContractChecked] = useState(false);  // Sözleşme onay kutusu
   const [loading, setLoading] = useState(false);
@@ -70,8 +70,8 @@ const CheckoutScreen = () => {
   const finalPrice = totalPrice + SHIPPING_FEE + paymentFee;
   
   // Seçili adresi ID'den bul
-  const selectedAddress = addresses.find(a => a.id === selectedAddressId);
-  const itemCount = ProductItems.reduce((sum, item) => sum + item.quantity, 0);
+  const selectedAddress = addresses.find(a => a.id === selectedAddressId);  // Seçili adres objesi
+  const itemCount = ProductItems.reduce((sum, item) => sum + item.quantity, 0);  // Toplam ürün adedi
 
   const loadAddresses = async () => {
     setLoading(true);
