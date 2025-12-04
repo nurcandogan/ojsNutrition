@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, LayoutAnimation, Platform, UIManager } from 'react-native';
+import { View, Text, TouchableOpacity, Image, LayoutAnimation } from 'react-native';
 import React, { useState } from 'react';
 import Feather from '@expo/vector-icons/Feather';
 import { useCartStore } from '../../../store/cartStore'; 

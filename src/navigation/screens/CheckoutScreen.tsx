@@ -133,21 +133,17 @@ const CheckoutScreen = () => {
           shipmentFee={SHIPPING_FEE}
       />
 
-      <ScrollView className="flex-1 px-5" contentContainerStyle={{ paddingBottom: 50 }}>
+      <ScrollView className="flex-1 px-5" contentContainerStyle={{ paddingBottom: 20 }}>
         
         {/* --- 1. TESLİMAT ADRESİ --- */}
         <View className="mt-4 mb-6">
             <View className="flex-row items-center mb-4">
-                <StepIndicator step={1} isCompleted={!!selectedAddressId} />
+                <StepIndicator step={1} isCompleted={!!selectedAddressId} />. 
                 <Text className="text-xl font-bold text-black flex-1">Adres</Text>
                 
                 {!!selectedAddressId && (
                     <TouchableOpacity 
-                        onPress={() => navigation.navigate('AddressForm', { 
-                            isNew: false, 
-                            addressToEdit: null,
-                            isSelectionMode: true // 🔥 BU PARAMETRE ARTIK DOĞRU
-                        })}
+                        onPress={() => navigation.navigate('AddressForm', { isSelectionMode: true })}
                     >
                         <Text className="text-gray-600 font-medium">Düzenle</Text>
                     </TouchableOpacity>
@@ -163,7 +159,7 @@ const CheckoutScreen = () => {
                     <Text className="text-sm text-gray-500 mt-1">{selectedAddress.region.name}, {selectedAddress.country.name}</Text>
                 </View>
             ) : (
-                <TouchableOpacity onPress={() => navigation.navigate('AddressForm', { isNew: true })} className="pl-11">
+                <TouchableOpacity onPress={() => navigation.navigate('AddressForm', { isSelectionMode: true })} className="pl-11">
                     <Text className="text-indigo-600 font-bold">Bir teslimat adresi ekleyin</Text>
                 </TouchableOpacity>
             )}
