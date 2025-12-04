@@ -4,9 +4,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { useCartStore } from '../../../store/cartStore'; 
 import { MEDIA_BASE_URL } from '@env'; 
 
-if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
-  UIManager.setLayoutAnimationEnabledExperimental(true);
-}
+
 
 interface OrderSummaryCollapseProps {
     totalAmount: number;
