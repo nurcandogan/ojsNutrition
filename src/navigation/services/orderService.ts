@@ -103,27 +103,53 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
         return { success: false, orderNo: null, message: "Sepetiniz boş." };
     }
 
-    //  ADIM 1: Önce Sepeti Sunucuya Gönder (GARANTİLEMEK İÇİN)
+    //  ADIM 1: Önce Sepeti Sunucuya Gönder
     await syncCartWithBackend(token, cartItems);
 
     //  ADIM 2: Ödeme Tipini Çevir
     let backendPaymentType = '';
-    if (paymentType === 'credit_card_form') {
-        backendPaymentType = 'credit_cart'; 
-    } 
-    else if (paymentType === 'cash_on_delivery_cash') {
-        backendPaymentType = 'cash_at_door'; 
-    }
-    else if (paymentType === 'cash_on_delivery_card') {
-        backendPaymentType = 'credit_cart_at_door'; 
-    }
-    else {
-        backendPaymentType = paymentType;
-    }
+    if (paymentType === 'credit_card_form') backendPaymentType = 'credit_cart'; 
+    else if (paymentType === 'cash_on_delivery_cash') backendPaymentType = 'cash_at_door'; 
+    else if (paymentType === 'cash_on_delivery_card') backendPaymentType = 'credit_cart_at_door'; 
+    else backendPaymentType = paymentType;
 
-    // ADIM 3: Siparişi Tamamla
-    // Not: itemsPayload göndermemize gerek kalmadı çünkü yukarıda sync yaptık,
-    // ama yine de dursun, zararı yok.
+    // --- 🔥 DÜZELTME BAŞLANGICI: VERİ TEMİZLİĞİ VE ALGILAMA ---
+    
+    let formattedDate = "";
+    let cleanCardNumber = "";
+    let detectedCardType = "VISA"; // Varsayılan
+
+    if (backendPaymentType === 'credit_cart' && cardDetails) {
+        
+        // 1. KART NUMARASI TEMİZLİĞİ:
+        // Kullanıcı "5528 7900..." girerse boşlukları siliyoruz -> "55287900..."
+        if (cardDetails.cardNumber) {
+            cleanCardNumber = cardDetails.cardNumber.replace(/[^0-9]/g, '');
+        }
+
+        // 2. KART TİPİNİ OTOMATİK ALGILA:
+        // Eğer 5 ile başlıyorsa MASTERCARD yap.
+        if (cleanCardNumber.startsWith('5')) {
+            detectedCardType = "MASTERCARD";
+        } else if (cleanCardNumber.startsWith('9') || cleanCardNumber.startsWith('6')) {
+            detectedCardType = "TROY"; // Troy veya diğerleri (İsteğe bağlı)
+        }
+        // Not: Visa zaten 4 ile başlar, varsayılanımız VISA olduğu için ona else yazmadık.
+
+        // 3. TARİH FORMATLAMA:
+        // Kullanıcı "12/28", "1228" veya "12.28" girse bile bunu "12-28" yapıyoruz.
+        if (cardDetails.cardExpire) {
+            let rawDate = cardDetails.cardExpire.replace(/[^0-9]/g, ''); // Sadece rakamları al (1228)
+            if (rawDate.length === 4) {
+                 formattedDate = `${rawDate.substring(0, 2)}-${rawDate.substring(2, 4)}`;
+            } else {
+                 // Yedek plan
+                 formattedDate = cardDetails.cardExpire.replace('/', '-'); 
+            }
+        }
+    }
+    // -----------------------------------------------------------
+
     const itemsPayload = cartItems.map(item => ({
         product_variant_id: item.variantId,
         pieces: item.quantity
@@ -135,15 +161,18 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
       items: itemsPayload,
       
       ...(backendPaymentType === 'credit_cart' && cardDetails ? {
-        card_digits: cardDetails.cardNumber,
-        card_expiration_date: cardDetails.cardExpire,
+        
+        //  GÜNCELLENDİ: Temizlenmiş ve hesaplanmış verileri yolluyoruz
+        card_digits: cleanCardNumber, 
+        card_expiration_date: formattedDate,
+        card_type: detectedCardType, // Otomatik algılanan tip (VISA / MASTER_CARD)
+        
         card_security_code: cardDetails.cardCvc,
-        card_type: "VISA", 
         card_holder: cardDetails.cardHolder
       } : {}),
     };
 
-    console.log("Backend'e Giden Body:", JSON.stringify(orderBody));
+    console.log("🚀 Backend'e Giden Body:", JSON.stringify(orderBody, null, 2));
 
     const response = await fetch(`${API_BASE_URL}/orders/complete-shopping`, {
       method: "POST",
@@ -155,18 +184,21 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
     });
 
     const json = await response.json();
-    console.log("Backend Cevabı:", json);
+    console.log(" Backend Cevabı:", json);
     
     if (response.ok && json.status === 'success' && json.data.order_no) {
       return { success: true, orderNo: json.data.order_no, message: "Siparişiniz başarıyla alındı" };
     } else {
       let errorMessage = "Sipariş oluşturulamadı.";
       if (json.message) errorMessage = json.message;
-      else if (json.reason) errorMessage = JSON.stringify(json.reason);
+      else if (json.reason) {
+          if (typeof json.reason === 'string') errorMessage = json.reason;
+          else errorMessage = JSON.stringify(json.reason);
+      }
       return { success: false, orderNo: null, message: errorMessage };
     }
-  } catch (error) {
-    console.error("Sipariş hatası:", error);
-    return { success: false, orderNo: null, message: "Bir sorun oluştu" };
+  } catch (error: any) {
+    console.error("Sipariş hatası (Network):", error);
+    return { success: false, orderNo: null, message: error.message || "Bir sorun oluştu" };
   }
 }
