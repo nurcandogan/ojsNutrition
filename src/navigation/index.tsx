@@ -32,6 +32,7 @@ import MenuTabs from '../Svgs/MenuTabs';
 import CheckoutScreen from './screens/CheckoutScreen';
 import OrderSuccessScreen from './screens/OrderSuccessScreen';
 import Orders from './screens/Orders';
+import OrderDetailScreen from './screens/OrderDetailScreen';
 
 
 
@@ -196,6 +197,7 @@ function RootNavigation() {
           ContactUs:    { screen: ContactUs },
           Sss:          { screen: Sss },
           Orders:       { screen: Orders },
+          OrderDetailScreen: { screen: OrderDetailScreen }
         }
 
       : { Login: { screen: LoginRegister } },

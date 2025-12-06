@@ -30,6 +30,7 @@ module.exports = {
         placeHolderText:'#A1A1AA',
         basketText:'#919191',
         searchBg:'#F3F3F3',
+        orderText:'#52C41A',
         
       }
     },

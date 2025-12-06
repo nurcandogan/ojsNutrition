@@ -218,12 +218,8 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
 // Tüm siparişleri getirir (sipariş listesi)
 export async function fetchAllOrders(): Promise<OrderListItem[]> {
   try {
-    console.log("🚀 Siparişleri Çekme Başladı...");
-    
     let token = await AsyncStorage.getItem("access_token");
-    
     if (!token) {
-        console.log("❌ Token yok, çıkış yapılıyor.");
         return [];
     }
 
@@ -231,7 +227,7 @@ export async function fetchAllOrders(): Promise<OrderListItem[]> {
     // Bazen token "eyJh..." şeklinde tırnaklı kaydedilir, bunu düzeltiyoruz.
     token = token.replace(/^"|"$/g, ''); 
 
-    // 2. URL'NİN SONUNA "/" EKLEMEK (Çok Önemli!)
+
     // Bazı API'ler '/orders' yerine '/orders/' ister.
     const url = `${API_BASE_URL}/orders/`; 
 
@@ -260,15 +256,15 @@ export async function fetchAllOrders(): Promise<OrderListItem[]> {
     }
 
     if (json?.status === 'success' && Array.isArray(json.data)) {
-        console.log(`✅ ${json.data.length} adet sipariş başarıyla çekildi.`);
+        console.log(` ${json.data.length} adet sipariş başarıyla çekildi.`);
         return json.data;
     }
     
-    console.log("⚠️ Veri formatı beklendiği gibi değil:", json);
+    console.log(" Veri formatı beklendiği gibi değil:", json);
     return [];
 
   } catch (error) {
-    console.log("❌ Order Fetch Hatası (Catch):", error);
+    console.log(" Order Fetch Hatası (Catch):", error);
     return [];
   }
 }

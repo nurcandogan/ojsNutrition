@@ -15,7 +15,7 @@ const formatDate = (dateString: string) => {
 const getStatusInfo = (status: string) => {
     switch (status) {
         case 'delivered': 
-            return { text: 'Teslim Edildi', color: '#7AC142' }; // Yeşil
+            return { text: 'Teslim Edildi', styleClass: "text-orderText" }; // Yeşil
         case 'getting_ready': 
             return { text: 'Hazırlanıyor', color: '#F59E0B' }; // Turuncu
         case 'shipped': 
@@ -49,34 +49,34 @@ const MyOrdersScreen = () => {
     const mainProductName = item.cart_detail?.[0]?.name || "Sipariş Ürünü";
 
     return (
-      <View className="border-b border-gray-200 py-6 px-4 bg-white">
+      <View className="border-b border-black py-6 px-10 bg-white ">
         
         {/* Durum Yazısı (Yeşil) */}
-        <Text style={{ color: statusInfo.color }} className="font-medium text-sm mb-1">
+        <Text className={`font-medium text-sm mb-1 ${statusInfo.styleClass}`}>
             {statusInfo.text}
         </Text>
 
         {/* Ürün İsmi (Kalın Siyah) */}
-        <Text className="text-black font-bold text-lg mb-1 uppercase tracking-wide">
+        <Text className="text-black font-semibold text-[13.25px] mb-1 uppercase tracking-wide">
             {mainProductName}
         </Text>
 
         {/* Tarih Bilgisi */}
-        <Text className="text-black text-sm mb-1">
+        <Text className="text-black text-[13.88px] mb-1">
             {formatDate(item.created_at)} Tarihinde Sipariş Verildi
         </Text>
 
         {/* Sipariş Numarası */}
-        <Text className="text-black text-sm mb-4">
+        <Text className="text-black  text-[13.88px] mb-4">
             {item.order_no} numaralı sipariş
         </Text>
 
         {/* Buton */}
         <TouchableOpacity 
             onPress={() => navigation.navigate('OrderDetailScreen', { orderId: item.order_no })}
-            className="border border-black rounded py-2.5 px-5 self-start active:bg-gray-100"
+            className="border border-black rounded-[4px] py-2.5 px-5 self-start active:bg-gray-100"
         >
-            <Text className="text-black font-medium text-sm">
+            <Text className="text-black  text-[13.75px]">
                 Detayı Görüntüle
             </Text>
         </TouchableOpacity>
