@@ -73,7 +73,7 @@ const MyOrdersScreen = () => {
 
         {/* Buton */}
         <TouchableOpacity 
-            onPress={() => navigation.navigate('OrderDetailScreen', { orderId: item.order_no })}
+            onPress={() => navigation.navigate('OrderDetailScreen', { orderId: item.order_no, orderDate: item.created_at })}
             className="border border-black rounded-[4px] py-2.5 px-5 self-start active:bg-gray-100"
         >
             <Text className="text-black  text-[13.75px]">

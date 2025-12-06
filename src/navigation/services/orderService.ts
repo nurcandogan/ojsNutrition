@@ -5,7 +5,9 @@ import { useCartStore } from '../../store/cartStore';
 export interface OrderDetail {
     order_no: string;
     order_status: string;
+    created_at: string;
     shipment_tracking_number: string | null;
+    cargo_firm?: string;
     address: {
         title: string;
         country: string;
@@ -13,6 +15,8 @@ export interface OrderDetail {
         subregion: string;
         full_address: string;
         phone_number: string;
+        first_name?: string; 
+        last_name?: string;  
     };
     payment_detail: {
         card_digits: string;
