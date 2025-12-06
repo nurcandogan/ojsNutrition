@@ -92,7 +92,7 @@ const OrderDetailScreen = () => {
       }
   }
 
-  const displayCargoFirm = cargo_firm ? cargo_firm : "Kargo Firması";
+   const cargoLabel = cargo_firm ? cargo_firm : "Yurtiçi Kargo";
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -152,10 +152,9 @@ const OrderDetailScreen = () => {
         {/* KARGO TAKİP */}
         {shipment_tracking_number && (
             <View className="px-4 py-3 border-b border-black mx-3 flex-row justify-between items-center">
-                <Text className="text-[13.75px] text-black font-medium">
-                    {cargo_firm ? cargo_firm : "Kargo"} Takip Numarası:
+                <Text className="text-[12.5px] text-black ">{cargoLabel} <Text className='text-[13.75px]'>  Takip Numarası:</Text>
                 </Text>
-                <Text className="text-[13.75px] mr-20 text-black ">{shipment_tracking_number}</Text>
+                <Text className="text-[13.75px] mr-10 text-black ">{shipment_tracking_number}</Text>
             </View>
         )}
 
@@ -181,13 +180,13 @@ const OrderDetailScreen = () => {
             <Text className="font-bold text-black mb-4 text-base">Özet</Text>
             
             <View className="flex-row justify-between mb-2">
-                <Text className="text-black">Ara Toplam</Text>
-                <Text className="text-black">{payment_detail.base_price} TL</Text>
+                <Text className="text-black text-[13.75px]">Ara Toplam</Text>
+                <Text className="text-black text-[13.75px]">{payment_detail.base_price} TL</Text>
             </View>
             
-            <View className="flex-row justify-between mb-2">
-                <Text className="text-black">Kargo</Text>
-                <Text className="text-black">
+            <View className="flex-row justify-between ">
+                <Text className="text-black text-[13.75px]">Kargo</Text>
+                <Text className="text-black text-[13.75px]">
                     {payment_detail.shipment_fee === 0 ? "0 TL" : `${payment_detail.shipment_fee} TL`}
                 </Text>
             </View>
@@ -200,9 +199,9 @@ const OrderDetailScreen = () => {
                 </View>
             )}
 
-            <View className="flex-row justify-between mt-2 pt-2 border-t border-gray-100">
-                <Text className="text-black font-bold text-lg">Toplam</Text>
-                <Text className="text-black font-bold text-lg">{Math.round(payment_detail.final_price)} TL</Text>
+            <View className="flex-row justify-between pt-2 ">
+                <Text className="text-black font-bold text-[13.75px]">Toplam</Text>
+                <Text className="text-black font-bold text-[13.75px]">{Math.round(payment_detail.final_price)} TL</Text>
             </View>
         </View>
 
