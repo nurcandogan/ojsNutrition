@@ -71,11 +71,11 @@ const OrderSuccessScreen = () => {
       <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 150 }}>
         
         <View className="items-center py-8  mb-4">
-          <View className="mb-4 mt-28">
+          <View className="mb-4 mt-20">
              <OrderIcon  /> 
           </View>
           
-          <Text className="text-2xl font-bold text-green-600">Siparişiniz Alındı</Text>
+          <Text className="text-[22px] font-semibold text-black">Siparişiniz Alındı</Text>
           <Text className="text-sm text-gray-500 mt-2">Sipariş No: **{order_no}**</Text>
         </View>
 
@@ -108,7 +108,7 @@ const OrderSuccessScreen = () => {
           </View>
 
           {/* 3. LİSTE: ÜRÜNLER */}
-          <View>
+          <View className='mx-4 '>
              <Text className="text-lg font-bold text-black mb-3">
                 Ürünler ({shopping_cart.items.length})
              </Text>
@@ -134,8 +134,8 @@ const OrderSuccessScreen = () => {
       </ScrollView>
 
       {/* --- ALT SABİT BUTON --- */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white pb-8 pt-4 border-t border-gray-100 px-4">
-        <OkInput title="ANA SAYFAYA DÖN" onPress={handleGoHome} />
+      <View className="absolute bottom-0 left-0 right-0 bg-white pb-8 pt-4 mb-8   border-gray-100 mx-auto w-full px-5">
+        <OkInput title="Siparişe Git" onPress={handleGoHome} />
       </View>
 
     </SafeAreaView>
