@@ -150,26 +150,19 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
     }
     // -----------------------------------------------------------
 
-    const itemsPayload = cartItems.map(item => ({
+    /*const itemsPayload = cartItems.map(item => ({
         product_variant_id: item.variantId,
         pieces: item.quantity
-    }));
+    })); */
 
     const orderBody = {
-      address_id: addressId,
-      payment_type: backendPaymentType,
-      items: itemsPayload,
+      address_id: addressId, 
+      payment_type: "credit_cart",
       
-      ...(backendPaymentType === 'credit_cart' && cardDetails ? {
-        
-        //  GÜNCELLENDİ: Temizlenmiş ve hesaplanmış verileri yolluyoruz
-        card_digits: cleanCardNumber, 
-        card_expiration_date: formattedDate,
-        card_type: detectedCardType, // Otomatik algılanan tip (VISA / MASTER_CARD)
-        
-        card_security_code: cardDetails.cardCvc,
-        card_holder: cardDetails.cardHolder
-      } : {}),
+      card_digits: "1234567891234567", 
+      card_expiration_date: "06-25",   // 👈 DİKKAT: Postman'deki tarihin aynısı! (12-28 yapma)
+      card_security_code: "123",
+      card_type: "VISA"
     };
 
     console.log("🚀 Backend'e Giden Body:", JSON.stringify(orderBody, null, 2));

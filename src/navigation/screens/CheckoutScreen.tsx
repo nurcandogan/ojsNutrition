@@ -138,7 +138,7 @@ const CheckoutScreen = () => {
         {/* --- 1. TESLİMAT ADRESİ --- */}
         <View className="mt-4 mb-6">
             <View className="flex-row items-center mb-4">
-                <StepIndicator step={1} isCompleted={!!selectedAddressId} />. 
+                <StepIndicator step={1} isCompleted={!!selectedAddressId} />
                 <Text className="text-xl font-bold text-black flex-1">Adres</Text>
                 
                 {!!selectedAddressId && (
