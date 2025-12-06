@@ -6,6 +6,7 @@ import { fetchOrderDetail, OrderDetail } from '../services/orderService';
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput'; 
 import { clearRemoteCart } from '../services/basketService';
 import OrderIcon from '../../Svgs/OrderIcon';
+import Orders from './Orders';
 
 // 🔥 Senin oluşturduğun SVG ikonunu buraya import etmelisin.
 // Yolunu kendi projene göre düzenle (Örn: '../../assets/svg/OrderIcon')
@@ -135,7 +136,7 @@ const OrderSuccessScreen = () => {
 
       {/* --- ALT SABİT BUTON --- */}
       <View className="absolute bottom-0 left-0 right-0 bg-white pb-8 pt-4 mb-8   border-gray-100 mx-auto w-full px-5">
-        <OkInput title="Siparişe Git" onPress={handleGoHome} />
+        <OkInput title="Siparişe Git" onPress={() => navigation.navigate("Orders")} />
       </View>
 
     </SafeAreaView>

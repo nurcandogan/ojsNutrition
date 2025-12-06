@@ -31,6 +31,7 @@ import AllTabs from '../Svgs/AllTabs';
 import MenuTabs from '../Svgs/MenuTabs';
 import CheckoutScreen from './screens/CheckoutScreen';
 import OrderSuccessScreen from './screens/OrderSuccessScreen';
+import Orders from './screens/Orders';
 
 
 
@@ -136,6 +137,12 @@ const RootStack = createNativeStackNavigator({
         headerShown: false,
       },
     },
+    Orders: {
+      screen: Orders,
+      options: {
+        headerShown: false,
+      },
+    },
     
     HomeTabs: {
       screen: HomeTabs,
@@ -188,6 +195,7 @@ function RootNavigation() {
           AboutUs:      { screen: AboutUs },
           ContactUs:    { screen: ContactUs },
           Sss:          { screen: Sss },
+          Orders:       { screen: Orders },
         }
 
       : { Login: { screen: LoginRegister } },

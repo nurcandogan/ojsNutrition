@@ -46,6 +46,24 @@ export interface OrderDetail {
     };
 }
 
+
+export interface OrderListItem {
+    order_no: string;
+    order_status: string;
+    created_at: string;
+    total_price: number;
+    cart_detail: Array<{
+        variant_id: string;
+        name: string;
+        photo_src: string;
+        pieces: string;
+        unit_price: string;
+        total_price: string;
+        slug: string;
+    }>;
+}
+
+
 export async function fetchOrderDetail(orderId: string): Promise<OrderDetail | null> {
   try {
     const token = await AsyncStorage.getItem("access_token");
@@ -193,5 +211,64 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
   } catch (error: any) {
     console.error("Sipariş hatası (Network):", error);
     return { success: false, orderNo: null, message: error.message || "Bir sorun oluştu" };
+  }
+}
+
+
+// Tüm siparişleri getirir (sipariş listesi)
+export async function fetchAllOrders(): Promise<OrderListItem[]> {
+  try {
+    console.log("🚀 Siparişleri Çekme Başladı...");
+    
+    let token = await AsyncStorage.getItem("access_token");
+    
+    if (!token) {
+        console.log("❌ Token yok, çıkış yapılıyor.");
+        return [];
+    }
+
+    // 1. TOKEN TEMİZLİĞİ (Gereksiz tırnakları sil)
+    // Bazen token "eyJh..." şeklinde tırnaklı kaydedilir, bunu düzeltiyoruz.
+    token = token.replace(/^"|"$/g, ''); 
+
+    // 2. URL'NİN SONUNA "/" EKLEMEK (Çok Önemli!)
+    // Bazı API'ler '/orders' yerine '/orders/' ister.
+    const url = `${API_BASE_URL}/orders/`; 
+
+    console.log("🌍 İstek Atılan URL:", url);
+    // console.log("🔑 Kullanılan Token (İlk 10):", token.substring(0, 10) + "...");
+
+    const response = await fetch(url, { 
+        method: 'GET',
+        headers: { 
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+    });
+
+    console.log("📡 Sunucu Durum Kodu:", response.status);
+
+    const json = await response.json();
+    
+    // Loglarda gelen veriyi görelim
+    // console.log("📦 Gelen Veri:", JSON.stringify(json, null, 2));
+
+    if (response.status === 401) {
+        console.log("⚠️ Yetki Hatası (401)! Token geçersiz veya URL yanlış.");
+        return [];
+    }
+
+    if (json?.status === 'success' && Array.isArray(json.data)) {
+        console.log(`✅ ${json.data.length} adet sipariş başarıyla çekildi.`);
+        return json.data;
+    }
+    
+    console.log("⚠️ Veri formatı beklendiği gibi değil:", json);
+    return [];
+
+  } catch (error) {
+    console.log("❌ Order Fetch Hatası (Catch):", error);
+    return [];
   }
 }

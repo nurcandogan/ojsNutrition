@@ -1,8 +1,9 @@
 
 import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { API_BASE_URL } from '@env';
 
 const AccountInfo = () => {
   const navigation = useNavigation();
@@ -21,6 +22,30 @@ const AccountInfo = () => {
       console.error('Çıkış yapılırken hata oluştu:', error);
     }
   };
+
+
+  
+  
+/*
+const abs = async () => {
+  const token = await AsyncStorage.getItem("access_token");
+ const response = await fetch(API_BASE_URL + "/users/my-account", {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  })
+  const json = await response.json();
+  console.log("json:", json);
+}
+
+useEffect(() => {
+  abs();
+}, [])
+ 
+*/
+
 
   return (
     <View className="flex-1 items-center justify-center">
