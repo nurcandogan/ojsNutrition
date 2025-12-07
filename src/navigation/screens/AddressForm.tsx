@@ -5,6 +5,7 @@ import { useNavigation, useFocusEffect, useRoute } from '@react-navigation/nativ
 import Feather from '@expo/vector-icons/Feather';
 import PhoneField from '../../components/TabsMenu/Adress/PhoneField';
 import SaveButton from '../../components/TabsMenu/Adress/SaveButton';
+import DeleteButton from '../../components/TabsMenu/Adress/DeleteButton';
 import Input from '../../components/TabsMenu/BizeUlasin/Input';
 import AddressCard from '../../components/TabsMenu/Adress/AddressCard';
 import { useAddressStore } from '../../store/addressStore';
@@ -14,6 +15,7 @@ import {
   AddressProps, 
   fetchAddresses, 
   saveAddress, 
+  deleteAddress, 
   fetchCities, 
   fetchDistricts, 
   CityItem, 
@@ -23,14 +25,18 @@ import {
 const AddressForm = () => {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
-  const isSelectionMode = route.params?.isSelectionMode || false;
+  
+  // Checkout'tan geliyorsak seçim modu açık
+  const isSelectionMode = !!route.params?.isSelectionMode;
+  
   const { selectedAddressId, setSelectedAddressId } = useAddressStore();
 
   const [adresses, setAdresses] = useState<AddressProps[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [loading, setLoading] = useState(false);        // Sayfa açılış loading'i
+  const [loadingForm, setLoadingForm] = useState(false); // Form açılırken verileri çekme loading'i
+  const [loadingDelete, setLoadingDelete] = useState(false);
   
-  // Düzenlenecek adresin tamamını tutar
+  const [isFormVisible, setIsFormVisible] = useState(false);
   const [addressToEdit, setAddressToEdit] = useState<AddressProps | null>(null);
 
   // Form Input State'leri
@@ -42,29 +48,26 @@ const AddressForm = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [country] = useState({ cca2: "TR", callingCode: ["90"] });
 
-  // Şehir & İlçe Seçimi
+  // Şehir & İlçe
   const [cities, setCities] = useState<CityItem[]>([]);
   const [districts, setDistricts] = useState<DistrictItem[]>([]);
   const [selectedCity, setSelectedCity] = useState<CityItem | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<DistrictItem | null>(null);
 
-  // Modal Ayarları
+  // Modal
   const [modalVisible, setModalVisible] = useState(false);
   const [modalType, setModalType] = useState<'CITY' | 'DISTRICT'>('CITY');
   const [searchText, setSearchText] = useState('');
 
-  // 1. Verileri Yükle
+  // 1. OPTİMİZE EDİLDİ: Sadece adresleri çeker (Çok hızlı açılır)
   const loadInitialData = async () => {
     setLoading(true);
     try {
-      const [addrRes, citiesRes] = await Promise.all([
-        fetchAddresses(),
-        fetchCities()
-      ]);
+      // SADECE ADRESLERİ ÇEKİYORUZ, ŞEHİRLERİ DEĞİL
+      const addrRes = await fetchAddresses();
       setAdresses(addrRes);
-      setCities(citiesRes);
       
-      // Hiç adres yoksa ekleme ekranını aç
+      // Eğer hiç adres yoksa mecburen formu açacağız
       if (addrRes.length === 0) {
         handleAddNewAddress();
       }
@@ -79,48 +82,68 @@ const AddressForm = () => {
     loadInitialData();
   }, []));
 
-  // 2. Yeni Adres Ekleme Modu
-  const handleAddNewAddress = () => {
+  // YARDIMCI: Şehirleri sadece ihtiyaç anında çeker
+  const ensureCitiesLoaded = async () => {
+    if (cities.length > 0) return; // Zaten çekildiyse tekrar çekme
+    
+    try {
+      setLoadingForm(true); // Ufak bir bekleme gösterilebilir
+      const citiesRes = await fetchCities();
+      setCities(citiesRes);
+    } catch (error) {
+      console.log("Şehirler çekilemedi", error);
+    } finally {
+      setLoadingForm(false);
+    }
+  };
+
+  // 2. Yeni Adres Ekleme
+  const handleAddNewAddress = async () => {
+    // Önce şehir verisi var mı kontrol et, yoksa çek
+    await ensureCitiesLoaded();
+    
     resetForm();
     setIsFormVisible(true);
   };
   
-  // 3. Düzenleme Modu (Verileri Doldur)
+  // 3. Düzenleme Modu
   const handleEditAddress = async (item: AddressProps) => {
-    resetForm(item); // Inputları doldur
+    // Önce şehir verisi var mı kontrol et, yoksa çek
+    await ensureCitiesLoaded();
+
+    resetForm(item);
     
-    // Backend'den gelen mevcut şehir ve ilçeyi state'e set et
+    // Düzenlenen adresin şehir ve ilçe bilgilerini hazırla
     const cityObj = { id: item.region.id, name: item.region.name };
     const districtObj = { id: item.subregion.id, name: item.subregion.name };
     
     setSelectedCity(cityObj);
     setSelectedDistrict(districtObj);
     
-    // Şehir seçili olduğu için o şehrin ilçelerini de hemen yükle (kullanıcı değiştirmek isterse diye)
-    const dists = await fetchDistricts(cityObj.name);
-    setDistricts(dists);
+    // Seçili şehrin ilçelerini çek
+    try {
+        const dists = await fetchDistricts(cityObj.name);
+        setDistricts(dists);
+    } catch (e) { console.log(e); }
 
     setIsFormVisible(true);
   };
 
   const resetForm = (item?: AddressProps) => {
-    setAddressToEdit(item || null); // Eğer item varsa düzenleme modudur
+    setAddressToEdit(item || null);
     setAdressName(item?.title || '');
     setName(item?.first_name || '');
     setSurname(item?.last_name || '');
     setAdress(item?.full_address || '');
     setApartment(''); 
     setPhoneNumber(item?.phone_number.replace('+90', '') || '');
-    
     if (!item) {
-        // Yeni ekleme ise seçimleri sıfırla
         setSelectedCity(null);
         setSelectedDistrict(null);
         setDistricts([]);
     }
   };
 
-  // Adres Seçimi (Checkout için)
   const handleSelectAddress = (item: AddressProps) => {
       if (isSelectionMode) {
           setSelectedAddressId(item.id);
@@ -128,14 +151,11 @@ const AddressForm = () => {
       }
   };
 
-  // Modal Seçimleri
   const onSelectCity = async (city: CityItem) => {
     setSelectedCity(city);
-    setSelectedDistrict(null); // Şehir değişirse ilçe sıfırlanır
+    setSelectedDistrict(null);
     setModalVisible(false);
     setSearchText('');
-    
-    // İlçeleri çek
     const dists = await fetchDistricts(city.name);
     setDistricts(dists);
   };
@@ -146,51 +166,73 @@ const AddressForm = () => {
     setSearchText('');
   };
 
-  // 4. KAYDETME BUTONU
+  const handleDelete = async () => {
+    if (!addressToEdit?.id) return;
+
+    Alert.alert(
+      "Adresi Sil",
+      "Bu adresi silmek istediğinize emin misiniz?",
+      [
+        { text: "Vazgeç", style: "cancel" },
+        { 
+          text: "Sil", 
+          style: "destructive", 
+          onPress: async () => {
+            try {
+              setLoadingDelete(true);
+              await deleteAddress(addressToEdit.id.toString());
+              Alert.alert("Başarılı", "Adres başarıyla silindi.");
+              setIsFormVisible(false);
+              resetForm();
+              loadInitialData();
+            } catch (error: any) {
+              Alert.alert("Hata", error.message || "Silinemedi.");
+            } finally {
+              setLoadingDelete(false);
+            }
+          }
+        }
+      ]
+    );
+  };
+
   const handleSave = async () => {
     if (!adressName || !name || !surname || !adress || !selectedCity || !selectedDistrict || !phoneNumber) {
       Alert.alert("Uyarı", "Lütfen tüm zorunlu alanları doldurun");
       return;
     }
 
-    setLoading(true);
+    // Formu kilitliyoruz (loading)
+    setLoadingForm(true); 
     try {
       const cleanPhone = phoneNumber.replace(/\D/g, "");
-      
       const body = {
         title: adressName,  
         first_name: name,
         last_name: surname,
         country_id: 226, 
-        region_id: selectedCity.id,       // Şehir ID
-        subregion_id: selectedDistrict.id,// İlçe ID
+        region_id: selectedCity.id,
+        subregion_id: selectedDistrict.id,
         full_address: adress,
         apartment: apartment,
         phone_number: `+90${cleanPhone}`
       };
-
-      // 🔥 KİLİT NOKTA: 
-      // addressToEdit varsa onun ID'sini gönderiyoruz (PUT oluyor).
-      // Yoksa ID göndermiyoruz (POST oluyor).
       await saveAddress(body, addressToEdit?.id);
-
       Alert.alert("Başarılı", `Adres başarıyla ${addressToEdit ? 'güncellendi' : 'kaydedildi'}.`);
-      
       setIsFormVisible(false); 
       resetForm(); 
-      loadInitialData(); // Listeyi yenile
+      loadInitialData();
     } catch (error: any) {
       Alert.alert("Hata", error.message || "Bir sorun oluştu");
+    } finally {
+      setLoadingForm(false);
     }
-    setLoading(false);
   };
   
-  // Başlık Ayarı
   const headerTitle = isFormVisible 
     ? (addressToEdit ? "Adresi Düzenle" : "Yeni Adres Ekle")
     : "Adreslerim";
 
-  // --- SEÇİM MODALI ---
   const renderSelectionModal = () => {
     const data = modalType === 'CITY' ? cities : districts;
     const filteredData = data.filter(item => 
@@ -200,7 +242,6 @@ const AddressForm = () => {
     return (
         <Modal visible={modalVisible} animationType="slide">
             <SafeAreaView className="flex-1 bg-white">
-                {/* Modal Header */}
                 <View className="px-4 py-4 flex-row items-center border-b border-gray-200 justify-between">
                     <Text className="text-lg font-bold">
                         {modalType === 'CITY' ? 'Şehir Seçiniz' : 'İlçe Seçiniz'}
@@ -209,8 +250,6 @@ const AddressForm = () => {
                         <Feather name="x" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
-
-                {/* Arama */}
                 <View className="p-4">
                     <TextInput 
                         className="bg-gray-100 p-3 rounded-lg text-black"
@@ -219,8 +258,6 @@ const AddressForm = () => {
                         onChangeText={setSearchText}
                     />
                 </View>
-
-                {/* Liste */}
                 <FlatList 
                     data={filteredData}
                     keyExtractor={(item) => item.id.toString()}
@@ -238,6 +275,7 @@ const AddressForm = () => {
     );
   };
 
+  // Eğer ilk yüklemede adresler çekiliyorsa loading göster
   if (loading && adresses.length === 0 && !isFormVisible) {
       return (
         <SafeAreaView className="flex-1 bg-white items-center justify-center">
@@ -273,7 +311,7 @@ const AddressForm = () => {
               <AddressCard
                 key={item.id}
                 address={item}
-                isSelectable={isSelectionMode}
+                isSelectable={isSelectionMode} 
                 isSelected={item.id === selectedAddressId}
                 onSelect={() => handleSelectAddress(item)}
                 onEdit={() => handleEditAddress(item)} 
@@ -285,51 +323,69 @@ const AddressForm = () => {
         {/* --- ADRES FORMU --- */}
         {isFormVisible && (
           <View>
-            <View className="mt-10">
-              <Input title="*Adres Başlığı" value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." />
-              <Input title="*Ad" value={name} onChangeText={setName} placeholder="" />
-              <Input title="*Soyad" value={surname} onChangeText={setSurname} placeholder="" />
-              <Input title="*Adres" value={adress} onChangeText={setAdress} placeholder="" multiline />
-              <Input title="Apartman, Daire" value={apartment} onChangeText={setApartment} placeholder="" />
-              
-              {/* ŞEHİR SEÇİMİ */}
-              <View className="mx-5 mb-4">
-                  <Text className="text-sm font-semibold text-gray-700 mb-1">*Şehir</Text>
-                  <TouchableOpacity 
-                    onPress={() => { setModalType('CITY'); setModalVisible(true); }}
-                    className="border border-gray-300 rounded-lg p-3 bg-white flex-row justify-between items-center"
-                  >
-                      <Text className={selectedCity ? "text-black" : "text-gray-400"}>
-                          {selectedCity ? selectedCity.name : "Şehir Seçiniz"}
-                      </Text>
-                      <Feather name="chevron-down" size={20} color="gray" />
-                  </TouchableOpacity>
-              </View>
+             {/* FORM AÇILIRKEN ŞEHİRLER YÜKLENİYORSA LOADING GÖSTER */}
+             {loadingForm ? (
+                 <View className="h-60 justify-center items-center">
+                     <ActivityIndicator size="large" color="#4F46E5" />
+                     <Text className="text-gray-500 mt-2">Form verileri hazırlanıyor...</Text>
+                 </View>
+             ) : (
+                <View className="mt-10">
+                  <Input title="*Adres Başlığı" value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." />
+                  <Input title="*Ad" value={name} onChangeText={setName} placeholder="" />
+                  <Input title="*Soyad" value={surname} onChangeText={setSurname} placeholder="" />
+                  <Input title="*Adres" value={adress} onChangeText={setAdress} placeholder="" multiline />
+                  <Input title="Apartman, Daire" value={apartment} onChangeText={setApartment} placeholder="" />
+                  
+                  <View className="mx-5 mb-4">
+                      <Text className="text-sm font-semibold text-gray-700 mb-1">*Şehir</Text>
+                      <TouchableOpacity 
+                        onPress={() => { setModalType('CITY'); setModalVisible(true); }}
+                        className="border border-gray-300 rounded-lg p-3 bg-white flex-row justify-between items-center"
+                      >
+                          <Text className={selectedCity ? "text-black" : "text-gray-400"}>
+                              {selectedCity ? selectedCity.name : "Şehir Seçiniz"}
+                          </Text>
+                          <Feather name="chevron-down" size={20} color="gray" />
+                      </TouchableOpacity>
+                  </View>
 
-              {/* İLÇE SEÇİMİ */}
-              <View className="mx-5 mb-4">
-                  <Text className="text-sm font-semibold text-gray-700 mb-1">*İlçe</Text>
-                  <TouchableOpacity 
-                    onPress={() => { 
-                        if(!selectedCity) { Alert.alert("Uyarı", "Önce şehir seçiniz."); return; }
-                        setModalType('DISTRICT'); 
-                        setModalVisible(true); 
-                    }}
-                    className="border border-gray-300 rounded-lg p-3 bg-white flex-row justify-between items-center"
-                  >
-                      <Text className={selectedDistrict ? "text-black" : "text-gray-400"}>
-                          {selectedDistrict ? selectedDistrict.name : "İlçe Seçiniz"}
-                      </Text>
-                      <Feather name="chevron-down" size={20} color="gray" />
-                  </TouchableOpacity>
-              </View>
+                  <View className="mx-5 mb-4">
+                      <Text className="text-sm font-semibold text-gray-700 mb-1">*İlçe</Text>
+                      <TouchableOpacity 
+                        onPress={() => { 
+                            if(!selectedCity) { Alert.alert("Uyarı", "Önce şehir seçiniz."); return; }
+                            setModalType('DISTRICT'); 
+                            setModalVisible(true); 
+                        }}
+                        className="border border-gray-300 rounded-lg p-3 bg-white flex-row justify-between items-center"
+                      >
+                          <Text className={selectedDistrict ? "text-black" : "text-gray-400"}>
+                              {selectedDistrict ? selectedDistrict.name : "İlçe Seçiniz"}
+                          </Text>
+                          <Feather name="chevron-down" size={20} color="gray" />
+                      </TouchableOpacity>
+                  </View>
 
-              <PhoneField value={phoneNumber} onChange={setPhoneNumber} country={country} setCountry={() => {}} />
-            </View>
+                  <PhoneField value={phoneNumber} onChange={setPhoneNumber} country={country} setCountry={() => {}} />
+                </View>
+             )}
             
-            <View className="items-end mx-5 mt-14">
-              <SaveButton loading={loading} onPress={handleSave} />
-            </View>
+            {/* Buton Alanı (Form Yüklenirken Gizlenebilir veya Disabled Olabilir) */}
+            {!loadingForm && (
+                <View className="flex-row justify-end items-center mx-5 mt-14 mb-10">
+                  {addressToEdit && (
+                    <DeleteButton 
+                      loading={loadingDelete} 
+                      onPress={handleDelete} 
+                    />
+                  )}
+                  <SaveButton 
+                    loading={loadingForm} // Kaydederken de bu loading kullanılabilir veya ayrı tutulur
+                    onPress={handleSave} 
+                  />
+                </View>
+            )}
           </View>
         )}
 

@@ -117,3 +117,30 @@ export async function fetchDistricts(cityName: string): Promise<DistrictItem[]> 
     return [];
   } catch (error) { return []; }
 }
+
+
+// Adresi sil
+export async function deleteAddress(addressId: string): Promise<boolean> {
+  try {
+    const token = await AsyncStorage.getItem("access_token");
+    if (!token) throw new Error("Oturum bulunamadı");
+
+    const response = await fetch(`${API_BASE_URL}/users/addresses/${addressId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (response.ok) {
+      return true;
+    } else {
+      const json = await response.json();
+      throw new Error(json.message || 'Silme işlemi başarısız oldu');
+    }
+  } catch (error) {
+    console.error("Adres silme hatası:", error);
+    throw error;
+  }
+}
