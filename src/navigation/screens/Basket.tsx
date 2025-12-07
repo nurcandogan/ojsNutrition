@@ -6,6 +6,7 @@ import { MEDIA_BASE_URL } from '@env';
 import { useCartStore } from '../../store/cartStore';
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput';
 import SwipeableItem from '../../components/SwipeableItem';
+import DeleteIcon from '../../Svgs/DeleteIcon';
 
 const Basket = () => {
   const navigation = useNavigation();
@@ -127,16 +128,21 @@ const Basket = () => {
                     >
                       <View className="flex-row gap-6  items-center justify-center">
 
-                        <TouchableOpacity onPress={() => decreaseQuantity(item.variantId)}>
-                          <Feather name="minus" size={18} color="#000" />
-                        </TouchableOpacity>
-
+                        {item.quantity === 1 ? (
+                          <TouchableOpacity onPress={() => removeItem(item.variantId)}>
+                             <DeleteIcon width={17} height={17} />
+                          </TouchableOpacity>
+                        ) : (
+                          <TouchableOpacity onPress={() => decreaseQuantity(item.variantId)}>
+                            <Feather name="minus" size={19} color="#000" />
+                          </TouchableOpacity>
+                        )}
                         <Text className="text-base font-semibold">
                           {item.quantity}
                         </Text>
 
                         <TouchableOpacity onPress={() => increaseQuantity(item.variantId)}>
-                          <Feather name="plus" size={18} color="#000" />
+                          <Feather name="plus" size={19} color="#000" />
                         </TouchableOpacity>
 
                       </View>
