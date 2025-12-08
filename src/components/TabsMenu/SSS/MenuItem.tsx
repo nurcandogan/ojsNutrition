@@ -9,7 +9,7 @@ interface MenuItemProps {
 const MenuItem = ({label, onPress}:MenuItemProps) => {
 
   return (
-   <TouchableOpacity onPress={onPress} className="px-4 py-7   ">
+   <TouchableOpacity onPress={onPress} className=" py-7 px-4 w-full">
         <Text className="text-[13.63px] font-light">{label}</Text>
    </TouchableOpacity>
   )
