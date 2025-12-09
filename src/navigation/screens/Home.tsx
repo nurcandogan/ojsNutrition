@@ -74,14 +74,14 @@ const categoriesFetch = async () => {
      <TextInput
        placeholder="Aradığınız ürünü yazınız..."
        placeholderTextColor="#333333"
-       className="ml-3 flex-1 text-base p-0"
+       className="ml-3 flex-1 text-base "
        value={searchText}
        onChangeText={setSearchText}
        />
     </View>
 
-    <View>
-      <Image source={require('../../assets/ojs-slider.png')} className='w-full h-72 mt-4' resizeMode="cover" />
+    <View className='mt-3'>
+      <Image source={require('../../assets/ojs-slider.png')} className='w-full h-72 ' resizeMode="cover" />
     </View>
 
     <View className='mt-3 px-4'>

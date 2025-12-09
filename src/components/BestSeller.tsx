@@ -22,8 +22,6 @@ const BestSeller = ({items}: Props) => {
       <Text className='ml-5 font-semibold text-xl mt-6 mb-2'>Top Sellers</Text>
       <View className='flex-row flex-wrap mt-4 px-2'>
         {items.map((item) => {
-          
-        
           return (
             <View key={item.slug} className='w-1/2 px-2 mb-6'>
               <TouchableOpacity activeOpacity={0.8} className='' onPress={() => navigation.navigate('ProductDetail', { slug: item.slug })}

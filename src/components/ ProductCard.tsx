@@ -35,7 +35,7 @@ const  ProductCard = ({ product }:ProductCardProps) => {
             <View className='items-center relative  '>
              <Image
               source={{uri: `${MEDIA_BASE_URL}${product.photo_src}`}}
-              className='w-[150px] h-[150px] rounded-lg'
+              className='w-[150px] h-[150px]'
               resizeMode='cover'
              />  
               {hasDiscount && (

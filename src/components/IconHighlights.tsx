@@ -6,7 +6,7 @@ import SafeIcon from '../Svgs/SafeIcon'
 
 const IconHighlights = () => {
   return (
-    <View className='flex-row justify-between mt-7 px-4 mx-2'>
+    <View className='flex-row justify-between mt-7 px-4 mx-2 border-b  border-neutral-200 py-4'>
       <View className='flex-row gap-2 items-center'>
         <CarIcon/>
         <Text className='text-[9.94px] text-center'>Aynı Gün{'\n'}Ücretsiz Kargo</Text>

@@ -227,7 +227,7 @@ const ingredients = (
          <IconHighlights />
 
         <View className='mt-7 px-5'>
-          <Text className='text-[13.01px] mb-1'>Son Kullanma Tarihi: 10.2026</Text>
+          <Text className='text-[13.01px] mb-2 '>Son Kullanma Tarihi: 10.2026</Text>
           <CollapseSection title='ÖZELLİKLER'>
            <Text className='text-s leading-5 ' >
             {data?.explanation?.features  || 'Bilgi yakında eklenecek.'}
