@@ -198,7 +198,7 @@ const ingredients = (
           className='w-[390px] h-[390px] mt-2 ' resizeMode='cover'
         />
 
-        <View className='px-5 mt-4 '>
+        <View className='px-5 mt-4  '>
           <Text className='text-lg font-bold'>{data.name.toUpperCase()} </Text>
 
           {!!data.short_explanation && (
@@ -215,6 +215,7 @@ const ingredients = (
             </View>
 
         </View>
+        <View className='border-b border-neutral-200 pb-4 mx-3'/>
 
         <VariantPicker
          aromas={aromas}
