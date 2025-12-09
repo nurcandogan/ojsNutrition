@@ -35,11 +35,11 @@ const AllProducts = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <ScrollView className="px-[16px]">
+      <ScrollView>
         <BackButtonOverlay onPress={() => navigation.goBack()} data={{ name: "Tüm Ürünler" }} />
         <Text className="text-center text-[22.5px] font-bold mt-8 mb-2">TÜM ÜRÜNLER</Text>
 
-        <View className="flex-row flex-wrap justify-between">
+        <View className="flex-row flex-wrap px-[16px] justify-between">
           {products.map((product) => (
             <TouchableOpacity
               key={product.id}

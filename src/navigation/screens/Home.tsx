@@ -55,10 +55,11 @@ const categoriesFetch = async () => {
 
   return (
 
-  <SafeAreaView className='bg-white'>
+  <SafeAreaView className=' flex-1 bg-white '>
    <ScrollView contentContainerStyle={{ paddingBottom: 20 }} >
-    <View className='flex-row justify-between items-center px-6 mt-3 shadow-lg bg-neutral-200 ' >
+    <View className='flex-row justify-between items-center px-6  shadow-lg bg-white ' >
         <Image source={require('../../assets/ojslogo2.png')} className='w-32 h-16 items-start' resizeMode="contain"  />
+       
        <TouchableOpacity onPress={() => navigation.navigate('Basket' as never)}>
          <Feather name="shopping-cart" size={24} color="black" />
          <View className='absolute top-[-7] right-[-7] bg-discountText rounded-full w-[18px] h-[18px] flex items-center justify-center '>
@@ -68,11 +69,11 @@ const categoriesFetch = async () => {
     </View>
     
      { /* Search bar */}
-    <View className='align-center mt-5  mx-4 flex-row items-center rounded-full bg-inputgray px-4 py-4'>
+    <View className='align-center mt-5  mx-4 flex-row items-center rounded-[24px] bg-searchBg px-4 py-4'>
      <EvilIcons name="search" size={24} color="black" />
      <TextInput
        placeholder="Aradığınız ürünü yazınız..."
-       placeholderTextColor="#999"
+       placeholderTextColor="#333333"
        className="ml-3 flex-1 text-base p-0"
        value={searchText}
        onChangeText={setSearchText}
