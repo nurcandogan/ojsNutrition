@@ -337,11 +337,11 @@ const AddressForm = () => {
                   <Input title="*Adres" value={adress} onChangeText={setAdress} placeholder="" multiline />
                   <Input title="Apartman, Daire" value={apartment} onChangeText={setApartment} placeholder="" />
                   
-                  <View className="mx-5 mb-4">
-                      <Text className="text-sm font-semibold text-gray-700 mb-1">*Şehir</Text>
+                  <View className="mx-5 mb-4 mt-4">
+                      <Text className=" mb-3 text-[13.75px] font-medium">*Şehir</Text>
                       <TouchableOpacity 
                         onPress={() => { setModalType('CITY'); setModalVisible(true); }}
-                        className="border border-gray-300 rounded-lg p-3 bg-white flex-row justify-between items-center"
+                        className="border border-bordergray  w-[358px] h-[50px] rounded-[4px] p-3 bg-commentBg flex-row justify-between items-center"
                       >
                           <Text className={selectedCity ? "text-black" : "text-gray-400"}>
                               {selectedCity ? selectedCity.name : "Şehir Seçiniz"}
@@ -350,15 +350,15 @@ const AddressForm = () => {
                       </TouchableOpacity>
                   </View>
 
-                  <View className="mx-5 mb-4">
-                      <Text className="text-sm font-semibold text-gray-700 mb-1">*İlçe</Text>
+                  <View className="mx-5 mb-4 mt-4">
+                      <Text className=" mb-3 text-[13.75px] font-medium">*İlçe</Text>
                       <TouchableOpacity 
                         onPress={() => { 
                             if(!selectedCity) { Alert.alert("Uyarı", "Önce şehir seçiniz."); return; }
                             setModalType('DISTRICT'); 
                             setModalVisible(true); 
                         }}
-                        className="border border-gray-300 rounded-lg p-3 bg-white flex-row justify-between items-center"
+                        className="border border-bordergray  w-[358px] h-[50px] rounded-[4px] p-3 bg-commentBg flex-row justify-between items-center"
                       >
                           <Text className={selectedDistrict ? "text-black" : "text-gray-400"}>
                               {selectedDistrict ? selectedDistrict.name : "İlçe Seçiniz"}

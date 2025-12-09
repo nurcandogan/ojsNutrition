@@ -3,11 +3,7 @@ import { View, Text, TouchableOpacity, Image, ImageBackground, ImageSourcePropTy
 import { useNavigation } from '@react-navigation/native';
 import { Category } from '../navigation/services/categoryService';
 
-type RootStackParamList = {
-  navigate(arg0: string, arg1: { id: string; name: string; slug: string; }): void;
-  Home: undefined;
-  CategoryProducts: { id: string; name: string; slug: string };
-};
+
 
 interface CategoryCardProps {
   categories: Category[];
@@ -17,8 +13,7 @@ interface CategoryCardProps {
 }
 
 const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryCardProps) => {
-  const navigation = useNavigation<RootStackParamList>();
-
+  const navigation = useNavigation<any>();
   if (loading) {
     return (
       <View className='flex-1 justify-center items-center'>
@@ -45,19 +40,15 @@ const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryC
                   className="absolute mt-9 left-2 w-20 h-16"
                 />
               )}
-
+                   
               <View className='flex-1 justify-center items-center p-4 gap-4 mt-5'>
                 <Text className="font-black text-xl text-center leading-tight text-right">
                   {categorie.name.replace(' ', '\n')}
                 </Text>
-
-                <TouchableOpacity
-                  onPress={() => {
-                  if (categorie.name === 'TÜM ÜRÜNLER') {
-                  navigation.navigate('AllProducts' as never);
-                  return;
-                  }
-
+  
+                <TouchableOpacity onPress={() => {
+                  if (categorie.name === 'TÜM ÜRÜNLER') { navigation.navigate('AllProductsStack');
+                  return; }
                 navigation.navigate('ProductList', {
                  id: categorie.id,
                  name: categorie.name,
@@ -78,3 +69,8 @@ const CategoryCard = ({ categories, images, loading, aminoAcidImage }: CategoryC
 };
 
 export default CategoryCard;
+ 
+
+
+
+// Navigasyona AllProductsStack vermemizin sebebi; Tum urunler home 'da tabs ile gözüküyor ama kategorilerden girince bu tabs'ın gözükmemesi gerekiyor . Bu yüzden ayrı bir stack oluşturdum.

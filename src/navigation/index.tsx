@@ -186,6 +186,7 @@ function RootNavigation() {
     screenOptions: { headerShown: false },
     screens: isLoggedIn
       ? { HomeTabs: { screen: HomeTabs }, 
+          AllProductsStack: { screen: AllProducts },
           ProductList: { screen: ProductList },   
           ProductDetail: { screen: ProductDetail  },  
           Basket:       { screen: Basket },

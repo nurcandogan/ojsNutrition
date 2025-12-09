@@ -45,8 +45,8 @@ const PhoneField = ({ value, onChange, country, setCountry }: PhoneFieldProps) =
   
 
   return (
-    <View className="mx-5 mt-6">
-      <Text className="mb-1 text-[13.75px] font-medium">*Telefon</Text>
+    <View className="mx-5 mt-6 ">
+      <Text className="mb-3 text-[13.75px] font-medium">*Telefon</Text>
 
       <View className="flex-row items-center border border-bordergray w-[358px] h-[50px] rounded-[4px] bg-commentBg px-3">
 
