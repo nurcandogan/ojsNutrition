@@ -14,8 +14,12 @@ const LoginForm = ({label,value,onChangeText,error} :PropsLogin) => {
     <View className='mb-4 w-[324px] mx-auto'>
       <Text className='ml-2 mt-1 font-medium'>{label}</Text>
       <View className=' mt-2  rounded-md w-[324px] h-[50px] border border-bordergray bg-inputgray' >
-        <TextInput className='mx-4 mt-4' value={value} onChangeText={onChangeText} 
-        secureTextEntry={label.includes('Şifre')}/>
+        <TextInput className='mx-4 mt-4'
+         value={value}
+         onChangeText={onChangeText} 
+         secureTextEntry={label.includes('Şifre')}
+         autoCapitalize="none"  // İlk harfi asla büyütmez
+         keyboardType={label.includes('E-posta') ? 'email-address' : 'default'}/>
       </View>
       {/* Hata mesajı */}
       {error && <Text className="text-errortext text-xs  ml-2 mt-2 "  style={{ fontWeight: "500", lineHeight: 18 }}>{error}</Text>}
