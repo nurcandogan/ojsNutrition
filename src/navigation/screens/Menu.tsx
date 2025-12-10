@@ -14,17 +14,14 @@ import Feather from '@expo/vector-icons/Feather';
 
 
 const Menu = () => {
-  const nav = useNavigation<any>();
+  const nav = useNavigation<any>()
 const handleLogout = async () => {
     try {
       // Token'ı sil
       await AsyncStorage.removeItem('access_token');
+      //  ana navigasyon dosyası (RootNavigation), token'ın silindiğini 
+      // otomatik algılayacak ve ekranı "Login"e kendisi çevirecek. o yuzden burada nav işlemi yapmaya gerek yok.
       
-      // Uygulamayı yeniden başlat ki login ekranına dönsün
-      nav.reset({
-        index: 0,
-        routes: [{ name: 'Login' }],
-      });
     } catch (error) {
       console.error('Çıkış yapılırken hata oluştu:', error);
     }

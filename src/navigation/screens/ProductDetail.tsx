@@ -204,8 +204,8 @@ const ingredients = (
           {!!data.short_explanation && (
            <Text className='text-[14.61px] text-shortExplanationText mt-1'>{data.short_explanation} </Text> )}
            
-           <View className='mt-2 flex-row items-center'>
-            <ProductStars rating={data.average_star} commentCount={data.comment_count} />
+           <View className=' flex-row items-center'>
+            <ProductStars detail={true} rating={data.average_star} commentCount={data.comment_count} />
            </View>
 
            <View className="flex-row flex-wrap mt-2">

@@ -6,13 +6,15 @@ import AntDesign from '@expo/vector-icons/AntDesign'
 interface Props {
   rating: number;
   commentCount: number;
+  detail: boolean;
+ 
 }
 
-const ProductStars = ({ rating, commentCount }: Props) => {
+const ProductStars = ({ rating, commentCount, detail= false }: Props) => {
   return (
     
-      <View className='items-center mt-1'>
-            <View className='flex-row '>
+      <View className={`items-center mt-1 ${detail ? 'flex-row' : ''}`}>
+            <View className='flex-row'>
               {[...Array(5)].map((_, index) => (
                 <AntDesign 
                       key={index}
@@ -21,8 +23,9 @@ const ProductStars = ({ rating, commentCount }: Props) => {
                       color="#Fdd835"
                 />
               ))}
+              
             </View>
-             <Text className="text-[12.5px] mt-2 ">
+             <Text className={`text-[12.5px] mt-2 ${detail ? 'ml-4 mb-2' : ''}`}>
                   {commentCount} Yorum
              </Text>
       </View>
