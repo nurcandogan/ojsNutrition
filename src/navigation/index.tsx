@@ -1,21 +1,16 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HeaderButton, Text } from '@react-navigation/elements';
-import {
-  createStaticNavigation,
-  StaticParamList,
-} from '@react-navigation/native';
+import { createStaticNavigation, StaticParamList } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ActivityIndicator, Image, View } from 'react-native';
-import bell from '../assets/bell.png';
-import newspaper from '../assets/newspaper.png';
+import { useEffect } from 'react';
+import * as SplashScreen from "expo-splash-screen";
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Eklendi
+
+// Ekranlar
 import SearchProduct from './screens/SearchProduct';
 import AllProducts from './screens/AllProducts';
 import Menu from './screens/Menu';
 import Home from './screens/Home';
 import LoginRegister from './screens/LoginRegister';
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SplashScreen from "expo-splash-screen";
 import ProductDetail from './screens/ProductDetail';
 import ProductList from './screens/ProductList';
 import AccountInfo from './screens/AccountInfo';
@@ -24,195 +19,74 @@ import AboutUs from './screens/AboutUs';
 import ContactUs from './screens/ContactUs';
 import Sss from './screens/Sss';
 import Basket from './screens/Basket';
-import HomeTabsIcon from '../Svgs/HomeTabsIcon';
-import { SearchBar } from 'react-native-screens';
-import SearchTabs from '../Svgs/SearchTabs';
-import AllTabs from '../Svgs/AllTabs';
-import MenuTabs from '../Svgs/MenuTabs';
 import CheckoutScreen from './screens/CheckoutScreen';
 import OrderSuccessScreen from './screens/OrderSuccessScreen';
 import Orders from './screens/Orders';
 import OrderDetailScreen from './screens/OrderDetailScreen';
 
-
-
+// İkonlar
+import HomeTabsIcon from '../Svgs/HomeTabsIcon';
+import SearchTabs from '../Svgs/SearchTabs';
+import AllTabs from '../Svgs/AllTabs';
+import MenuTabs from '../Svgs/MenuTabs';
 
 SplashScreen.preventAutoHideAsync();
-
 
 const HomeTabs = createBottomTabNavigator({
    screenOptions: {
     headerShown: false,
-
-    tabBarStyle: {
-       height: 90,
-    },
-
-    tabBarActiveTintColor: "#000",     //title color
+    tabBarStyle: { height: 90 },
+    tabBarActiveTintColor: "#000",
     tabBarInactiveTintColor: "#9E9E9E",
-
-    tabBarLabelStyle: {
-      fontSize: 12.91,
-      
-    },
-
-    tabBarItemStyle: {
-      justifyContent: "center",   // 📌 Dikeyde ortalama
-      alignItems: "center",
-      paddingVertical: 10,    
-      
-    },
-  
+    tabBarLabelStyle: { fontSize: 12.91 },
+    tabBarItemStyle: { justifyContent: "center", alignItems: "center", paddingVertical: 10 },
   },
-
-
   screens: {
-    Home: {
-      screen: Home,
-      options: {
-        title: 'Anasayfa',
-        tabBarIcon: ({ color, size }) => (
-         <HomeTabsIcon color={color}/>
-        ),
-      },
-    },
-
-    SearchProduct: {
-      screen: SearchProduct,
-      options: {
-        title: 'Ürün Ara',
-        tabBarIcon: ({ color, size }) => (
-          <SearchTabs/>
-        ),
-      },
-    },
-    AllProducts: {
-      screen: AllProducts,
-      options: {
-        title: 'Tüm Ürünler',
-        tabBarIcon: ({ color, size }) => (
-          <AllTabs/>
-        ),
-      },
-    },
- 
-    Menu: {
-      screen: Menu,
-      options: {
-        title: 'Menü',
-        tabBarIcon: ({ color, size }) => (
-          <MenuTabs/>
-        ),
-      },
-    },
+    Home: { screen: Home, options: { title: 'Anasayfa', tabBarIcon: ({ color }) => <HomeTabsIcon color={color}/> }},
+    SearchProduct: { screen: SearchProduct, options: { title: 'Ürün Ara', tabBarIcon: ({ color }) => <SearchTabs/> }},
+    AllProducts: { screen: AllProducts, options: { title: 'Tüm Ürünler', tabBarIcon: ({ color }) => <AllTabs/> }},
+    Menu: { screen: Menu, options: { title: 'Menü', tabBarIcon: ({ color }) => <MenuTabs/> }},
   },
 });
 
-const RootStack = createNativeStackNavigator({
-  screenOptions: {
-    headerShown: false,
-  },
+// TÜM SAYFALAR TEK BİR LİSTEDE
+const MainStack = createNativeStackNavigator({
+  initialRouteName: "HomeTabs", // Açılış sayfası KESİNLİKLE Anasayfa
+  screenOptions: { headerShown: false },
   screens: {
-    Login: {
-      screen: LoginRegister,
-      options: {
-        //title: 'Home',
-        headerShown: false,
-      },
-    },
-     ProductList: {
-      screen: ProductList,
-      options: {
-        headerShown: false,
-      },
-    },
-     ProductDetail: {
-      screen: ProductDetail,
-      options: {
-        headerShown: false,
-      },
-    },
-    Basket: {
-      screen: Basket,
-      options: {
-        headerShown: false,
-      },
-    },
-    Orders: {
-      screen: Orders,
-      options: {
-        headerShown: false,
-      },
-    },
-    
-    HomeTabs: {
-      screen: HomeTabs,
-      options: {
-        headerShown: false,
-       
-      },
-    },
-  }})
-
-
-    
-// ------------------- Navigation Wrapper -------------------
+    HomeTabs: { screen: HomeTabs },
+    Login: { screen: LoginRegister },
+    Basket: { screen: Basket },
+    CheckoutScreen: { screen: CheckoutScreen },
+    AllProductsStack: { screen: AllProducts },
+    ProductList: { screen: ProductList },
+    ProductDetail: { screen: ProductDetail },
+    OrderSuccessScreen: { screen: OrderSuccessScreen },
+    AccountInfo: { screen: AccountInfo },
+    AddressForm: { screen: AddressForm },
+    AboutUs: { screen: AboutUs },
+    ContactUs: { screen: ContactUs },
+    Sss: { screen: Sss },
+    Orders: { screen: Orders },
+    OrderDetailScreen: { screen: OrderDetailScreen }
+  }
+});
 
 function RootNavigation() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
-
-  // 🔸 Token kontrol fonksiyonu
-  const checkToken = async () => {
-    try {
-      const token = await AsyncStorage.getItem('access_token');
-      setIsLoggedIn(!!token);
-    } catch (err) {
-      console.log("Token kontrol hatası:", err);
-      setIsLoggedIn(false);
-    } finally {
-      await SplashScreen.hideAsync(); // splash her durumda kapatılır
-    }
-  };
-
   useEffect(() => {
-    checkToken();
-    const interval = setInterval(checkToken, 1000); // 1 saniyede bir kontrol
-    return () => clearInterval(interval);
+    const prepare = async () => {
+      await SplashScreen.hideAsync();
+    };
+    prepare();
   }, []);
 
-  if (isLoggedIn === null) return null;
-
-  const StackWithAuth = createNativeStackNavigator({
-    screenOptions: { headerShown: false },
-    screens: isLoggedIn
-      ? { HomeTabs: { screen: HomeTabs }, 
-          AllProductsStack: { screen: AllProducts },
-          ProductList: { screen: ProductList },   
-          ProductDetail: { screen: ProductDetail  },  
-          Basket:       { screen: Basket },
-          AccountInfo:  { screen: AccountInfo },
-          AddressForm:  { screen: AddressForm },
-          CheckoutScreen:{ screen: CheckoutScreen },
-          OrderSuccessScreen: {screen: OrderSuccessScreen},
-          AboutUs:      { screen: AboutUs },
-          ContactUs:    { screen: ContactUs },
-          Sss:          { screen: Sss },
-          Orders:       { screen: Orders },
-          OrderDetailScreen: { screen: OrderDetailScreen }
-        }
-
-      : { Login: { screen: LoginRegister } },
-  });
-
-  const Navigation = createStaticNavigation(StackWithAuth);
+  const Navigation = createStaticNavigation(MainStack);
   return <Navigation />;
 }
 
-
 export const Navigation = RootNavigation;
 
-type RootStackParamList = StaticParamList<typeof RootStack>;
-
+type RootStackParamList = StaticParamList<typeof MainStack>;
 declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
