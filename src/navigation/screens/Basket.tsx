@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, Alert } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Feather from '@expo/vector-icons/Feather';
 import { MEDIA_BASE_URL } from '@env';
@@ -13,7 +13,7 @@ const Basket = () => {
   const navigation = useNavigation<any>();
   const { ProductItems, increaseQuantity, decreaseQuantity, removeItem, getTotalPrice } = useCartStore();
   const totalPrice = getTotalPrice();
-
+const [loading, setLoading] = useState(false);
   const formatSize = (size: any) => {
     if (size?.gram) return `${size.gram}g`;
     if (size?.pieces) return `${size.pieces} tablet`;

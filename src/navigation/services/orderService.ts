@@ -86,7 +86,7 @@ export async function fetchOrderDetail(orderId: string): Promise<OrderDetail | n
 // YARDIMCI FONKSİYON: Siparişten önce sepeti sunucuyla eşitle
 // Sunucu "sepet boş" demesin diye ürünleri tek tek sunucuya gönderiyoruz.
 async function syncCartWithBackend(token: string, items: any[]) {
-    console.log("🔄 Sepet Sunucuyla Eşitleniyor...");
+    console.log(" Sepet Sunucuyla Eşitleniyor...");
     const ADD_TO_CART_URL = `${API_BASE_URL}/users/cart`; 
 
     for (const item of items) {
@@ -135,7 +135,7 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
     else if (paymentType === 'cash_on_delivery_card') backendPaymentType = 'credit_cart_at_door'; 
     else backendPaymentType = paymentType;
 
-    // --- 🔥 DÜZELTME BAŞLANGICI: VERİ TEMİZLİĞİ VE ALGILAMA ---
+    // ---  DÜZELTME BAŞLANGICI: VERİ TEMİZLİĞİ VE ALGILAMA ---
     
     let formattedDate = "";
     let cleanCardNumber = "";
@@ -187,7 +187,7 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
       card_type: "VISA"
     };
 
-    console.log("🚀 Backend'e Giden Body:", JSON.stringify(orderBody, null, 2));
+    console.log(" Backend'e Giden Body:", JSON.stringify(orderBody, null, 2));
 
     const response = await fetch(`${API_BASE_URL}/orders/complete-shopping`, {
       method: "POST",
@@ -236,7 +236,7 @@ export async function fetchAllOrders(): Promise<OrderListItem[]> {
     const url = `${API_BASE_URL}/orders/`; 
 
     console.log("🌍 İstek Atılan URL:", url);
-    // console.log("🔑 Kullanılan Token (İlk 10):", token.substring(0, 10) + "...");
+    // console.log(" Kullanılan Token (İlk 10):", token.substring(0, 10) + "...");
 
     const response = await fetch(url, { 
         method: 'GET',
