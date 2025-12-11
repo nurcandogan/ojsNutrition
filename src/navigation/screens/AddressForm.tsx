@@ -279,7 +279,7 @@ const AddressForm = () => {
   if (loading && adresses.length === 0 && !isFormVisible) {
       return (
         <SafeAreaView className="flex-1 bg-white items-center justify-center">
-            <ActivityIndicator size="large" color="#4F46E5" />
+            <ActivityIndicator size="large" color="#2126AB" />
         </SafeAreaView>
       );
   }
@@ -303,7 +303,7 @@ const AddressForm = () => {
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-[20px] font-semibold">Adreslerim</Text>
               <TouchableOpacity onPress={handleAddNewAddress}>
-                <Text className="text-orange-500 font-semibold text-[16px]">Adres Ekle</Text>
+                <Text className="text-errortext font-semibold text-[16px]">Adres Ekle</Text>
               </TouchableOpacity>
             </View>
 
@@ -326,7 +326,7 @@ const AddressForm = () => {
              {/* FORM AÇILIRKEN ŞEHİRLER YÜKLENİYORSA LOADING GÖSTER */}
              {loadingForm ? (
                  <View className="h-60 justify-center items-center">
-                     <ActivityIndicator size="large" color="#4F46E5" />
+                     <ActivityIndicator size="large" color="#2126AB" />
                      <Text className="text-gray-500 mt-2">Form verileri hazırlanıyor...</Text>
                  </View>
              ) : (

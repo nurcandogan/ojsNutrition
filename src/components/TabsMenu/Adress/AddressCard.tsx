@@ -23,7 +23,7 @@ const AddressCard = ({
     // Eğer seçilebilir değilse (Profil sayfası), karta tıklayınca seçim yapma
     onPress={isSelectable ? onSelect : undefined}
     activeOpacity={isSelectable ? 0.7 : 1}
-    className={`bg-white rounded-lg p-4 mb-4 border ${isSelectable && isSelected ? 'border-indigo-600' : 'border-gray-200'} shadow-sm`} 
+    className={`bg-white rounded-lg p-4 mb-4 border ${isSelectable && isSelected ? 'border-logintext' : 'border-gray-200'} shadow-sm`} 
    >
     <View className='flex-row justify-between items-start'>
         <View className="flex-row items-center flex-1 pr-4">
@@ -33,13 +33,13 @@ const AddressCard = ({
               <Feather 
                 name={isSelected ? "check-circle" : "circle"} 
                 size={20} 
-                color={isSelected ? "#4F46E5" : "#6B7280"} 
+                color={isSelected ? "#2126AB" : "#6B7280"} 
                 className="mr-3"
               />
           )}
           
           {/* Başlık Rengi: Seçim modu kapalıysa (Profil) Turuncu, değilse Siyah/Mor */}
-          <Text className={`${!isSelectable ? 'text-orange-500' : (isSelected ? 'text-indigo-600' : 'text-black')} font-bold ml-2 text-base`}>
+          <Text className={`${!isSelectable ? 'text-errortext' : (isSelected ? 'text-indigo-600' : 'text-black')} font-bold ml-2 text-base`}>
             {address.title}
           </Text>
         </View>
