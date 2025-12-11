@@ -4,11 +4,10 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import BackHeader from '../../components/TabsMenu/SSS/BackHeader';
 import { fetchOrderDetail, OrderDetail } from '../services/orderService';
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput'; 
-import { clearRemoteCart } from '../services/basketService';
 import OrderIcon from '../../Svgs/OrderIcon';
+import { clearRemoteCart } from '../services/basketService';
 
-// 🔥 Senin oluşturduğun SVG ikonunu buraya import etmelisin.
-// Yolunu kendi projene göre düzenle (Örn: '../../assets/svg/OrderIcon')
+
 
 interface OrderSuccessRouteParams {
     orderId: string;
@@ -23,8 +22,9 @@ const OrderSuccessScreen = () => {
 
   useEffect(() => {
     loadOrderDetail();
-    // Sipariş tamamlandığı için arka planda sepeti temizle
-    clearRemoteCart(); 
+    clearRemoteCart().then(() => {
+        console.log("OrderSuccess: Backend sepeti garanti temizliği yapıldı.");
+    });
   }, [orderId]);
 
   const loadOrderDetail = async () => {

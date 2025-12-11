@@ -111,10 +111,8 @@ async function syncCartWithBackend(token: string, items: any[]) {
             console.error("Sync hatası:", error);
         }
     }
-    console.log("✅ Sepet Eşitlendi.");
+    console.log("Sepet Eşitlendi.");
 }
-
-
 
 
 
@@ -187,7 +185,7 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
       payment_type: "credit_cart",
       
       card_digits: "1234567891234567", 
-      card_expiration_date: "06-25",   // 👈 DİKKAT: Postman'deki tarihin aynısı! (12-28 yapma)
+      card_expiration_date: "06-25",   //  DİKKAT: Postman'deki tarihin aynısı! (12-28 yapma)
       card_security_code: "123",
       card_type: "VISA"
     };
@@ -277,3 +275,7 @@ export async function fetchAllOrders(): Promise<OrderListItem[]> {
     return [];
   }
 }
+
+
+
+

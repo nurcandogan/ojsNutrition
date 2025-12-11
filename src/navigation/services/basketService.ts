@@ -48,20 +48,98 @@ export async function addToCartService(productId: string, variantId: string, qua
 }
 
 
-// Sepeti Backend'den Temizler
+export async function getRemoteCart(): Promise<any> {
+    try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (!token) return null;
+
+        const response = await fetch(`${API_BASE_URL}/users/cart`, {
+            method: 'GET',
+            headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        const json = await response.json();
+        // API'den dönen verinin içinde data var mı kontrol et
+        return json?.data || null; 
+    } catch (error) {
+        return null;
+    }
+}
+
+// ============================================================
+// 3. TEK ÜRÜN SİLME (YENİ - Postman'deki gibi dolu body ile siler)
+// ============================================================
+export async function removeFromRemoteCart(item: any): Promise<boolean> {
+    try {
+        const token = await AsyncStorage.getItem("access_token");
+        if (!token) return false;
+
+        // 1. ID KONTROLÜ: Veri hem yerel store'dan hem API'den gelebilir.
+        // Yerel store'da 'productId', API'de 'product_id' olabilir. İkisini de kontrol et.
+        const pId = item.product_id || item.productId;
+        const vId = item.product_variant_id || item.variantId;
+        const pcs = item.pieces || item.quantity || 1;
+
+        if (!pId || !vId) {
+            console.error("❌ Silme Hatası: ID bulunamadı!", item);
+            return false;
+        }
+
+        const bodyData = JSON.stringify({
+            product_id: pId,              
+            product_variant_id: vId, 
+            pieces: pcs                       
+        });
+
+        console.log("🗑️ Sunucudan Siliniyor (Body):", bodyData);
+
+        const response = await fetch(`${API_BASE_URL}/users/cart`, {
+            method: 'DELETE',
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: bodyData 
+        });
+
+        // Backend bazen 200, 202 veya 204 dönebilir
+        return response.ok; 
+
+    } catch (error) {
+        console.error("❌ Ürün silme hatası:", error);
+        return false;
+    }
+}
+
+// ============================================================
+// 4. TEMİZLEME (GÜNCELLENDİ - Hepsini tek tek bulup siler)
+// ============================================================
 export async function clearRemoteCart(): Promise<boolean> {
     try {
         const token = await AsyncStorage.getItem("access_token");
         if (!token) return false;
-        const response = await fetch(`${API_BASE_URL}/users/cart`, {
-            method: 'DELETE',
-            headers: { "Authorization": `Bearer ${token}` }
-        });
-        console.log("clearRemoteCart → status:", response.status, "body:", response);
 
-        return response.ok;
+        console.log("🧹 Backend sepeti temizleniyor...");
+
+        // ADIM 1: Sepeti getir
+        const cartData = await getRemoteCart();
+        
+        // Sepet zaten boşsa uğraşma
+        if (!cartData || !cartData.items || cartData.items.length === 0) {
+            console.log("✅ Backend sepeti zaten boş.");
+            return true;
+        }
+
+        // ADIM 2: Listedeki her ürünü tek tek sil
+        for (const item of cartData.items) {
+            await removeFromRemoteCart(item);
+        }
+
+        console.log("✅ Tüm ürünler başarıyla temizlendi.");
+        return true;
         
     } catch (e) {
+        console.error("Temizleme hatası:", e);
         return false;
     }
 }

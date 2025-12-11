@@ -7,19 +7,23 @@ import { useCartStore } from '../../store/cartStore';
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput';
 import SwipeableItem from '../../components/SwipeableItem';
 import DeleteIcon from '../../Svgs/DeleteIcon';
-import AsyncStorage from '@react-native-async-storage/async-storage'; // Import KESİN OLMALI
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { removeFromRemoteCart } from '../services/basketService';
 
 const Basket = () => {
   const navigation = useNavigation<any>();
   const { ProductItems, increaseQuantity, decreaseQuantity, removeItem, getTotalPrice } = useCartStore();
   const totalPrice = getTotalPrice();
   const [loading, setLoading] = useState(false);
+  
   const formatSize = (size: any) => {
     if (size?.gram) return `${size.gram}g`;
     if (size?.pieces) return `${size.pieces} tablet`;
     if (size?.total_services) return `${size.total_services} servis`;
     return '';
-  };  
+  };
+
+  
 
   // --- KONTROL MEKANİZMASI ---
   const onClick = async () => {
@@ -81,7 +85,13 @@ const Basket = () => {
         </View>
         <View className="px-5 mt-4">
           {ProductItems.map((item) => (
-           <SwipeableItem  key={item.variantId} onDelete={() => removeItem(item.variantId)}>
+           <SwipeableItem 
+  key={item.variantId} 
+  onDelete={async () => {
+     await removeFromRemoteCart(item); // Önce sunucudan sil
+     removeItem(item.variantId);       // Sonra ekrandan sil
+  }}
+>
             <View key={item.variantId} className="flex-row pb-5 mb-5 border-b border-gray-100 ">
               <Image source={{ uri: `${MEDIA_BASE_URL}${item.photo_src}` }} className="w-[87px] h-[87px] " resizeMode="cover"/>
               <View className="flex-1 ml-4">
@@ -99,8 +109,12 @@ const Basket = () => {
                     <View className="w-[135px] h-[37px] bg-white mt-5 rounded-xl justify-center shadow-sm border border-gray-100">
                       <View className="flex-row gap-6 items-center justify-center">
                         {item.quantity === 1 ? (
-                          <TouchableOpacity onPress={() => removeItem(item.variantId)}><DeleteIcon width={17} height={17} /></TouchableOpacity>
-                        ) : (
+<TouchableOpacity onPress={async () => {
+    await removeFromRemoteCart(item); // Önce sunucudan sil
+    removeItem(item.variantId);       // Sonra ekrandan sil
+}}>
+    <DeleteIcon width={17} height={17} />
+</TouchableOpacity>                        ) : (
                           <TouchableOpacity onPress={() => decreaseQuantity(item.variantId)}><Feather name="minus" size={19} color="#000" /></TouchableOpacity>
                         )}
                         <Text className="text-base font-semibold">{item.quantity}</Text>

@@ -3,16 +3,14 @@ import React, { useCallback, useState } from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import Feather from '@expo/vector-icons/Feather';
 import BackHeader from '../../components/TabsMenu/SSS/BackHeader';
-// Yardımcı Bileşenler
 import OrderSummaryCollapse from '../../components/TabsMenu/Order/OrderSummaryCollapse'; 
 import CardFormInputs from '../../components/TabsMenu/Order/CardFormInputs'; 
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput'; 
-// Servisler ve Store
 import { AddressProps, fetchAddresses } from '../services/addressService';
 import { useCartStore } from '../../store/cartStore'; 
 import { createOrder } from '../services/orderService'; 
-// 🔥 Store'u import etmeyi unutmuyoruz
 import { useAddressStore } from '../../store/addressStore';
+import { clearRemoteCart } from '../services/basketService';
 
 const SHIPPING_FEE = 0; 
 const CASH_ON_DELIVERY_FEE = 39; 
@@ -112,6 +110,7 @@ const CheckoutScreen = () => {
     try {
       const result = await createOrder(selectedAddressId, selectedPaymentType, cardDetails);
       if (result.success && result.orderNo) {
+       await clearRemoteCart(); 
         clearCart(); 
         navigation.navigate('OrderSuccessScreen', { orderId: result.orderNo });
       } else {
