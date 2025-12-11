@@ -14,7 +14,6 @@ const Basket = () => {
   const navigation = useNavigation<any>();
   const { ProductItems, increaseQuantity, decreaseQuantity, removeItem, getTotalPrice } = useCartStore();
   const totalPrice = getTotalPrice();
-  const [loading, setLoading] = useState(false);
   
   const formatSize = (size: any) => {
     if (size?.gram) return `${size.gram}g`;
@@ -23,19 +22,27 @@ const Basket = () => {
     return '';
   };
 
-  
+  // --- SİLME İŞLEMİNİ TEK YERE TOPLADIK ---
+  const handleRemoveItem = async (item: any) => {
+    try {
+        // 1. Önce sunucuya haber ver (Login olmamışsa false döner, sorun olmaz)
+        await removeFromRemoteCart(item); 
+        
+        // 2. Sonra ekrandan sil
+        removeItem(item.variantId);       
+    } catch (error) {
+        console.error("Silme sırasında hata:", error);
+    }
+  };
 
   // --- KONTROL MEKANİZMASI ---
   const onClick = async () => {
     try {
       const token = await AsyncStorage.getItem('access_token');
-      console.log("Sepet Kontrolü - Token Durumu:", token ? "Var" : "Yok");
-
+      
       if (token) {
-        // Giriş yapılmış -> Ödemeye geç
         navigation.navigate('CheckoutScreen');
       } else {
-        // Giriş yapılmamış -> Uyarı ver
         Alert.alert(
           "OJS Nutrition hesabınız yok mu?", 
           "Siparişinizi tamamlamak için lütfen giriş yapın veya üye olun.", 
@@ -44,7 +51,6 @@ const Basket = () => {
             { 
               text: "Giriş Yap / Üye Ol", 
               onPress: () => {
-                // Login sayfasına 'returnScreen' parametresiyle git
                 navigation.navigate('Login', { returnScreen: 'CheckoutScreen' });
               }
             }
@@ -85,13 +91,12 @@ const Basket = () => {
         </View>
         <View className="px-5 mt-4">
           {ProductItems.map((item) => (
+           
+           // 1. SWIPE İLE SİLME
            <SwipeableItem 
-  key={item.variantId} 
-  onDelete={async () => {
-     await removeFromRemoteCart(item); // Önce sunucudan sil
-     removeItem(item.variantId);       // Sonra ekrandan sil
-  }}
->
+              key={item.variantId} 
+              onDelete={() => handleRemoveItem(item)}
+           >
             <View key={item.variantId} className="flex-row pb-5 mb-5 border-b border-gray-100 ">
               <Image source={{ uri: `${MEDIA_BASE_URL}${item.photo_src}` }} className="w-[87px] h-[87px] " resizeMode="cover"/>
               <View className="flex-1 ml-4">
@@ -109,12 +114,13 @@ const Basket = () => {
                     <View className="w-[135px] h-[37px] bg-white mt-5 rounded-xl justify-center shadow-sm border border-gray-100">
                       <View className="flex-row gap-6 items-center justify-center">
                         {item.quantity === 1 ? (
-<TouchableOpacity onPress={async () => {
-    await removeFromRemoteCart(item); // Önce sunucudan sil
-    removeItem(item.variantId);       // Sonra ekrandan sil
-}}>
-    <DeleteIcon width={17} height={17} />
-</TouchableOpacity>                        ) : (
+                          
+                          // 2. İKON İLE SİLME
+                          <TouchableOpacity onPress={() => handleRemoveItem(item)}>
+                              <DeleteIcon width={17} height={17} />
+                          </TouchableOpacity>                        
+                        
+                        ) : (
                           <TouchableOpacity onPress={() => decreaseQuantity(item.variantId)}><Feather name="minus" size={19} color="#000" /></TouchableOpacity>
                         )}
                         <Text className="text-base font-semibold">{item.quantity}</Text>
@@ -132,7 +138,6 @@ const Basket = () => {
       <View className="absolute bottom-0 left-0 right-0 bg-white pb-6 pt-3">
         <View className="items-end"><Text className="text-[14.25px] font-bold mx-6 my-2">TOPLAM {Math.round(totalPrice)} TL</Text></View>
         <View className="content-center mb-10 items-center mt-2">
-          {/* Tıklama buraya bağlı */}
           <OkInput onPress={onClick} title="DEVAM ET" />
         </View>
       </View>
