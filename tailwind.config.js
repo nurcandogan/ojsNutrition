@@ -31,6 +31,8 @@ module.exports = {
         basketText:'#919191',
         searchBg:'#F3F3F3',
         orderText:'#52C41A',
+        adresText:'#8A8B94',
+        adresName:'#272727',
         
       }
     },

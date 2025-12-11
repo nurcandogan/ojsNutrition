@@ -57,13 +57,13 @@ const AddressCard = ({
         {address.first_name} {address.last_name}
       </Text>
 
-      <Text className="text-gray-700 mt-1">{address.phone_number}</Text>
+      <Text className="text-ticaritext font-semibold text-[14px] mt-2">{address.phone_number}</Text>
 
-      <Text className="text-gray-600 mt-1 leading-5">
+      <Text className="text-ticaritext font-semibold text-[14px] mt-1 leading-5">
         {address.full_address}
       </Text>
 
-      <Text className="text-gray-900 font-semibold mt-2 text-sm">
+      <Text className="text-black font-semibold mt-1 text-sm">
         {address.subregion?.name} / {address.region?.name}
       </Text>
    </TouchableOpacity>

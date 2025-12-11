@@ -19,7 +19,9 @@ const CASH_ON_DELIVERY_FEE = 39;
 
 // --- 1. ÖZEL SİYAH CHECKBOX BİLEŞENİ ---
 const CustomBlackCheckbox = ({ isChecked, onPress, label, isBoldLabel = false }: { isChecked: boolean, onPress: () => void, label: string | React.ReactNode, isBoldLabel?: boolean }) => (
-    <TouchableOpacity onPress={onPress} className="flex-row items-start mb-4">
+    <TouchableOpacity onPress={onPress}
+    activeOpacity={2}
+     className="flex-row items-start mb-4">
         <View className={`w-5 h-5 rounded-md items-center justify-center border mr-3 ${isChecked ? 'bg-black border-black' : 'bg-white border-gray-400'}`}>
             {isChecked && <Feather name="check" size={14} color="white" />}
         </View>
@@ -133,7 +135,7 @@ const CheckoutScreen = () => {
           shipmentFee={SHIPPING_FEE}
       />
 
-      <ScrollView className="flex-1 px-5" contentContainerStyle={{ paddingBottom: 20 }}>
+      <ScrollView className="flex-1 px-5" >
         
         {/* --- 1. TESLİMAT ADRESİ --- */}
         <View className="mt-4 mb-6">
@@ -154,9 +156,9 @@ const CheckoutScreen = () => {
             {selectedAddress ? (
                 <View className="pl-11">
                     <Text className="text-base text-gray-800 font-medium mb-1">{selectedAddress.first_name} {selectedAddress.last_name}</Text>
-                    <Text className="text-sm text-gray-500 mb-1">{selectedAddress.phone_number}</Text>
-                    <Text className="text-sm text-gray-500 leading-5">{selectedAddress.full_address}</Text>
-                    <Text className="text-sm text-gray-500 mt-1">{selectedAddress.region.name}, {selectedAddress.country.name}</Text>
+                    <Text className="text-sm text-adresText mb-1">{selectedAddress.phone_number}</Text>
+                    <Text className="text-sm text-adresText leading-5">{selectedAddress.full_address}</Text>
+                    <Text className="text-sm text-adresText mt-1">{selectedAddress.region.name}, {selectedAddress.country.name}</Text>
                 </View>
             ) : (
                 <TouchableOpacity onPress={() => navigation.navigate('AddressForm', { isSelectionMode: true })} className="pl-11">
@@ -164,7 +166,7 @@ const CheckoutScreen = () => {
                 </TouchableOpacity>
             )}
             
-            <View className="h-[1px] bg-gray-100 mt-6 ml-11" />
+            <View className="h-[1px] bg-gray-200 mt-6 mx-2" />
         </View>
 
         {/* --- 2. KARGO --- */}
@@ -180,7 +182,7 @@ const CheckoutScreen = () => {
                 </Text>
             </View>
 
-            <View className="h-[1px] bg-gray-100 mt-6 ml-11" />
+            <View className="h-[1px] bg-gray-200 mt-6 mx-2" />
         </View>
         
         {/* --- 3. ÖDEME --- */}
@@ -193,6 +195,7 @@ const CheckoutScreen = () => {
             {/* Kredi Kartı */}
             <View className={`border rounded-xl mb-3 overflow-hidden ${selectedPaymentType === 'credit_card_form' ? 'border-indigo-600' : 'border-gray-200'}`}>
                 <TouchableOpacity 
+                activeOpacity={1}
                     onPress={() => setSelectedPaymentType('credit_card_form')}
                     className="flex-row items-center p-4"
                 >
@@ -201,7 +204,7 @@ const CheckoutScreen = () => {
                         size={24} 
                         color={selectedPaymentType === 'credit_card_form' ? "#4F46E5" : "#D1D5DB"} 
                     />
-                    <Text className="ml-3 text-base font-medium text-black">Kredi Kartı</Text>
+                    <Text className="ml-3 text-base font-medium text-adresName">Kredi Kartı</Text>
                 </TouchableOpacity>
 
                 {selectedPaymentType === 'credit_card_form' && (
@@ -218,26 +221,42 @@ const CheckoutScreen = () => {
             </View>
             
             {/* Kapıda Nakit */}
-            <TouchableOpacity 
+           <View className={`border rounded-xl mb-6 ${selectedPaymentType === 'cash_on_delivery_cash' ? 'border-logintext' : 'border-gray-200'}`}>
+             <TouchableOpacity 
+                activeOpacity={1}
                 onPress={() => setSelectedPaymentType('cash_on_delivery_cash')}
-                className={`flex-row items-center justify-between p-4 border rounded-xl mb-3 ${selectedPaymentType === 'cash_on_delivery_cash' ? 'border-indigo-600' : 'border-gray-200'}`}
+                className={`flex-row items-center justify-between p-4`}
             >
                 <View className="flex-row items-center">
                     <Feather 
                         name={selectedPaymentType === 'cash_on_delivery_cash' ? "check-circle" : "circle"} 
                         size={24} 
-                        color={selectedPaymentType === 'cash_on_delivery_cash' ? "#4F46E5" : "#D1D5DB"} 
+                        color={selectedPaymentType === 'cash_on_delivery_cash' ? "#2126AB" : "#D1D5DB"} 
                     />
                     <View className="ml-3">
-                        <Text className="text-base font-medium text-black">Kapıda Ödeme (Nakit)</Text>
+                        <Text className="text-base font-medium text-adresName">Kapıda Ödeme  {'\n'}(Nakit)</Text>
                     </View>
                 </View>
-                <Text className="text-sm font-bold text-gray-800">{CASH_ON_DELIVERY_FEE} TL İşlem Bedeli</Text>
+                <Text className="text-sm font-bold text-adresName">{CASH_ON_DELIVERY_FEE} TL İşlem Bedeli</Text>
+
             </TouchableOpacity>
 
+            {/* Alt Metin */}
+                {selectedPaymentType === 'cash_on_delivery_cash' && (
+                    <View className="px-12 pb-4">
+                        <Text className="text-sm text-gray-700 leading-5">
+                            Kargo şirketi tarafından kapıda ödeme hizmet bedeli alınmaktadır.
+                        </Text>
+                    </View>
+                )}
+           </View>
+
+            
+
             {/* Kapıda Kredi Kartı */}
-            <View className={`border rounded-xl mb-6 ${selectedPaymentType === 'cash_on_delivery_card' ? 'border-indigo-600 bg-gray-50' : 'border-gray-200'}`}>
+            <View className={`border rounded-xl mb-6 ${selectedPaymentType === 'cash_on_delivery_card' ? 'border-logintext ' : 'border-gray-200'}`}>
                 <TouchableOpacity 
+                    activeOpacity={1}
                     onPress={() => setSelectedPaymentType('cash_on_delivery_card')}
                     className="flex-row items-center justify-between p-4"
                 >
@@ -245,13 +264,13 @@ const CheckoutScreen = () => {
                         <Feather 
                             name={selectedPaymentType === 'cash_on_delivery_card' ? "check-circle" : "circle"} 
                             size={24} 
-                            color={selectedPaymentType === 'cash_on_delivery_card' ? "#4F46E5" : "#D1D5DB"} 
+                            color={selectedPaymentType === 'cash_on_delivery_card' ? "#2126AB" : "#D1D5DB"} 
                         />
                         <View className="ml-3">
-                            <Text className="text-base font-medium text-black">Kapıda Ödeme (Kredi Kartı)</Text>
+                            <Text className="text-base font-medium text-adresName">Kapıda Ödeme  {'\n'}(Kredi Kartı)</Text>
                         </View>
                     </View>
-                    <Text className="text-sm font-bold text-gray-800">{CASH_ON_DELIVERY_FEE} TL İşlem Bedeli</Text>
+                    <Text className="text-sm font-bold text-adresName">{CASH_ON_DELIVERY_FEE} TL İşlem Bedeli</Text>
                 </TouchableOpacity>
                 
                 {/* Alt Metin */}
