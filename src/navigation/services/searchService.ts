@@ -14,3 +14,7 @@ export const searchProducts = async (keyword: string) => {
     return [];
   }
 };
+
+
+
+// backendden arama yapıp ürünleri getiriyor fakat ürünün boyut bilgisi backendden gelmiyor.

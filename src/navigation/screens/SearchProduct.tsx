@@ -44,11 +44,11 @@ const SearchProduct = () => {
 
       <View className=" flex-row items-center justify-between px-4 h-12 border-b border-lineColor bg-searchBg">
        <View className="flex-row items-center flex-1 h-9 mr-3  bg-searchBg  ">
-         <EvilIcons name="search" size={20} color="black" />
+         <EvilIcons name="search" size={25} color="black" />
         <TextInput
           placeholder="Ürün ara"
           placeholderTextColor='#000'
-          className="flex-1 text-black ml-2 "
+          className="flex-1 text-black ml-1 "
           value={query}
           onChangeText={setQuery}        // onChangeText={(text) => { setQuery(text);
           style={{                       //                setResults([]); }}. eski sonucları temizler 
