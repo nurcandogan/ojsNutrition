@@ -6,7 +6,6 @@ import { fetchOrderDetail, OrderDetail } from '../services/orderService';
 import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput'; 
 import { clearRemoteCart } from '../services/basketService';
 import OrderIcon from '../../Svgs/OrderIcon';
-import Orders from './Orders';
 
 // 🔥 Senin oluşturduğun SVG ikonunu buraya import etmelisin.
 // Yolunu kendi projene göre düzenle (Örn: '../../assets/svg/OrderIcon')

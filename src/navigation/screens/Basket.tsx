@@ -13,13 +13,13 @@ const Basket = () => {
   const navigation = useNavigation<any>();
   const { ProductItems, increaseQuantity, decreaseQuantity, removeItem, getTotalPrice } = useCartStore();
   const totalPrice = getTotalPrice();
-const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const formatSize = (size: any) => {
     if (size?.gram) return `${size.gram}g`;
     if (size?.pieces) return `${size.pieces} tablet`;
     if (size?.total_services) return `${size.total_services} servis`;
     return '';
-  };
+  };  
 
   // --- KONTROL MEKANİZMASI ---
   const onClick = async () => {

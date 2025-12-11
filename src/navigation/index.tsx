@@ -75,6 +75,37 @@ const MainStack = createNativeStackNavigator({
 function RootNavigation() {
   useEffect(() => {
     const prepare = async () => {
+      try {
+        // Uygulama her açıldığında (kill/restart sonrası) token'ı siliyoruz.
+        // Bu sayede kullanıcı her defasında yeniden giriş yapmak zorunda kalıyor.
+        await AsyncStorage.removeItem('access_token');
+        console.log("Uygulama başlatıldı: Güvenlik için oturum kapatıldı.");
+
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        // İşlemler bitince Splash ekranını kaldır
+        await SplashScreen.hideAsync();
+      }
+    };
+    
+    prepare();
+  }, []);
+
+  const Navigation = createStaticNavigation(MainStack);
+  return <Navigation />;
+}
+
+export const Navigation = RootNavigation;
+
+
+
+//kalıı bır sekılde token saklamak ıstıyosan yanı uygulamaya bır kere girdiğinde token  saklamak ıcın asagıdaki kodu kullanabilrsın.
+// bu sekılde yaparsan her uygulamayı actıgında token saklanmıs olur ve kullanıcı tekrar gırıs yapması gerekmez.
+
+/*function RootNavigation() {
+  useEffect(() => {
+    const prepare = async () => {
       await SplashScreen.hideAsync();
     };
     prepare();
@@ -91,4 +122,4 @@ declare global {
   namespace ReactNavigation {
     interface RootParamList extends RootStackParamList {}
   }
-}
+} */

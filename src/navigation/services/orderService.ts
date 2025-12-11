@@ -84,7 +84,6 @@ export async function fetchOrderDetail(orderId: string): Promise<OrderDetail | n
 }
 
 // YARDIMCI FONKSİYON: Siparişten önce sepeti sunucuyla eşitle
-// Sunucu "sepet boş" demesin diye ürünleri tek tek sunucuya gönderiyoruz.
 async function syncCartWithBackend(token: string, items: any[]) {
     console.log(" Sepet Sunucuyla Eşitleniyor...");
     const ADD_TO_CART_URL = `${API_BASE_URL}/users/cart`; 
@@ -107,12 +106,17 @@ async function syncCartWithBackend(token: string, items: any[]) {
                 },
                 body: body
             });
+            console.log(` Sepet Eklendi: ÜrünID=${item.productId}, VaryantID=${item.variantId}, Adet=${item.quantity}`);
         } catch (error) {
             console.error("Sync hatası:", error);
         }
     }
     console.log("✅ Sepet Eşitlendi.");
 }
+
+
+
+
 
 /** Sipariş oluşturur */
 export async function createOrder(addressId: string, paymentType: string, cardDetails?: any): Promise<{ success: boolean, orderNo: string | null, message: string }> {
@@ -124,6 +128,7 @@ export async function createOrder(addressId: string, paymentType: string, cardDe
     if (!cartItems || cartItems.length === 0) {
         return { success: false, orderNo: null, message: "Sepetiniz boş." };
     }
+    console.log("🛒 createOrder → cartItems:", JSON.stringify(cartItems, null, 2));
 
     //  ADIM 1: Önce Sepeti Sunucuya Gönder
     await syncCartWithBackend(token, cartItems);

@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, Alert } from 'react-native'
 import React, {  useEffect, useMemo, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { FactItem, fetchProductDetail, NutritionalContent, Variant } from '../services/productService';
@@ -33,7 +33,8 @@ const ProductDetail = () => {
   const [commentsCount, setCommentsCount] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
-  const { addItem } = useCartStore();
+  const { addItem, ProductItems } = useCartStore();
+  
 
   const STICKY_H = 76;
 
@@ -175,8 +176,12 @@ const handleAddToCart = async () => {
         variant: selectedVariant,
       });
  
-      // 3. Sepete Git
-      navigation.navigate('Basket' as never);
+      // 3.
+      Alert.alert(
+            "Sepete Eklendi", 
+            `${data.name} sepetinize başarıyla eklendi.`,
+            [{ text: "Tamam" }] // İstersen buraya ikinci bir buton ekleyip "Sepete Git" diyebilirsin.
+        );
 
     } catch (error) {
       console.error("Sepet hatası:", error);
@@ -192,7 +197,21 @@ const ingredients = (
     <SafeAreaView className='flex-1 bg-white '>
       <ScrollView contentContainerStyle={{ paddingBottom: STICKY_H + 24 }}>
         <BackButtonOverlay onPress={()=> navigation.goBack()} data={data}/>
-            
+
+          {ProductItems.length > 0 && (
+            <TouchableOpacity 
+              onPress={() => navigation.navigate('Basket' as never)}
+              className="absolute top-12 right-5  shadow-sm"
+            >
+             <Feather name="shopping-cart" size={24} color="black" />
+          
+             <View className='absolute top-[-7] right-[-7] bg-discountText rounded-full w-[18px] h-[18px] flex items-center justify-center '>
+               <Text className='text-[12px] text-white text-center items-center justify-center '>{ProductItems.length}</Text>
+             </View>
+           
+            </TouchableOpacity>)}
+
+
         <Image 
           source={{ uri: `${MEDIA_BASE_URL}${selectedVariant?.photo_src || data.variants?.[0]?.photo_src || ''}` }}
           className='w-[390px] h-[390px] mt-2 ' resizeMode='cover'

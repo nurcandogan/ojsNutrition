@@ -46,6 +46,8 @@ export async function addToCartService(productId: string, variantId: string, qua
     return false;
   }
 }
+
+
 // Sepeti Backend'den Temizler
 export async function clearRemoteCart(): Promise<boolean> {
     try {
@@ -55,7 +57,10 @@ export async function clearRemoteCart(): Promise<boolean> {
             method: 'DELETE',
             headers: { "Authorization": `Bearer ${token}` }
         });
+        console.log("clearRemoteCart → status:", response.status, "body:", response);
+
         return response.ok;
+        
     } catch (e) {
         return false;
     }
