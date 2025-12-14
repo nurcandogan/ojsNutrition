@@ -32,11 +32,13 @@ const AddressForm = () => {
   const { selectedAddressId, setSelectedAddressId } = useAddressStore();
 
   const [adresses, setAdresses] = useState<AddressProps[]>([]);
-  const [loading, setLoading] = useState(false);        // Sayfa açılış loading'i
-  const [loadingForm, setLoadingForm] = useState(false); // Form açılırken verileri çekme loading'i
+  const [loading, setLoading] = useState(true); // Başlangıçta true olsun
+  const [loadingForm, setLoadingForm] = useState(false);
   const [loadingDelete, setLoadingDelete] = useState(false);
   
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [showFirstTimeWarning, setShowFirstTimeWarning] = useState(false);
+  
   const [addressToEdit, setAddressToEdit] = useState<AddressProps | null>(null);
 
   // Form Input State'leri
@@ -59,21 +61,27 @@ const AddressForm = () => {
   const [modalType, setModalType] = useState<'CITY' | 'DISTRICT'>('CITY');
   const [searchText, setSearchText] = useState('');
 
-  // 1. OPTİMİZE EDİLDİ: Sadece adresleri çeker (Çok hızlı açılır)
+  // 1. Verileri Çekme Fonksiyonu
   const loadInitialData = async () => {
     setLoading(true);
     try {
-      // SADECE ADRESLERİ ÇEKİYORUZ, ŞEHİRLERİ DEĞİL
       const addrRes = await fetchAddresses();
       setAdresses(addrRes);
       
       // Eğer hiç adres yoksa mecburen formu açacağız
       if (addrRes.length === 0) {
-        handleAddNewAddress();
+        setShowFirstTimeWarning(true); // Uyarıyı aç
+        // Form açılırken şehirleri de yüklememiz lazım, bu işlemin bitmesini BEKLİYORUZ (await)
+        await handleAddNewAddress(true); 
+      } else {
+        setShowFirstTimeWarning(false); // Adres varsa uyarıyı kapat
+        setIsFormVisible(false); // Listeyi göster
       }
+
     } catch (error) {
       console.log(error);
     } finally {
+      // Her şey (adres kontrolü ve gerekirse form hazırlığı) bittikten sonra loading'i kapat
       setLoading(false);
     }
   };
@@ -82,12 +90,11 @@ const AddressForm = () => {
     loadInitialData();
   }, []));
 
-  // YARDIMCI: Şehirleri sadece ihtiyaç anında çeker
   const ensureCitiesLoaded = async () => {
-    if (cities.length > 0) return; // Zaten çekildiyse tekrar çekme
-    
+    if (cities.length > 0) return;
     try {
-      setLoadingForm(true); // Ufak bir bekleme gösterilebilir
+      // Eğer sayfa ilk açılış loading'i içindeyse ekstra form loading gösterme
+      if(!loading) setLoadingForm(true); 
       const citiesRes = await fetchCities();
       setCities(citiesRes);
     } catch (error) {
@@ -98,29 +105,31 @@ const AddressForm = () => {
   };
 
   // 2. Yeni Adres Ekleme
-  const handleAddNewAddress = async () => {
-    // Önce şehir verisi var mı kontrol et, yoksa çek
+  // isAutoTriggered: Bu fonksiyon kullanıcı butona basınca mı çalıştı yoksa sistem otomatik mi açtı?
+  const handleAddNewAddress = async (isAutoTriggered = false) => {
+    // Eğer kullanıcı butona bastıysa uyarıyı gösterme (sadece liste boşken otomatik açıldığında göster)
+    if (!isAutoTriggered) {
+        setShowFirstTimeWarning(false);
+    }
+
     await ensureCitiesLoaded();
-    
     resetForm();
     setIsFormVisible(true);
   };
   
   // 3. Düzenleme Modu
   const handleEditAddress = async (item: AddressProps) => {
-    // Önce şehir verisi var mı kontrol et, yoksa çek
+    setShowFirstTimeWarning(false); // Düzenlemede uyarı görünmez
     await ensureCitiesLoaded();
 
     resetForm(item);
     
-    // Düzenlenen adresin şehir ve ilçe bilgilerini hazırla
     const cityObj = { id: item.region.id, name: item.region.name };
     const districtObj = { id: item.subregion.id, name: item.subregion.name };
     
     setSelectedCity(cityObj);
     setSelectedDistrict(districtObj);
     
-    // Seçili şehrin ilçelerini çek
     try {
         const dists = await fetchDistricts(cityObj.name);
         setDistricts(dists);
@@ -181,10 +190,9 @@ const AddressForm = () => {
             try {
               setLoadingDelete(true);
               await deleteAddress(addressToEdit.id.toString());
-              Alert.alert("Başarılı", "Adres başarıyla silindi.");
-              setIsFormVisible(false);
-              resetForm();
-              loadInitialData();
+              // Başarılı silme sonrası listeyi yenile
+              await loadInitialData(); 
+              // Formu kapat (loadInitialData içinde adres kalmadıysa otomatik tekrar açılacak ama mantık orada)
             } catch (error: any) {
               Alert.alert("Hata", error.message || "Silinemedi.");
             } finally {
@@ -202,7 +210,6 @@ const AddressForm = () => {
       return;
     }
 
-    // Formu kilitliyoruz (loading)
     setLoadingForm(true); 
     try {
       const cleanPhone = phoneNumber.replace(/\D/g, "");
@@ -218,10 +225,13 @@ const AddressForm = () => {
         phone_number: `+90${cleanPhone}`
       };
       await saveAddress(body, addressToEdit?.id);
-      Alert.alert("Başarılı", `Adres başarıyla ${addressToEdit ? 'güncellendi' : 'kaydedildi'}.`);
-      setIsFormVisible(false); 
-      resetForm(); 
-      loadInitialData();
+      
+      Alert.alert(
+          "Başarılı", 
+          `Adres başarıyla ${addressToEdit ? 'güncellendi' : 'kaydedildi'}.`,
+          [{ text: "Tamam", onPress: () => loadInitialData() }] // Kaydettikten sonra listeyi/formu yenile
+      );
+      
     } catch (error: any) {
       Alert.alert("Hata", error.message || "Bir sorun oluştu");
     } finally {
@@ -230,8 +240,24 @@ const AddressForm = () => {
   };
   
   const headerTitle = isFormVisible 
-    ? (addressToEdit ? "Adresi Düzenle" : "Yeni Adres Ekle")
+    ? (addressToEdit ? "Adresi Düzenle" : "Adres Oluştur") // Görsele uygun başlık
     : "Adreslerim";
+
+  // Back tuşu işlevi: Eğer form açıksa ve adres listesi BOŞ DEĞİLSE geri döner, boşsa navigasyon geriye gider.
+  const handleBackPress = () => {
+      if (isFormVisible) {
+          // Eğer adres listesi boşsa ve form açıksa, geri tuşu komple sayfadan çıkarır
+          if (adresses.length === 0) {
+              navigation.goBack();
+          } else {
+              // Adres listesi varsa forma geri döner
+              setIsFormVisible(false);
+              setShowFirstTimeWarning(false);
+          }
+      } else {
+          navigation.goBack();
+      }
+  };
 
   const renderSelectionModal = () => {
     const data = modalType === 'CITY' ? cities : districts;
@@ -275,8 +301,8 @@ const AddressForm = () => {
     );
   };
 
-  // Eğer ilk yüklemede adresler çekiliyorsa loading göster
-  if (loading && adresses.length === 0 && !isFormVisible) {
+  // Full Screen Loading (Sadece ilk açılışta)
+  if (loading && !isFormVisible) {
       return (
         <SafeAreaView className="flex-1 bg-white items-center justify-center">
             <ActivityIndicator size="large" color="#2126AB" />
@@ -294,7 +320,7 @@ const AddressForm = () => {
       >
         <BackHeader 
           title={headerTitle}
-          onPress={() => isFormVisible ? setIsFormVisible(false) : navigation.goBack()}
+          onPress={handleBackPress}
         />
 
         {/* --- ADRES LİSTESİ --- */}
@@ -302,7 +328,7 @@ const AddressForm = () => {
           <View className="px-4 mt-5">
             <View className="flex-row justify-between items-center mb-4">
               <Text className="text-[20px] font-semibold">Adreslerim</Text>
-              <TouchableOpacity onPress={handleAddNewAddress}>
+              <TouchableOpacity onPress={() => handleAddNewAddress(false)}>
                 <Text className="text-errortext font-semibold text-[16px]">Adres Ekle</Text>
               </TouchableOpacity>
             </View>
@@ -323,14 +349,22 @@ const AddressForm = () => {
         {/* --- ADRES FORMU --- */}
         {isFormVisible && (
           <View>
-             {/* FORM AÇILIRKEN ŞEHİRLER YÜKLENİYORSA LOADING GÖSTER */}
+             {/* YENİ: HİÇ ADRES YOKSA GÖSTERİLECEK UYARI KUTUSU */}
+             {showFirstTimeWarning && (
+                 <View className="mx-5 mt-5 p-4 bg-[#E6E6FA] border border-[#2126AB] rounded-md">
+                     <Text className="text-[#2126AB] text-[13px] leading-5">
+                         Kayıtlı bir adresiniz yok. Lütfen aşağıdaki kısımdan adres oluşturunuz.
+                     </Text>
+                 </View>
+             )}
+
              {loadingForm ? (
                  <View className="h-60 justify-center items-center">
                      <ActivityIndicator size="large" color="#2126AB" />
-                     <Text className="text-gray-500 mt-2">Form verileri hazırlanıyor...</Text>
+                     <Text className="text-gray-500 mt-2">Form hazırlanıyor...</Text>
                  </View>
              ) : (
-                <View className="mt-10">
+                <View className="mt-5">
                   <Input title="*Adres Başlığı" value={adressName} onChangeText={setAdressName} placeholder="ev, iş vb.." />
                   <Input title="*Ad" value={name} onChangeText={setName} placeholder="" />
                   <Input title="*Soyad" value={surname} onChangeText={setSurname} placeholder="" />
@@ -371,7 +405,7 @@ const AddressForm = () => {
                 </View>
              )}
             
-            {/* Buton Alanı (Form Yüklenirken Gizlenebilir veya Disabled Olabilir) */}
+            {/* Buton Alanı */}
             {!loadingForm && (
                 <View className="flex-row justify-end items-center mx-5 mt-14 mb-10">
                   {addressToEdit && (
@@ -381,7 +415,7 @@ const AddressForm = () => {
                     />
                   )}
                   <SaveButton 
-                    loading={loadingForm} // Kaydederken de bu loading kullanılabilir veya ayrı tutulur
+                    loading={loadingForm} 
                     onPress={handleSave} 
                   />
                 </View>
