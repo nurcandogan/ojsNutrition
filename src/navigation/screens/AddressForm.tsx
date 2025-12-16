@@ -10,7 +10,6 @@ import Input from '../../components/TabsMenu/BizeUlasin/Input';
 import AddressCard from '../../components/TabsMenu/Adress/AddressCard';
 import { useAddressStore } from '../../store/addressStore';
 
-// Servisler
 import { 
   AddressProps, 
   fetchAddresses, 
