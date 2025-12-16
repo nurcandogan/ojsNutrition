@@ -7,8 +7,6 @@ import OkInput from '../../components/TabsMenu/BizeUlasin/OkInput';
 import OrderIcon from '../../Svgs/OrderIcon';
 import { clearRemoteCart } from '../services/basketService';
 
-
-
 interface OrderSuccessRouteParams {
     orderId: string;
 }
