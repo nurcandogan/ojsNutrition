@@ -131,6 +131,7 @@ const OrderSuccessScreen = () => {
         </View>
       </ScrollView>
 
+
       {/* --- ALT SABİT BUTON --- */}
       <View className="absolute bottom-0 left-0 right-0 bg-white pb-8 pt-4 mb-8   border-gray-100 mx-auto w-full px-5">
         <OkInput title="Siparişe Git" onPress={() => navigation.navigate("Orders")} />

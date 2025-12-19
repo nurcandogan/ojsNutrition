@@ -22,12 +22,11 @@ const questionsByCategory = useMemo(() =>
 
 const toggle = (id: string) => {
   if (openId === id) {
-    setOpenId(null);   // aynı item tekrar tıklanırsa kapat
+    setOpenId(null);   
   } else {
-    setOpenId(id);      // yeni item açılır
+    setOpenId(id);    
   }
 }
-
 
   return (
    <SafeAreaView className='bg-white flex-1'>
