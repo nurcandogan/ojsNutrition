@@ -7,9 +7,7 @@ import BackHeader from '../../components/TabsMenu/SSS/BackHeader'
 import UnderTabs from '../../components/TabsMenu/SSS/UnderTabs'
 import AccordionItem from '../../components/TabsMenu/SSS/AccordionItem'
 
-
 const tabs: Category[] = ['Genel', 'Ürünler', 'Kargo']
-
 
 const Sss = () => {
   const navigation = useNavigation<any>();
