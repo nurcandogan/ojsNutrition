@@ -10,7 +10,6 @@ import BestSeller from '../../components/BestSeller';
 import CategoryCard from '../../components/CategoryCard';
 import { useCartStore } from '../../store/cartStore';
 
-
 const images = [
   require("../../assets/protein.png"),
   require("../../assets/vitamin.png"),
@@ -21,7 +20,6 @@ const images = [
 ];
 
 const aminoAcidImage = require("../../assets/amino-asit-paket.png");
-
 
 const Home = () => {
     const navigation = useNavigation();
