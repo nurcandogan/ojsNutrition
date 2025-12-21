@@ -40,8 +40,8 @@ const OrderDetailScreen = () => {
   const loadDetail = async () => {
     setLoading(true);
     const data = await fetchOrderDetail(orderId);
-    // 🔥 KARGO SORUNUNU ÇÖZMEK İÇİN KONSOLA YAZDIRIYORUZ
-    console.log("📦 KARGO VERİSİ KONTROL:", JSON.stringify(data, null, 2));
+    //  KARGO SORUNUNU ÇÖZMEK İÇİN KONSOLA YAZDIRIYORUZ
+    console.log(" KARGO VERİSİ KONTROL:", JSON.stringify(data, null, 2));
     
     setDetail(data);
     setLoading(false);

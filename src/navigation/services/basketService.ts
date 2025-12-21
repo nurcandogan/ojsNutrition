@@ -66,9 +66,7 @@ export async function getRemoteCart(): Promise<any> {
     }
 }
 
-// ============================================================
-// 3. TEK ÜRÜN SİLME (YENİ - Postman'deki gibi dolu body ile siler)
-// ============================================================
+      // 3. SİLME: Ürünü Backend Sepetinden Kaldırır
 export async function removeFromRemoteCart(item: any): Promise<boolean> {
     try {
         const token = await AsyncStorage.getItem("access_token");
@@ -81,7 +79,7 @@ export async function removeFromRemoteCart(item: any): Promise<boolean> {
         const pcs = item.pieces || item.quantity || 1;
 
         if (!pId || !vId) {
-            console.error("❌ Silme Hatası: ID bulunamadı!", item);
+            console.error(" Silme Hatası: ID bulunamadı!", item); 
             return false;
         }
 
@@ -91,7 +89,7 @@ export async function removeFromRemoteCart(item: any): Promise<boolean> {
             pieces: pcs                       
         });
 
-        console.log("🗑️ Sunucudan Siliniyor (Body):", bodyData);
+        console.log(" Sunucudan Siliniyor (Body):", bodyData);
 
         const response = await fetch(`${API_BASE_URL}/users/cart`, {
             method: 'DELETE',
@@ -106,14 +104,14 @@ export async function removeFromRemoteCart(item: any): Promise<boolean> {
         return response.ok; 
 
     } catch (error) {
-        console.error("❌ Ürün silme hatası:", error);
+        console.error(" Ürün silme hatası:", error);
         return false;
     }
 }
 
-// ============================================================
-// 4. TEMİZLEME (GÜNCELLENDİ - Hepsini tek tek bulup siler)
-// ============================================================
+
+// 4. TEMİZLEME, Hepsini tek tek bulup siler
+
 export async function clearRemoteCart(): Promise<boolean> {
     try {
         const token = await AsyncStorage.getItem("access_token");
@@ -126,7 +124,7 @@ export async function clearRemoteCart(): Promise<boolean> {
         
         // Sepet zaten boşsa uğraşma
         if (!cartData || !cartData.items || cartData.items.length === 0) {
-            console.log("✅ Backend sepeti zaten boş.");
+            console.log(" Backend sepeti zaten boş.");
             return true;
         }
 
@@ -135,7 +133,7 @@ export async function clearRemoteCart(): Promise<boolean> {
             await removeFromRemoteCart(item);
         }
 
-        console.log("✅ Tüm ürünler başarıyla temizlendi.");
+        console.log(" Tüm ürünler başarıyla temizlendi.");
         return true;
         
     } catch (e) {
@@ -143,3 +141,6 @@ export async function clearRemoteCart(): Promise<boolean> {
         return false;
     }
 }
+
+
+//mmkv from 'src/storage/mmkv';
