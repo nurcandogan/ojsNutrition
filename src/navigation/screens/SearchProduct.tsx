@@ -66,8 +66,6 @@ const SearchProduct = () => {
           <Text className="ml-3 text-[16px] text-logintext bg-searchBg ">Vazgeç</Text>
         </TouchableOpacity>
        </View>
-
-        
       </View>
 
       <ScrollView className="px-6 bg-searchBg">

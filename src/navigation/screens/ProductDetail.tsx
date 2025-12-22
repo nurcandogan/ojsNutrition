@@ -285,8 +285,6 @@ const ingredients = (
           pageSize={pageSize}
           onPageChange={setPage}
         />
-
-
       </ScrollView>
       
       <StickyBar
@@ -296,8 +294,6 @@ const ingredients = (
         onAddToCart={handleAddToCart}
        
       />
-       
-      
     </SafeAreaView>
   )
 }
