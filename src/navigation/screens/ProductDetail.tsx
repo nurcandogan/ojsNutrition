@@ -121,7 +121,6 @@ const ProductDetail = () => {
     };
   }, [selectedVariant]);
   
-
    // yorumları (ve sayısını) çek
   useEffect(() => {
     const loadComments = async () => {
@@ -140,7 +139,6 @@ const ProductDetail = () => {
 
     loadComments();
   }, [slug, page]); 
-
 
 
   if (loading) {
