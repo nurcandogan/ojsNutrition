@@ -13,7 +13,7 @@ const AboutUs = () => {
   const [page, setPage] = useState<number>(1);
   const pageSize = 10;
   
-  const FIXED_SLUG = "pea-protein"; // spesifik bır urunuyn yorumlrını cektık. tum yorumlar backendde yok !!
+  const FIXED_SLUG = "pea-protein"; // spesifik bır urunun yorumlrını cektık. tum yorumlar backendde yok !!
 
  useEffect(() => {
     loadComments();
@@ -124,10 +124,7 @@ const AboutUs = () => {
           page={page}
           pageSize={pageSize}
           onPageChange={setPage}
-        />
-
-
-    
+        />    
     </ScrollView>
    </SafeAreaView>
   )

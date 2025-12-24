@@ -103,6 +103,10 @@ export const Navigation = RootNavigation;
 //kalıı bır sekılde token saklamak ıstıyosan yanı uygulamaya bır kere girdiğinde token  saklamak ıcın asagıdaki kodu kullanabilrsın.
 // bu sekılde yaparsan her uygulamayı actıgında token saklanmıs olur ve kullanıcı tekrar gırıs yapması gerekmez.
 
+
+
+
+
 /*function RootNavigation() {
   useEffect(() => {
     const prepare = async () => {
