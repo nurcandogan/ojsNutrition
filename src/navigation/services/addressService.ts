@@ -23,6 +23,7 @@ export interface DistrictItem {
   name: string;
 }
 
+
 /** Kayıtlı adresleri backend'den çeker (GET) */
 export async function fetchAddresses(): Promise<AddressProps[]> {
   try { 

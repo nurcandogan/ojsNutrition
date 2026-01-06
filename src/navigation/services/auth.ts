@@ -1,8 +1,5 @@
 import { API_BASE_URL, API_KEY } from "@env";
 
-//console.log("API_KEY:", API_KEY);
-
-
 export const REGISTER_URL = `${API_BASE_URL}/auth/register`;
 export const LOGIN_URL = `${API_BASE_URL}/auth/login`;
 
