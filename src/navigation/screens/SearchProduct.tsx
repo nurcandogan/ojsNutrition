@@ -14,6 +14,7 @@ import { useNavigation } from "@react-navigation/native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { EvilIcons } from "@expo/vector-icons";
 
+
 const SearchProduct = () => {
   const navigation = useNavigation();
   const [query, setQuery] = useState("");

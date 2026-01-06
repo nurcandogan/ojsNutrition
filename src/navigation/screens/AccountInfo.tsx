@@ -81,6 +81,7 @@ const AccountInfo = () => {
     }
     
     
+    
     if (!isCheck) {
         Alert.alert("Uyarı", "Lütfen ticari ileti onayını işaretleyiniz.");
         return;

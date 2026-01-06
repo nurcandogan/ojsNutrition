@@ -13,6 +13,8 @@ import QuestionIcon from '../../Svgs/QuestionIcon';
 import Feather from '@expo/vector-icons/Feather';
 
 
+
+
 const Menu = () => {
   const nav = useNavigation<any>()
 
