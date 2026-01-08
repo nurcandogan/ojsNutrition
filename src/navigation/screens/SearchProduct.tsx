@@ -40,6 +40,7 @@ const SearchProduct = () => {
     setLoading(false);
   };
 
+  
   return (
     <SafeAreaView className=" bg-white " >
        <Image source={require('../../assets/ojslogo2.png')} className=' mx-6 w-32 h-16 ' resizeMode="contain"  />
