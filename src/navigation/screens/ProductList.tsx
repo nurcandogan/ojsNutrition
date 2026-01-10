@@ -16,8 +16,8 @@ interface Product {
   price_info: {
     profit?: number;
     total_price: number;
-    discounted_price?: number;
-    discount_percentage?: number;
+    discounted_price: number | null;
+    discount_percentage: number | null;
   };
 }
 
