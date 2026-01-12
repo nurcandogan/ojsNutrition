@@ -102,7 +102,7 @@ export async function fetchCities(): Promise<CityItem[]> {
   } catch (error) { return []; }
 }
 
-/** İlçeleri Getir */
+/* İlçeleri Getir */
 export async function fetchDistricts(cityName: string): Promise<DistrictItem[]> {
   try {
     const token = await AsyncStorage.getItem("access_token");

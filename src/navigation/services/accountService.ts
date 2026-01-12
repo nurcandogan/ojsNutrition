@@ -1,5 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { API_BASE_URL } from '@env'; // Veya senin config dosyan neresiyse
+import { API_BASE_URL } from '@env'; 
+
+
 
 // Kullanıcı Bilgilerini Getir (GET)
 export const getMyAccount = async () => {
@@ -26,6 +28,7 @@ export const getMyAccount = async () => {
     throw error;
   }
 };
+
 
 // Kullanıcı Bilgilerini Güncelle (PUT)
 export const updateMyAccount = async (data: any) => {
