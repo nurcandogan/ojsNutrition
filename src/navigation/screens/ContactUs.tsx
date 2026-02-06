@@ -20,7 +20,7 @@ const ContactUs = () => {
            Bize aşağıdaki iletişim formundan veya destek@proteinocean.com e-posta adresinden ulaşabilirsiniz.
         </Text>
        </View>
-       
+       // Form alanları
         <View className='mt-10'>
           <Input value={name} onChangeText={setName} placeholder="İsim *" />
           <Input value={surname} onChangeText={setSurname} placeholder="Soyad" />

@@ -10,6 +10,8 @@ import BestSeller from '../../components/BestSeller';
 import CategoryCard from '../../components/CategoryCard';
 import { useCartStore } from '../../store/cartStore';
 
+
+// Kategoriler için görseller
 const images = [
   require("../../assets/protein.png"),
   require("../../assets/vitamin.png"),
